@@ -1,0 +1,47 @@
+# -- Main Menu --
+# The main menu is displayed in the header at the top of the page.
+# Acceptable parameters are name, pageRef, page, url, title, weight.
+# 
+# The simplest menu configuration is to provide:
+#   name: The name to be displayed for this menu link
+#   pageRef: The identifier of the page or section to link to
+#
+# By default the menu is ordered alphabetically. This can be
+# overridden by providing a weight value. The menu will then be
+# ordered by weight from lowest to highest.
+
+main:
+
+  - name: GPG Keys
+    weight: 10
+    url: https://pujol.io/keys
+
+  - name: Projects
+    weight: 20
+    url: https://pujol.io/projects
+
+  - name: Research
+    weight: 30
+    url: https://pujol.io/research
+
+  - name: Posts
+    weight: 40
+    url: https://pujol.io/blog
+
+  - name: Pkg
+    weight: 50
+    url: https://pkg.pujol.io
+
+  - name: Home
+    weight: 60
+    url: https://pujol.io
+
+footer:
+
+  - name: Tags
+    weight: 50
+    url: https://pujol.io/tags
+
+  - name: Source
+    weight: 60
+    url: https://github.com/roddhjav/play
