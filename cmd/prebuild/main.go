@@ -1,0 +1,41 @@
+// play - Apparmor play machine
+// Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+// SPDX-License-Identifier: UNLICENSED
+
+package main
+
+import (
+	"github.com/roddhjav/apparmor.d/pkg/paths"
+	"github.com/roddhjav/apparmor.d/pkg/prebuild"
+	"github.com/roddhjav/apparmor.d/pkg/prebuild/builder"
+	"github.com/roddhjav/apparmor.d/pkg/prebuild/cli"
+	"github.com/roddhjav/apparmor.d/pkg/prebuild/prepare"
+)
+
+func init() {
+	// Define the target ABI
+	prebuild.ABI = 4
+
+	// Define the tasks applied by default
+	prepare.Register(
+		"synchronise", // Initialize a new clean apparmor.d build directory
+		"setflags",    // Set flags as definied in dist/flags
+	)
+
+	// Build tasks applied by default
+	builder.Register(
+		"userspace", // Resolve variable in profile attachments
+	)
+
+	// Define the flag directory
+	prebuild.FlagDir = paths.New(".")
+
+	// Define the apparmor.d paths to build
+	sync, _ := prepare.Tasks["synchronise"].(*prepare.Synchronise)
+	sync.Paths = []string{"apparmor.d"}
+}
+
+func main() {
+	cli.Configure()
+	cli.Prebuild()
+}
