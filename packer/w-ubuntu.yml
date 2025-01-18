@@ -1,0 +1,65 @@
+#cloud-config
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+hostname: ${hostname}
+
+ssh_pwauth: true
+users:
+  - name: ${username}
+    plain_text_passwd: ${password}
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ${ssh_key}
+    lock_passwd: false
+    sudo: ALL=(ALL) ALL
+
+  - name: root
+    lock_passwd: true
+
+apt:
+  sources:
+    wazuh:
+      source: "deb https://packages.wazuh.com/4.x/apt/ stable main"
+      keyid: "0DCFCA5547B19D2A6099506096B3EE5F29111145"
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: false
+packages:
+  - apparmor-profiles
+  - auditd
+  - filebeat
+  - firewalld
+  - htop
+  - libpam-apparmor
+  - qemu-guest-agent
+  - vim
+  - wazuh-agent
+  - wazuh-dashboard
+  - wazuh-indexer
+  - wazuh-manager
+
+write_files:
+
+  # Network configuration
+  - path: /etc/systemd/network/20-wired.network
+    owner: 'root:root'
+    permissions: '0644'
+    content: |
+      [Match]
+      Name=en*
+
+      [Network]
+      DHCP=yes
+
+      [DHCPv4]
+      RouteMetric=10
+
+  # Setup shared directory
+  # TODO: DEVELOPMENT ONLY
+  - path: /etc/fstab
+    append: true
+    content: |
+      0a31bc478ef8e2461a4b1cc10a24cc4 /home/play/Projects/play  virtiofs defaults  0  1
