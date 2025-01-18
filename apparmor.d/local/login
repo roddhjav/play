@@ -1,0 +1,7 @@
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+  include <mappings.d>
+  
+  deny @{bin}/@{shells} x,
