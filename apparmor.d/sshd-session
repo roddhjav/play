@@ -1,0 +1,52 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2024 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = @{lib}/{openssh,ssh}/sshd-session
+profile sshd-session @{exec_path} flags=(attach_disconnected,complain) {
+  include <abstractions/base>
+  include <abstractions/authentication>
+  include <abstractions/consoles>
+  include <abstractions/nameservice-strict>
+  include <abstractions/wutmp>
+  include <mappings.d>
+
+  capability audit_write,
+  capability chown,
+  capability dac_read_search,
+  capability setgid,
+  capability setuid,
+  capability sys_chroot,
+
+  # sshd doesn't require net_admin. libpam-systemd tries to
+  # use it if available to set the send/receive buffers size,
+  # but will fall back to a non-privileged version if it fails.
+  deny capability net_admin,
+
+  network inet dgram,
+  network inet stream,
+  network inet6 dgram,
+  network inet6 stream,
+  network netlink raw,
+
+  @{exec_path} mr,
+
+  /etc/machine-id r,
+
+  owner @{HOME}/@{XDG_SSH_DIR}/authorized_keys{,.*} r,
+
+  @{run}/systemd/sessions/@{int}.ref w,
+
+  owner @{PROC}/@{pid}/loginuid rw,
+  owner @{PROC}/@{pid}/uid_map r,
+
+  /dev/ptmx rw,
+
+  include if exists <local/sshd-session>
+}
+
+# vim:syntax=apparmor

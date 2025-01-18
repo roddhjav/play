@@ -1,0 +1,39 @@
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+# Allow confined users to read, write, lock and link to their own files
+# anywhere, and execute from some places.
+
+# TODO; integration tests, 
+# - List of things that must not work,
+# - List of things that must work,
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+profile role_root {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/nameservice-strict>
+  include <abstractions/shells>
+
+  deny capability sys_ptrace,
+
+  @{bin}/** mrix,
+  @{lib}/** mrix,
+
+  owner /root/ r,
+  owner /root/** mrix,
+  owner /root/*/** rwkl,
+  owner /root/thanks-append-only.txt ra,
+
+  @{PROC}/** r,
+
+  deny @{bin}/{kmod,lsmod,depmod,insmod,rmmod,modinfo,modprobe} x,
+
+  include if exists <local/role_root>
+}
+
+# vim:syntax=apparmor

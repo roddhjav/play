@@ -1,0 +1,27 @@
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+# The play user is a confined user. The hat contains only the permissions necessary
+# to transition to gray's login shell. All other permissions have been
+# moved into the confined_user profile.
+
+hat play flags=(complain) {
+  include <abstractions/authentication>
+  include <abstractions/nameservice-strict>
+  include <abstractions/wutmp>
+
+  capability dac_override,
+  capability audit_write,
+  capability setgid,
+  capability setuid,
+
+  @{shells_path}  rPx -> role_play,
+
+  /etc/default/su r,
+  @{etc_ro}/environment r,
+
+  include if exists <local/mappings_play>
+}
+
+# vim:syntax=apparmor

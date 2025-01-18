@@ -1,0 +1,25 @@
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+profile role_play flags=(attach_disconnected,mediate_deleted,complain) {
+
+  capability,
+  network,
+  mount,
+  remount,
+  umount,
+  pivot_root,
+  ptrace,
+  signal,
+  dbus,
+  unix,
+
+  include if exists <local/role_play>
+}
+
+# vim:syntax=apparmor

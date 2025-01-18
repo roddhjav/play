@@ -1,0 +1,20 @@
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = @{bin}/caddy
+profile caddy @{exec_path} flags=(complain) {
+  include <abstractions/base>
+
+  @{exec_path} mr,
+
+  /etc/caddy/** r,
+
+  include if exists <local/caddy>
+}
+
+# vim:syntax=apparmor
