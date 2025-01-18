@@ -5,7 +5,6 @@
 DESTDIR := env_var_or_default("DESTDIR", "")
 build := ".build"
 pkgdest := `pwd` / ".pkg"
-# version := "0." + `git rev-list --count HEAD`
 apparmord_dir := "../apparmor.d"
 src := `pwd` 
 
@@ -13,14 +12,16 @@ src := `pwd`
 default:
 	@just --list
 
-# Build the play machine
-play: web-buid
-	packer
 
-# Run the packer build
-packer:
-	packer build -force -only=qemu.ubuntu packer/
-	mv /tmp/packer/play-ubuntu.qcow2 ~/.vm/play-ubuntu.qcow2
+# Build the play image
+play:
+	packer build -force -only=qemu.ubuntu -var hostname=play.pujol.io packer/
+	mv /tmp/packer/play.pujol.io.qcow2 ~/.vm/play-ubuntu.qcow2
+
+# Build the wazuh image
+wazuh:
+	packer build -force -only=qemu.ubuntu -var hostname=w.pujol.xyz packer/
+	mv /tmp/packer/w.pujol.xyz.qcow2 ~/.vm/w.pujol.xyz.qcow2
 
 # Build the play distribution package
 build:
@@ -52,6 +53,9 @@ install:
 
 # Build the play package in an Ubuntu container
 dpkg-build-play: (_docker-dpkg-setup "play") (docker-dpkg-build "play")
+
+# Build the w package in an Ubuntu container
+dpkg-build-w: (_docker-dpkg-setup "w") (docker-dpkg-build "w")
 
 # Build and integrate apparmor.d package in an Ubuntu container
 dpkg-build-apparmord: (_docker-dpkg-setup "apparmor.d")
@@ -110,6 +114,10 @@ web-buid:
 # Serve the static website
 web-serve:
 	@cd site && hugo serve
+
+# Run the integration tests
+tests:
+	@bats --timing --print-output-on-failure tests/
 
 # Run the linters
 lint:
