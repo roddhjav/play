@@ -1,0 +1,15 @@
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+# tls alexandre@pujol.io
+# play.pujol.io {
+:80 {
+    root * /srv/www/public
+    file_server
+    encode gzip
+    #  @http {
+    #      protocol http
+    #  }
+    #  redir @http https://{host}{uri}
+}
