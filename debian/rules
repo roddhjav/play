@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+# play - Apparmor play machine
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: UNLICENSED
+
+%:
+	dh $@ --with=config-package
+
+override_dh_auto_build:
+	just build
+
+override_dh_auto_install:
+	DESTDIR="${CURDIR}/debian/play" just install
+
