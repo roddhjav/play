@@ -9,7 +9,7 @@ source "qemu" "ubuntu" {
   iso_target_path    = "${var.iso_dir}/ubuntu-${var.release.ubuntu.codename}-cloudimg-amd64.img"
   cpus               = 6
   memory             = 2048
-  disk_size          = "10G"
+  disk_size          = var.disk_size
   accelerator        = "kvm"
   headless           = true
   ssh_username       = var.username

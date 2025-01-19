@@ -14,13 +14,13 @@ default:
 
 
 # Build the play image
-play:
+play: dpkg-build-play dpkg-build-apparmord
 	packer build -force -only=qemu.ubuntu -var hostname=play.pujol.io packer/
 	mv /tmp/packer/play.pujol.io.qcow2 ~/.vm/play-ubuntu.qcow2
 
 # Build the wazuh image
-wazuh:
-	packer build -force -only=qemu.ubuntu -var hostname=w.pujol.xyz packer/
+wazuh: dpkg-build-wazuh dpkg-build-apparmord
+	packer build -force -only=qemu.ubuntu -var hostname=w.pujol.xyz -var disk_size=20G packer/
 	mv /tmp/packer/w.pujol.xyz.qcow2 ~/.vm/w.pujol.xyz.qcow2
 
 # Build the play distribution package
