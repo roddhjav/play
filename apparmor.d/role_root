@@ -5,10 +5,6 @@
 # Allow confined users to read, write, lock and link to their own files
 # anywhere, and execute from some places.
 
-# TODO; integration tests, 
-# - List of things that must not work,
-# - List of things that must work,
-
 abi <abi/4.0>,
 
 include <tunables/global>
@@ -21,13 +17,29 @@ profile role_root {
 
   deny capability sys_ptrace,
 
+  deny network inet dgram,
+  deny network inet6 dgram,
+  deny network inet raw,
+  deny network inet6 raw,
+
+  # Allow to run everything, but in this role.
   @{bin}/** mrix,
   @{lib}/** mrix,
 
+  # Allow to run some specific program and to transition to their profile
+  @{bin}/aa-log rPx,
+  @{bin}/aa-status rPx,
+
+  /etc/apparmor/** r,
+  /etc/apparmor.d/** r,
+
   owner /root/ r,
   owner /root/** mrix,
-  owner /root/*/** rwkl,
+  owner /root/*/ rw,
+  owner /root/*/** rwkl -> /root/*/**,
   owner /root/thanks-append-only.txt ra,
+
+  deny owner /root/.ssh/authorized_keys w,
 
   @{PROC}/** r,
 
