@@ -45,11 +45,6 @@ packages:
   - wazuh-agent
   - wget
 
-  # TODO: DEVELOPMENT ONLY
-  - just 
-  - golang-go
-  - hugo
-
 write_files:
 
   # Network configuration

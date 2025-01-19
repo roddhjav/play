@@ -12,7 +12,6 @@ src := `pwd`
 default:
 	@just --list
 
-
 # Build the play image
 play: dpkg-build-play dpkg-build-apparmord
 	packer build -force -only=qemu.ubuntu -var hostname=play.pujol.io packer/
