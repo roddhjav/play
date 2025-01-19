@@ -26,36 +26,39 @@ wazuh: dpkg-build-wazuh dpkg-build-apparmord
 # Build the play distribution package
 build:
 	@go build -o {{build}}/ ./cmd/prebuild
-	@./{{build}}/prebuild --complain
+	@./{{build}}/prebuild
 
 # Install the play package
-install:
+install-play: (_install "play")
+	@chmod 0600 "{{DESTDIR}}/root/thanks-append-only.txt"
+	@chmod 0700 "{{DESTDIR}}/root/.config/" "{{DESTDIR}}/root/.config/htop"
+
+# Install the wazuh package
+install-wazuh: (_install "wazuh")
+
+_install name="":
 	#!/usr/bin/env bash
 	set -euo pipefail
 	user=play
 
-	install -dm0750 "{{DESTDIR}}/root/.config/" "{{DESTDIR}}/root/.config/htop"
-	install -dm0750 -o 1000 -g 1000 "{{DESTDIR}}/home/$user/Projects/" "{{DESTDIR}}/home/$user/.config/"
+	# Create directories with special rights
+	install -dm0700 "{{DESTDIR}}/home/$user/Projects/" "{{DESTDIR}}/home/$user/.config/" "{{DESTDIR}}/home/$user/.config/htop"
 
 	# Install all files
-	mapfile -t root < <(find play -type f -printf "%P\n")
+	mapfile -t root < <(find {{name}} -type f -printf "%P\n")
 	for file in "${root[@]}"; do
-		install -Dm0644 "play/$file" "{{DESTDIR}}/$file"
+		install -Dm0644 "{{name}}/$file" "{{DESTDIR}}/$file"
 	done
 	mapfile -t profiles < <(find "{{build}}/apparmor.d" -type f -printf "%P\n")
 	for file in "${profiles[@]}"; do
 		install -Dm0644 "{{build}}/apparmor.d/$file" "{{DESTDIR}}/etc/apparmor.d/$file"
 	done
 
-	chown 1000:1000 "{{DESTDIR}}/home/$user/.bash_aliases"
-	chown -R 1000:1000 "{{DESTDIR}}/home/$user/.config/"
-	chmod 0600 "{{DESTDIR}}/root/thanks-append-only.txt"
-
 # Build the play package in an Ubuntu container
 dpkg-build-play: (_docker-dpkg-setup "play") (docker-dpkg-build "play")
 
 # Build the w package in an Ubuntu container
-dpkg-build-w: (_docker-dpkg-setup "w") (docker-dpkg-build "w")
+dpkg-build-wazuh: (_docker-dpkg-setup "wazuh") (docker-dpkg-build "wazuh")
 
 # Build and integrate apparmor.d package in an Ubuntu container
 dpkg-build-apparmord: (_docker-dpkg-setup "apparmor.d")
