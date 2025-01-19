@@ -8,9 +8,6 @@ function up() {
     done
 }
 
-alias sudo='sudo -E'
-alias aa-log='sudo aa-log'
-alias aa-status='sudo aa-status'
 alias c='clear'
 alias l='ll -h'
 alias ll='ls -alFh'
