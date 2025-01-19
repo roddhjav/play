@@ -30,7 +30,12 @@ build {
       "cloud-init clean",
 
       # Install system packages & extensions
-      "dpkg -i /tmp/*.deb",
+      "dpkg --force-confnew --install /tmp/*.deb",
+
+      # Ensure the earlypolicy is recompiled
+      "rm -rf /var/cache/apparmor/*",
+      "rm -rf /etc/apparmor/earlypolicy/",
+      "systemctl reload apparmor.service",
 
       # Minimize the image
       "bash /tmp/cleanup.sh",

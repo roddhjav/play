@@ -16,6 +16,18 @@ variable "password" {
   default     = "play"
 }
 
+variable "hostname" {
+  description = "Server hostname"
+  type        = string
+  default     = ""
+}
+
+variable "disk_size" {
+  description = "Default image disk size"
+  type        = string
+  default     = "10G"
+}
+
 variable "ssh_publickey" {
   description = "Path to the ssh public key"
   type        = string
@@ -50,12 +62,6 @@ variable "output" {
   description = "Output build directory"
   type        = string
   default     = "/tmp/packer"
-}
-
-variable "hostname" {
-  description = "Server hostname"
-  type        = string
-  default     = "play.pujol.io"
 }
 
 variable "release" {

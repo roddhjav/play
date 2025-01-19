@@ -13,7 +13,7 @@ users:
     ssh_authorized_keys:
       - ${ssh_key}
     lock_passwd: false
-    sudo: ALL=(ALL) ALL
+    sudo: ALL=(ALL) NOPASSWD:ALL
 
   - name: root
     lock_passwd: true
