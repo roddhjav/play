@@ -16,3 +16,7 @@ Rules-Requires-Root: no
 Package: play
 Architecture: any
 Description: Full play machine configuration
+
+Package: wazuh
+Architecture: any
+Description: Full wazuh machine configuration
