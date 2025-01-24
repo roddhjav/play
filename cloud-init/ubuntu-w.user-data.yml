@@ -30,6 +30,7 @@ package_reboot_if_required: false
 packages:
   - apparmor-profiles
   - auditd
+  - docker-compose
   - filebeat
   - firewalld
   - htop
