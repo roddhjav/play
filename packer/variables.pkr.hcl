@@ -22,6 +22,18 @@ variable "hostname" {
   default     = ""
 }
 
+variable "cpus" {
+  description = "Default CPU of the VM"
+  type        = string
+  default     = "6"
+}
+
+variable "ram" {
+  description = "Default RAM of the VM"
+  type        = string
+  default     = "2048"
+}
+
 variable "disk_size" {
   description = "Default image disk size"
   type        = string
@@ -32,12 +44,6 @@ variable "ssh_publickey" {
   description = "Path to the ssh public key"
   type        = string
   default     = "~/.ssh/id_ed25519.pub"
-}
-
-variable "ssh_privatekey" {
-  description = "Path to the ssh private key"
-  type        = string
-  default     = "~/.ssh/id_ed25519"
 }
 
 variable "iso_dir" {

@@ -7,8 +7,9 @@ source "qemu" "ubuntu" {
   iso_url            = "https://cloud-images.ubuntu.com/${var.release.ubuntu.codename}/current/${var.release.ubuntu.codename}-server-cloudimg-amd64.img"
   iso_checksum       = "file:https://cloud-images.ubuntu.com/${var.release.ubuntu.codename}/current/SHA256SUMS"
   iso_target_path    = "${var.iso_dir}/ubuntu-${var.release.ubuntu.codename}-cloudimg-amd64.img"
-  cpus               = 6
-  memory             = 2048
+  cpu_model          = "host"
+  cpus               = var.cpus
+  memory             = var.ram
   disk_size          = var.disk_size
   accelerator        = "kvm"
   headless           = true
@@ -19,7 +20,7 @@ source "qemu" "ubuntu" {
   disk_compression   = true
   disk_detect_zeroes = "unmap"
   disk_discard       = "unmap"
-  output_directory   = "${var.output}/"
+  output_directory   = var.output
   vm_name            = "${var.hostname}.qcow2"
   boot_wait          = "10s"
   firmware           = var.firmware

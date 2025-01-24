@@ -39,7 +39,7 @@ _sshdgenkeys() {
 	_EOF
 }
 
-clean_debian() {
+clean_apt() {
 	_msg "Cleaning the apt cache"
 	apt-get -y autoremove --purge
 	apt-get -y autoclean
@@ -113,7 +113,7 @@ trim() {
 main() {
 	local begin end
 	begin=$(_diskused)
-	clean_debian
+	clean_apt
 	_sshdgenkeys
 	impersonalize
 	trim
