@@ -1,7 +1,0 @@
-# play - Apparmor play machine
-# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
-# SPDX-License-Identifier: UNLICENSED
-
-write-cache
-cache-loc /etc/apparmor/earlypolicy/
-Optimize=compress-fast

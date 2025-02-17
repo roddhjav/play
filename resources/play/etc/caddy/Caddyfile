@@ -5,6 +5,10 @@
 # tls alexandre@pujol.io
 # play.pujol.io {
 :80 {
+  	basic_auth {
+		# password "ALPX7i7gisGyjGiSrN13XOkRU"
+		alex $2a$14$Cs3fM1N47lMaJiP6f3RSGOXeBC5Q7ywF.8MxvLMt6njK.nauGtMeW
+	}
     root * /srv/www/public
     file_server
     encode gzip
