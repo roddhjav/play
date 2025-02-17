@@ -1,8 +1,0 @@
-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: play
-Upstream-Contact: Alexandre Pujol <alexandre@pujol.io>
-Source: https://gitlab.com/rdhjv/security/play
-
-Files: *
-Copyright: 2025 Alexandre Pujol <alexandre@pujol.io>
-License: UNLICENSED

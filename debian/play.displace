@@ -1,6 +1,0 @@
-# play - Apparmor play machine
-# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
-# SPDX-License-Identifier: UNLICENSED
-
-/etc/apparmor/parser.conf.play
-/etc/caddy/Caddyfile.play
