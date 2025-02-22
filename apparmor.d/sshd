@@ -19,22 +19,19 @@ profile sshd @{exec_path} flags=(attach_disconnected,complain) {
   include <abstractions/base>
   include <abstractions/bus-system>
   include <abstractions/consoles>
+  include <abstractions/hosts_access>
   include <abstractions/nameservice-strict>
-  include <abstractions/wutmp>
-  include <mappings.d>
 
   capability audit_write,
   capability chown,
   capability dac_read_search,
   capability dac_override,
   capability fowner,
-  capability kill,
   capability sys_resource,
 
   capability net_bind_service,
   capability setgid,
   capability setuid,
-  capability sys_resource,
 
   # sshd doesn't require net_admin. libpam-systemd tries to
   # use it if available to set the send/receive buffers size,
@@ -51,7 +48,7 @@ profile sshd @{exec_path} flags=(attach_disconnected,complain) {
 
   ptrace (read,trace) peer=@{p_systemd},
 
-  unix (bind) type=stream addr=@@{udbus}/bus/sshd/system,
+  unix bind type=stream addr=@@{udbus}/bus/sshd/system,
   unix type=stream peer=(label=sshd-session),
 
   @{exec_path} mrix,
@@ -62,7 +59,6 @@ profile sshd @{exec_path} flags=(attach_disconnected,complain) {
   /etc/default/locale r,
   /etc/gss/mech.d/{,*} r,
   /etc/issue.net r,
-  /etc/legal r,
   /etc/machine-id r,
   /etc/shells r,
 
@@ -81,9 +77,8 @@ profile sshd @{exec_path} flags=(attach_disconnected,complain) {
 
   @{HOME}/@{XDG_SSH_DIR}/authorized_keys{,.*} r,
 
-  @{run}/systemd/sessions/@{int}.ref rw,
+  @{att}/@{run}/systemd/sessions/@{int}.ref rw,
 
-        @{run}/faillock/@{user} rwk,
         @{run}/systemd/notify w,
   owner @{run}/sshd{,.init}.pid wl,
 
@@ -93,6 +88,7 @@ profile sshd @{exec_path} flags=(attach_disconnected,complain) {
         @{PROC}/@{pids}/fd/ r,
         @{PROC}/1/environ r,
         @{PROC}/cmdline r,
+  # owner @{PROC}/@{pid}/limits r,
   owner @{PROC}/@{pid}/loginuid rw,
   owner @{PROC}/@{pid}/mounts r,
   owner @{PROC}/@{pid}/oom_adj rw,

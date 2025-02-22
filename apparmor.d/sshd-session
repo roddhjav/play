@@ -20,10 +20,11 @@ profile sshd-session @{exec_path} flags=(attach_disconnected,complain) {
   capability audit_write,
   capability chown,
   capability dac_read_search,
+  capability kill,
   capability setgid,
-  capability sys_resource,
   capability setuid,
   capability sys_chroot,
+  capability sys_resource,
 
   # sshd doesn't require net_admin. libpam-systemd tries to
   # use it if available to set the send/receive buffers size,
@@ -50,14 +51,14 @@ profile sshd-session @{exec_path} flags=(attach_disconnected,complain) {
 
   @{etc_rw}/motd r,
   @{etc_rw}/motd.d/{,**} r,
+  /etc/legal r,
   /etc/machine-id r,
-  /etc/motd r,
 
   owner @{HOME}/@{XDG_SSH_DIR}/authorized_keys{,.*} r,
 
   owner @{user_cache_dirs}/{,motd*} rw,
 
-  @{run}/systemd/sessions/@{int}.ref w,
+  @{att}/@{run}/systemd/sessions/@{int}.ref w,
 
         @{run}/motd.d/{,*} r,
         @{run}/motd.dynamic rw,
