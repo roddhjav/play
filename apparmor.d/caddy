@@ -7,12 +7,65 @@ abi <abi/4.0>,
 include <tunables/global>
 
 @{exec_path} = @{bin}/caddy
-profile caddy @{exec_path} flags=(complain) {
+profile caddy @{exec_path} flags=(attach_disconnected,complain) {
   include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/ssl_certs>
+  include <abstractions/nameservice-strict>
+
+  capability dac_override,
+  capability dac_read_search,
+  capability net_admin,
+  capability net_bind_service,
+
+  network inet dgram,
+  network inet stream,
+  network inet6 dgram,
+  network inet6 stream,
 
   @{exec_path} mr,
 
+  @{bin}/sudo  Cx -> sudo,
+
+  /usr/share/mime/globs2 r,
+
   /etc/caddy/** r,
+  /etc/machine-id r,
+
+  /srv/www/public/** r,
+
+  @{user_config_dirs}/caddy/{,**} rw,
+  @{user_share_dirs}/caddy/{,**} rw,
+
+  owner /var/lib/caddy/** rwlk -> /var/lib/caddy/**,
+
+  owner /tmp/truststore.@{int}.pem rw,
+
+  @{att}/@{run}/systemd/notify w,
+
+        @{PROC}/sys/net/core/somaxconn r,
+  owner @{PROC}/@{pid}/cgroup r,
+  owner @{PROC}/@{pid}/cpuset r,
+  owner @{PROC}/@{pid}/mountinfo r,
+
+  profile sudo flags=(attach_disconnected,complain) {
+    include <abstractions/base>
+    include <abstractions/app/sudo>
+
+    capability chown,
+    capability sys_ptrace,
+
+    network inet dgram,
+    network inet6 dgram,
+
+    ptrace read peer=caddy,
+
+    @{bin}/update-ca-certificates rPx,
+
+    @{run}/ r,
+
+    include if exists <local/caddy_sudo>
+  }
 
   include if exists <local/caddy>
 }
