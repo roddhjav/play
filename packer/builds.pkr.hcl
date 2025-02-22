@@ -12,7 +12,6 @@ build {
     destination = "/tmp/"
     sources = [
       "${path.cwd}/packer/cleanup.sh",
-      "${path.cwd}/.pkg/",
     ]
   }
 
@@ -28,14 +27,6 @@ build {
 
       # Remove logs and artifacts so cloud-init can re-run
       "cloud-init clean",
-
-      # Install system packages & extensions
-      "dpkg --force-confnew --install /tmp/*.deb",
-
-      # Ensure the earlypolicy is recompiled
-      "rm -rf /var/cache/apparmor/*",
-      "rm -rf /etc/apparmor/earlypolicy/",
-      "systemctl reload apparmor.service",
 
       # Minimize the image
       "bash /tmp/cleanup.sh",
