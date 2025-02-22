@@ -26,6 +26,7 @@ func init() {
 	// Build tasks applied by default
 	builder.Register(
 		"userspace", // Resolve variable in profile attachments
+		"attach",    // Re-attach disconnected path
 	)
 
 	// Define the dist directory, ie. the location of the overwrite file
