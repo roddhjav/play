@@ -1,0 +1,17 @@
+---
+
+- name: Play machine provisionning
+  hosts: ['play']
+  gather_facts: true
+  become: true
+
+  roles:
+
+    - role: core
+      tags: ['role::core', 'skip::core']
+
+    - role: apparmor-profiles
+      tags: ['role::apparmor-profiles', 'skip::apparmor-profiles']
+
+    - role: apparmor-local
+      tags: ['role::apparmor-local', 'skip::apparmor-local']

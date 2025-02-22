@@ -1,0 +1,66 @@
+---
+
+- name: Find unpriviliged user home
+  ansible.builtin.find:
+    paths: ['/home/']
+    patterns: "*"
+    recurse: false
+    file_type: directory
+    excludes: 'lost+found'
+  register: _users
+
+- name: Agregate user home list
+  ansible.builtin.set_fact:
+    core__users: '{{ _users.files | map(attribute="path") | map("basename") }}'
+
+- name: Synchronize the bash aliases
+  ansible.builtin.copy:
+    src: '{{ core__dotfiles_path }}/.bash_aliases'
+    dest: '/home/{{ item }}/.bash_aliases'
+    owner: '{{ item }}'
+    group: '{{ item }}'
+    mode: "0644"
+  with_items:
+    - '{{ core__users }}'
+
+- name: Synchronize the vim configuraton
+  ansible.builtin.copy:
+    src: '{{ core__dotfiles_path }}/.vimrc'
+    dest: '/home/{{ item }}/.vimrc'
+    owner: '{{ item }}'
+    group: '{{ item }}'
+    mode: "0644"
+  with_items:
+    - '{{ core__users }}'
+
+- name: Create the htop configuration directory
+  ansible.builtin.file:
+    path: '/home/{{ item }}/.config/htop'
+    state: directory
+    owner: '{{ item }}'
+    group: '{{ item }}'
+    mode: "0755"
+  with_items:
+    - '{{ core__users }}'
+
+- name: Synchronize the htop configuraton
+  ansible.builtin.copy:
+    src: '{{ core__dotfiles_path }}/.config/htop/htoprc'
+    dest: '/home/{{ item }}/.config/htop/htoprc'
+    owner: '{{ item }}'
+    group: '{{ item }}'
+    mode: "0644"
+  with_items:
+    - '{{ core__users }}'
+
+- name: Ensure bashrc will load the bash_aliases file
+  ansible.builtin.blockinfile:
+    path: '/home/{{ item }}/.bashrc'
+    block: |
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@$(hostname -f)\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+      [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
+    owner: '{{ item }}'
+    group: '{{ item }}'
+    mode: "0644"
+  with_items:
+    - '{{ core__users }}'

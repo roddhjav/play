@@ -1,0 +1,28 @@
+---
+
+# apparmor-local
+
+# Configure apparmor, build and install local apparmor profiles
+
+
+## Installation, APT packages
+
+# ??? apparmor_local__base_packages
+#
+# List of APT packages which are required by the role.
+apparmor_local__base_packages:
+  - libpam-apparmor
+
+# ??? apparmor_local__packages
+#
+# List of APT packages to install on all hosts with the role.
+apparmor_local__packages: []
+
+
+## Internal Settings
+
+# ??? apparmor_local__build
+#
+# Path to the resourse directory (default: ./resources from the repo root).
+# All files from this directory will be copied to the host root file.
+apparmor_local__build: '{{ inventory_dir | realpath | dirname | dirname }}/.build/apparmor.d'

@@ -1,6 +1,6 @@
 # Build output
+.ansible
 .build
-.pkg
 
 # Generated files by hugo
 public/

@@ -1,0 +1,66 @@
+# Configure apparmor.d build for server by ignoring profiles only required on desktop
+# File format: one ignore by line, it can be a profile name or a directory to ignore
+
+# Contains profiles and configuration for full system confinement, only included
+# when built with 'make full'
+apparmor.d/groups/_full
+
+# Ignore files recently upstreamed
+apparmor.d/abstractions/devices-usb
+apparmor.d/abstractions/devices-usb-read
+apparmor.d/abstractions/nameservice-strict
+apparmor.d/tunables/multiarch.d/base
+
+# This file is used to patch the apparmor.d build in order to ship far less profiles than enabled by default.
+# Will be the future equivalent of apparmor-profiles-base + apparmor-profiles-core + apparmor-profiles-server
+
+apparmor.d/abstractions/app/chromium
+apparmor.d/abstractions/app/firefox
+
+apparmor.d/groups/akonadi
+apparmor.d/groups/avahi
+apparmor.d/groups/bluetooth
+apparmor.d/groups/browsers
+apparmor.d/groups/cosmic
+apparmor.d/groups/cups
+apparmor.d/groups/display-manager
+apparmor.d/groups/flatpak
+apparmor.d/groups/freedesktop
+apparmor.d/groups/gnome
+apparmor.d/groups/gvfs
+apparmor.d/groups/hyprland
+apparmor.d/groups/kde
+apparmor.d/groups/lxqt
+apparmor.d/groups/steam
+apparmor.d/groups/xfce
+apparmor.d/groups/zed
+
+dunst
+element-desktop
+foliate
+freetube
+metadata-cleaner
+pipewire
+protonmail
+protonmail-bridge
+protonmail-bridge-core
+session-desktop
+signal-desktop
+signal-desktop-chrome-sandbox
+simple-scan
+snapshot
+solaar
+spotify
+superproductivity
+telegram-desktop
+thunderbird
+thunderbird-glxtest
+thunderbird-vaapitest
+totem
+transmission
+virt-manager
+vlc
+wechat-universal
+wemeet
+YACReader
+YACReaderLibrary

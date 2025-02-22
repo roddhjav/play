@@ -1,0 +1,49 @@
+---
+
+- name: Ensure core__tracked_resources_paths is initialized
+  ansible.builtin.set_fact:
+    core__tracked_resources_paths: "{{ core__tracked_resources_paths | default([]) }}"
+  when: core__tracked_resources_paths is not defined
+
+- name: Get the state of local resources directory
+  ansible.builtin.find:
+    path: "{{ core__resources_path }}/{{ ansible_hostname }}/"
+    recurse: true
+    hidden: true
+  delegate_to: localhost
+  become: false
+  register: _src_files
+
+- name: Get the local list of paths to track
+  ansible.builtin.set_fact:
+    core__new_resources_paths: "{{ _src_files.files | map(attribute='path') | map('replace', core__resources_path + '/' + ansible_hostname + '/', '') | list }}"
+
+- name: Remove files not tracked anymore
+  ansible.builtin.file:
+    path: "/{{ item }}"
+    state: absent
+  loop: "{{ core__tracked_resources_paths }}"
+  when: item not in core__new_resources_paths
+
+- name: Ensure all tracked directory exists
+  ansible.builtin.file:
+    path: "/{{ item | dirname }}"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+  with_items: "{{ core__new_resources_paths }}"
+
+- name: Install all tracked resourse files
+  ansible.builtin.copy:
+    src: '{{ core__resources_path }}/{{ ansible_hostname }}/{{ item }}'
+    dest: '/{{ item }}'
+    owner: root
+    group: root
+    mode: "0644"
+  with_items: "{{ core__new_resources_paths }}"
+
+- name: Update the list of tracked paths
+  ansible.builtin.set_fact:
+    core__tracked_resources_paths: "{{ core__new_resources_paths }}"
+    cacheable: true

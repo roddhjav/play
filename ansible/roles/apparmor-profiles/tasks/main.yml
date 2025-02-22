@@ -1,0 +1,63 @@
+---
+
+- name: Install requested packages
+  ansible.builtin.package:
+    name: '{{ q("flattened", (apparmor_profiles__base_packages
+                              + apparmor_profiles__packages)) }}'
+    state: 'present'
+    install_recommends: false
+
+- name: Configure apparmor for large set of profiles
+  ansible.builtin.copy:
+    src: parser.conf
+    dest: /etc/apparmor/parser.conf
+    mode: "0644"
+
+- name: Locally build the apparmor.d repository
+  ansible.builtin.shell:
+    chdir: '{{ apparmor_profiles__repo_path }}'
+    cmd: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      source dists/docker.sh
+
+      # Configure apparmor.d to our needs
+      configure() {
+        # Enable Full System Policy with forced enforce mode
+        # echo -e "\noverride_dh_auto_build:\n\tmake\n\t./.build/prebuild --complain --full" >> "$VOLUME/$PKGNAME/debian/rules"
+
+        # Disable hotfixes as they are for desktop only
+        sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
+
+        # Only install profile required on servers
+        cp '{{ role_path }}/files/main.ignore' "$VOLUME/$PKGNAME/dists/ignore/main.ignore"
+      }
+
+      sync
+      configure
+      build_in_docker_dpkg ubuntu
+  become: false
+  delegate_to: localhost
+
+- name: Locate the apparmor.d packages
+  ansible.builtin.find:
+    paths: '{{ apparmor_profiles__repo_path }}/.pkg'
+    patterns: 'apparmor.d_*.deb'
+    age: '-2m'
+  register: _apparmor_profiles__pkg_files
+  become: false
+  delegate_to: localhost
+
+- name: Upload the apparmor.d packages
+  ansible.builtin.copy:
+    src: '{{ item["path"] }}'
+    dest: /tmp/
+    mode: "0644"
+    force: '{{ apparmor_profiles__dev }}'
+  with_items: '{{ _apparmor_profiles__pkg_files.files }}'
+
+- name: Install the apparmor.d packages
+  ansible.builtin.command:
+    cmd: 'dpkg --install /tmp/{{  item["path"] | basename }}'
+  with_items: '{{ _apparmor_profiles__pkg_files.files }}'

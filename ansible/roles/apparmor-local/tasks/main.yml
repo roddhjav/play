@@ -1,0 +1,63 @@
+---
+
+- name: Ensure the list of tracked profiles is initialized
+  ansible.builtin.set_fact:
+    apparmor_local__tracked_paths: "{{ apparmor_local__tracked_paths | default([]) }}"
+  when: apparmor_local__tracked_paths is not defined
+
+- name: Install requested packages
+  ansible.builtin.package:
+    name: '{{ q("flattened", (apparmor_local__base_packages
+                              + apparmor_local__packages)) }}'
+    state: 'present'
+    install_recommends: false
+
+- name: Locally build the apparmor profiles managed by the role
+  ansible.builtin.command:
+    cmd: just build
+  become: false
+  delegate_to: localhost
+
+- name: Get the state of local profiles managed by the role
+  ansible.builtin.find:
+    paths: '{{ apparmor_local__build }}'
+    recurse: true
+    hidden: true
+  delegate_to: localhost
+  become: false
+  register: _src_files
+
+- name: Get the local list of profiles to track
+  ansible.builtin.set_fact:
+    apparmor_local__new_paths: "{{ _src_files.files | map(attribute='path') | map('replace', apparmor_local__build + '/', '') | list }}"
+
+- name: Remove profiles not tracked anymore
+  ansible.builtin.file:
+    path: "/etc/apparmor.d/{{ item }}"
+    state: absent
+  loop: "{{ apparmor_local__tracked_paths }}"
+  when: item not in apparmor_local__new_paths
+
+- name: Ensure all tracked directory exists
+  ansible.builtin.file:
+    path: "/etc/apparmor.d/{{ item | dirname }}"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+  with_items: "{{ apparmor_local__new_paths }}"
+
+- name: Install apparmor profiles managed by the role
+  ansible.builtin.copy:
+    src: '{{ apparmor_local__build }}/{{ item }}'
+    dest: '/etc/apparmor.d/{{ item }}'
+    owner: root
+    group: root
+    mode: "0644"
+  with_items: "{{ apparmor_local__new_paths }}"
+  notify: Restart apparmor
+
+- name: Update the list of tracked paths
+  ansible.builtin.set_fact:
+    apparmor_local__tracked_paths: "{{ apparmor_local__new_paths }}"
+    cacheable: true

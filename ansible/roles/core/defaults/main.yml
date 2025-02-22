@@ -1,0 +1,38 @@
+---
+
+# core
+
+# very common and basic configuration for all hosts
+
+## General settings
+
+# ??? core__base_packages
+#
+# List of APT packages which are required by the role.
+core__base_packages:
+  - firewalld
+  - htop
+  - qemu-guest-agent
+  - unattended-upgrades
+  - bash-completion
+
+# ??? core__packages
+#
+# List of APT packages to install on all hosts with the role.
+core__packages: []
+
+# ??? core__resources_path
+#
+# Path to the resourse directory (default: ./resources from the repo root).
+# All files from this directory will be copied to the host root file.
+core__resources_path: '{{ inventory_dir | realpath | dirname | dirname }}/resources'
+
+# ??? core__dotfiles_path
+#
+# Path to the dotfiles directory
+core__dotfiles_path: '{{ core__resources_path }}/dotfiles'
+
+# ??? core__with_root
+#
+# Copy dotfiles to the root user home directory
+core__with_root: true

@@ -1,0 +1,41 @@
+---
+
+- name: Synchronize the bash aliases (root)
+  ansible.builtin.copy:
+    src: '{{ core__dotfiles_path }}/.bash_aliases'
+    dest: /root/.bash_aliases
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Synchronize the vim configuraton (root)
+  ansible.builtin.copy:
+    src: '{{ core__dotfiles_path }}/.vimrc'
+    dest: /root/.vimrc
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Create the htop configuration directory (root)
+  ansible.builtin.file:
+    path: /root/.config/htop
+    state: directory
+    mode: "0755"
+
+- name: Synchronize the htop configuraton (root)
+  ansible.builtin.copy:
+    src: '{{ core__dotfiles_path }}/.config/htop/htoprc'
+    dest: /root/.config/htop/htoprc
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Ensure bashrc will load the bash_aliases file (root)
+  ansible.builtin.blockinfile:
+    path: /root/.bashrc
+    block: |
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@$(hostname -f)\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+      [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
+    owner: root
+    group: root
+    mode: "0644"
