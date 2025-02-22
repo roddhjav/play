@@ -1,0 +1,60 @@
+---
+
+# docker
+
+# Install docker and the following tools:
+#
+# - **`ctop`** Top-like interface for container metrics
+# - **`lazydocker`** The lazier way to manage everything docker
+#
+# !!! note
+#
+#     In order to decrease the amount of time required for the maintenance of
+#     this role, the last version of a software is automatically collected
+#     and installed.
+#
+
+
+## Installation, APT packages
+
+# ??? docker__base_packages
+#
+# List of APT packages which are required by the role.
+docker__base_packages:
+  - docker.io
+  - gnupg
+  - python3-docker
+
+# ??? docker__packages
+#
+# List of APT packages to install on all hosts with the role.
+docker__packages: []
+
+# ??? docker__pip_packages
+#
+# List of packages to install from PyPI using the pip command.
+docker__pip_packages:
+  - github3.py
+
+
+## Internal Docker Registry
+
+# ??? docker__registry_url
+#
+# Internal Docker registry url
+docker__registry_url: "registry.gitlab.com"
+
+# ??? docker__registry_user
+#
+# Internal Docker registry  username
+docker__registry_user: ""
+
+# ??? docker__registry_token
+#
+# Internal Docker registry  token
+docker__registry_token: ""
+
+# ??? docker__registry_token
+#
+# Enable/Disable internal Docker registry registration
+docker__registry_enabled: false

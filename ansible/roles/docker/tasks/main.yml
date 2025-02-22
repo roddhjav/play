@@ -1,0 +1,25 @@
+---
+
+- name: Install requested packages
+  ansible.builtin.package:
+    name: '{{ q("flattened", (docker__base_packages
+                              + docker__packages)) }}'
+    state: 'present'
+    update_cache: true
+    install_recommends: false
+
+- name: Install required python packages
+  ansible.builtin.pip:
+    name: '{{ q("flattened", (docker__pip_packages)) }}'
+    state: 'present'
+    break_system_packages: true
+
+- name: Ensure we are logged into the internal Docker registry
+  community.docker.docker_login:
+    registry: '{{ docker__registry_url }}'
+    username: '{{ docker__registry_user }}'
+    password: '{{ docker__registry_token }}'
+  when: docker__registry_enabled
+
+- name: Install docker monitoring tools
+  ansible.builtin.include_tasks: tools.yml
