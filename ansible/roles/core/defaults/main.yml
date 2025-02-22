@@ -21,6 +21,16 @@ core__base_packages:
 # List of APT packages to install on all hosts with the role.
 core__packages: []
 
+# ??? core__resources_remove_path
+#
+# List of paths to remove from the host.
+core__resources_remove_path: []
+
+# ??? core__resources_exec_path
+#
+# List of paths to be given executable permission
+core__resources_exec_path: []
+
 # ??? core__resources_path
 #
 # Path to the resourse directory (default: ./resources from the repo root).

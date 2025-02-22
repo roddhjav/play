@@ -47,3 +47,18 @@
   ansible.builtin.set_fact:
     core__tracked_resources_paths: "{{ core__new_resources_paths }}"
     cacheable: true
+
+- name: Ensure some paths have executable permission
+  ansible.builtin.file:
+    dest: '{{ item }}'
+    state: file
+    owner: root
+    group: root
+    mode: "0755"
+  with_items: '{{ core__resources_exec_path }}'
+
+- name: Ensure some paths are removed
+  ansible.builtin.file:
+    dest: '{{ item }}'
+    state: absent
+  with_items: '{{ core__resources_remove_path }}'
