@@ -3,7 +3,7 @@
 
 A Play Machine is what is called a system with root as the guest account with only Apparmor to restrict access.
 
-To access my Ubuntu 24.04 play machine ssh to `play.pujol.io` as root, the password is `apparmor`. To not give me your [own public SSH keys], connect without public keys: `ssh -o PubkeyAuthentication=no root@play.pujol.io`
+To access my Ubuntu 24.04 play machine ssh to `play.pujol.io` as root, the password is `apparmor`: `ssh root@play.pujol.io`
 
 The aim of this is to:
 - Demonstrate that necessary security can be provided by Apparmor without any Unix permissions (however it is still recommended that you use Unix permissions as well for real servers).
@@ -28,7 +28,7 @@ Although you get root access to this machine, in most jurisdictions it would be 
 
 #### Is it a completely useless and stripped down machine?
 
-No. This is not a fake machine, root is not a fake account, it is serving this very own page using Caddy, that also handles automatic SSL certificate with Let's encrypt...
+No. This is not a fake machine, root is not a fake account, it is serving this very page using Caddy, that also handles automatic SSL certificate with Let's encrypt.
 
 #### Do you have anything else than Apparmor to secure this machine?
 
@@ -36,17 +36,17 @@ No.
 
 #### Are you stupid or do you really know what you are doing?
 
-Yes. It should be secure. If it is not, it is a nice way to learn how to improve it.
+*Yes.* It should be secure. If it is not, it is a nice way to learn how to improve it.
 
 #### What can I do
 
 There is no harm in letting you see dmesg/journalctl as well as the apparmor profiles in use. Security by obscurity isn’t much good anyway. For a serious server you would probably deny dmesg access, but this is a play machine. One of the purposes of the machine is to teach people about Apparmor, and you can learn a lot from the dmesg output.
 
-This machine is intentionally more permissive than some other play machines. I let you see the policy files, so you can learn how to configure a machine in this way. You can use Pyhton and GCC.
+This machine is intentionally more permissive than what it could have been. The goal is to let you have fun with it. You can see the policy files, you can use Python, Go, and GCC.
 
 #### Can I overwrite the MAC policies?
 
-To administer Apparmor policies, you need the `mac_admin` capability as well as write access to a few files **or** executable access to a program that has the capability.
+To administer AppArmor policies, you need the `mac_admin` capability as well as write access to a few files **or** access to a program that has the capability.
 
 #### How can I see Apparmor's confinement?
 
