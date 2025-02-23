@@ -23,16 +23,6 @@
   with_items:
     - '{{ core__users }}'
 
-- name: Synchronize the vim configuraton
-  ansible.builtin.copy:
-    src: '{{ core__dotfiles_path }}/.vimrc'
-    dest: '/home/{{ item }}/.vimrc'
-    owner: '{{ item }}'
-    group: '{{ item }}'
-    mode: "0644"
-  with_items:
-    - '{{ core__users }}'
-
 - name: Create the htop configuration directory
   ansible.builtin.file:
     path: '/home/{{ item }}/.config/htop'

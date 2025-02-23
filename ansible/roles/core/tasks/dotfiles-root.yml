@@ -8,14 +8,6 @@
     group: root
     mode: "0644"
 
-- name: Synchronize the vim configuraton (root)
-  ansible.builtin.copy:
-    src: '{{ core__dotfiles_path }}/.vimrc'
-    dest: /root/.vimrc
-    owner: root
-    group: root
-    mode: "0644"
-
 - name: Create the htop configuration directory (root)
   ansible.builtin.file:
     path: /root/.config/htop
