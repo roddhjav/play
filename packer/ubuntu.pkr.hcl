@@ -28,7 +28,7 @@ source "qemu" "ubuntu" {
   cd_label           = "cidata"
   cd_content = {
     "meta-data" = ""
-    "user-data" = templatefile("${path.cwd}/cloud-init/${source.name}-${split(".", var.hostname)[0]}.user-data.yml",
+    "user-data" = templatefile("${path.cwd}/packer/cloud-init.yml",
       {
         username = "${var.username}"
         password = "${var.password}"

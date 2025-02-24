@@ -78,8 +78,8 @@ variable "release" {
   }))
   default = {
     "ubuntu" : {
-      codename = "plucky",
-      version  = "25.04",
+      codename = "noble",
+      version  = "24.04",
     },
   }
 }
