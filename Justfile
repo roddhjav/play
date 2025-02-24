@@ -13,6 +13,10 @@ img name="play" hostname="play.pujol.io" disk_size="10G":
 	packer build -force -only=qemu.ubuntu -var hostname={{hostname}} -var disk_size={{disk_size}} packer/
 	mv /tmp/packer/{{name}}.qcow2 ~/.vm/{{name}}-ubuntu.qcow2
 
+# Provision the VM image
+ansible inventory="staging" playbook="play" *args="":
+	ansible-playbook -i ansible/inventory/{{inventory}} ansible/playbooks/{{playbook}}.yml {{args}}
+
 # Build the apparmor profiles
 build:
 	@go build -o {{build}}/ ./cmd/prebuild
