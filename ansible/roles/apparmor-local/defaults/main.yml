@@ -25,4 +25,4 @@ apparmor_local__packages: []
 #
 # Path to the resourse directory (default: ./resources from the repo root).
 # All files from this directory will be copied to the host root file.
-apparmor_local__build: '{{ inventory_dir | realpath | dirname | dirname }}/.build/apparmor.d'
+apparmor_local__build: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/.build/apparmor.d'

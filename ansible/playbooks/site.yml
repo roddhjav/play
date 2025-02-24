@@ -1,11 +1,11 @@
 ---
 
 - name: Initialize the Hugo based static website
-  hosts: ['play']
+  hosts: ['play_machine']
   gather_facts: false
   become: true
   vars:
-    site_path: '{{ inventory_dir | realpath | dirname | dirname }}/site/public'
+    site_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/site/public'
 
   tasks:
 

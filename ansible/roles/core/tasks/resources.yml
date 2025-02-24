@@ -35,7 +35,7 @@
   with_items: "{{ core__new_resources_paths }}"
 
 - name: Install all tracked resourse files
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: '{{ core__resources_path }}/{{ ansible_hostname }}/{{ item }}'
     dest: '/{{ item }}'
     owner: root

@@ -42,4 +42,4 @@ lint:
 
 # Clean the build directory
 clean:
-	rm -rf {{build}}/ {{pkgdest}}/
+	rm -rf {{build}}/

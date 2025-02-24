@@ -12,6 +12,7 @@
 # List of APT packages which are required by the role.
 apparmor_profiles__base_packages:
   - apparmor-profiles
+  - apparmor-utils
   - auditd
 
 # ??? apparmor_profiles__packages
@@ -38,7 +39,7 @@ apparmor_profiles__names: []
 # ??? apparmor_profiles__repo_path
 #
 # Path to the apparmor.d repository. (default: ../apparmor.d for repo root)
-apparmor_profiles__repo_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/apparmor.d'
+apparmor_profiles__repo_path: '{{ inventory_dir | realpath | dirname | dirname | dirname | dirname }}/apparmor.d'
 
 # ??? apparmor_profiles__dev
 #

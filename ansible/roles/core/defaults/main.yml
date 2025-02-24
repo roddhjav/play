@@ -35,7 +35,7 @@ core__resources_exec_path: []
 #
 # Path to the resourse directory (default: ./resources from the repo root).
 # All files from this directory will be copied to the host root file.
-core__resources_path: '{{ inventory_dir | realpath | dirname | dirname }}/resources'
+core__resources_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/resources'
 
 # ??? core__dotfiles_path
 #

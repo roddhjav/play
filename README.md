@@ -2,16 +2,16 @@
 
 # play.pujol.io [![][build]][project]
 
-**Apparmor play machine**
+**AppArmor play machine**
 
-Free root access on an apparmor machine!
+Free root access on an AppArmor machine!
+
+A Play Machine is what is called a system with root as the guest account with only AppArmor to restrict access.
 
 To access the Ubuntu based play machine ssh to `play.pujol.io` as root, the password is `apparmor`.
 
-A Play Machine is what is called a system with root as the guest account with only Apparmor to restrict access.
-
 The aim of this is to:
-- Demonstrate that necessary security can be provided by Apparmor without any Unix permissions (however it is still recommended that you use Unix permissions as well for real servers).
+- Demonstrate that necessary security can be provided by AppArmor without any Unix permissions (however it is still recommended that you use Unix permissions as well for real servers).
 - Show that root is not everything in modern security.
 - Give a demo machine with [apparmor.d](https://github.com/roddhjav/apparmor.d) fully integrated.
 
