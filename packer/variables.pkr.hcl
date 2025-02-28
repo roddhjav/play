@@ -49,13 +49,7 @@ variable "ssh_publickey" {
 variable "iso_dir" {
   description = "Original ISO file directory"
   type        = string
-  default     = "/home/alex/.libvirt/iso"
-}
-
-variable "base_dir" {
-  description = "Packer image output directory on terraform host"
-  type        = string
-  default     = "/home/alex/.libvirt/base"
+  default     = "~/.libvirt/iso"
 }
 
 variable "firmware" {
@@ -70,16 +64,22 @@ variable "output" {
   default     = "/tmp/packer"
 }
 
-variable "release" {
+variable "target" {
+  description = "Distribution to target"
+  type        = string
+  default     = "ubuntu24"
+}
+
+variable "dist" {
   description = "Distribution metadata to use"
   type = map(object({
-    codename = string
-    version  = string
+    img_url      = string
+    img_checksum = string
   }))
   default = {
-    "ubuntu" : {
-      codename = "noble",
-      version  = "24.04",
+    "ubuntu24" : {
+      img_url      = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+      img_checksum = "https://cloud-images.ubuntu.com/noble/current/SHA256SUMS"
     },
   }
 }

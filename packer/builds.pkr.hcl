@@ -2,17 +2,52 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: UNLICENSED
 
+source "qemu" "default" {
+  disk_image         = true
+  iso_url            = var.dist[var.target].img_url
+  iso_checksum       = "file:${var.dist[var.target].img_checksum}"
+  iso_target_path    = pathexpand("${var.iso_dir}/${basename("${var.dist[var.target].img_url}")}")
+  cpu_model          = "host"
+  cpus               = var.cpus
+  memory             = var.ram
+  disk_size          = var.disk_size
+  accelerator        = "kvm"
+  headless           = true
+  ssh_username       = var.username
+  ssh_password       = var.password
+  ssh_port           = 22
+  ssh_wait_timeout   = "1000s"
+  disk_compression   = true
+  disk_detect_zeroes = "unmap"
+  disk_discard       = "unmap"
+  output_directory   = pathexpand(var.output)
+  vm_name            = "${var.hostname}.qcow2"
+  boot_wait          = "10s"
+  firmware           = pathexpand(var.firmware)
+  shutdown_command   = "echo ${var.password} | sudo -S /sbin/shutdown -hP now"
+  cd_label           = "cidata"
+  cd_content = {
+    "meta-data" = ""
+    "user-data" = templatefile("${path.cwd}/packer/cloud-init.yml",
+      {
+        username = "${var.username}"
+        password = "${var.password}"
+        ssh_key  = file("${var.ssh_publickey}")
+        hostname = "${var.hostname}"
+      }
+    )
+  }
+}
+
 build {
   sources = [
-    "source.qemu.ubuntu",
+    "source.qemu.default",
   ]
 
   # Upload system configuration
   provisioner "file" {
     destination = "/tmp/"
-    sources = [
-      "${path.cwd}/packer/cleanup.sh",
-    ]
+    sources     = ["${path.cwd}/packer/cleanup.sh"]
   }
 
   # Full system provisioning
