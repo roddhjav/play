@@ -4,9 +4,9 @@
 
 source "qemu" "default" {
   disk_image         = true
-  iso_url            = var.dist[var.target].img_url
-  iso_checksum       = "file:${var.dist[var.target].img_checksum}"
-  iso_target_path    = pathexpand("${var.iso_dir}/${basename("${var.dist[var.target].img_url}")}")
+  iso_url            = var.DM[var.dist].img_url
+  iso_checksum       = "file:${var.DM[var.dist].img_checksum}"
+  iso_target_path    = pathexpand("${var.iso_dir}/${basename("${var.DM[var.dist].img_url}")}")
   cpu_model          = "host"
   cpus               = var.cpus
   memory             = var.ram
@@ -65,6 +65,12 @@ build {
 
       # Minimize the image
       "bash /tmp/cleanup.sh",
+    ]
+  }
+
+  post-processor "shell-local" {
+    inline = [
+      "mv ${var.output}/${var.hostname}.qcow2 ${var.base_dir}/${var.hostname}.qcow2",
     ]
   }
 }

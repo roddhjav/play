@@ -52,26 +52,32 @@ variable "iso_dir" {
   default     = "~/.libvirt/iso"
 }
 
+variable "base_dir" {
+  description = "Final packer image output directory"
+  type        = string
+  default     = "~/.libvirt/base"
+}
+
+variable "output" {
+  description = "Output build directory"
+  type        = string
+  default     =  "~/.libvirt/base/packer"
+}
+
 variable "firmware" {
   description = "Path to the UEFI firmware"
   type        = string
   default     = "/usr/share/edk2/x64/OVMF.4m.fd"
 }
 
-variable "output" {
-  description = "Output build directory"
-  type        = string
-  default     = "/tmp/packer"
-}
-
-variable "target" {
+variable "dist" {
   description = "Distribution to target"
   type        = string
   default     = "ubuntu24"
 }
 
-variable "dist" {
-  description = "Distribution metadata to use"
+variable "DM" {
+  description = "Distribution Metadata to use"
   type = map(object({
     img_url      = string
     img_checksum = string
@@ -80,6 +86,10 @@ variable "dist" {
     "ubuntu24" : {
       img_url      = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
       img_checksum = "https://cloud-images.ubuntu.com/noble/current/SHA256SUMS"
+    },
+    "ubuntu25" : {
+      img_url      = "https://cloud-images.ubuntu.com/plucky/current/plucky-server-cloudimg-amd64.img"
+      img_checksum = "https://cloud-images.ubuntu.com/plucky/current/SHA256SUMS"
     },
   }
 }
