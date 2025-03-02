@@ -27,4 +27,4 @@ if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
 fi
 
 printf "Welcome to %s (%s). You are root. Have fun!\n" \
-    "$(hostname --fqdn)" "$DISTRIB_DESCRIPTION"
+    "$(hostname --alias)" "$DISTRIB_DESCRIPTION"
