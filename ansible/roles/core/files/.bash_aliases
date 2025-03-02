@@ -2,6 +2,10 @@
 
 source /usr/share/bash-completion/bash_completion
 
+# HOSTNAME="$(hostname --alias)"
+# readonly HOSTNAME
+# PS1='\e[1;32m[\u@$HOSTNAME \W]\$ \e[0m'
+
 function up() {
     for nb in $(seq "$1"); do
         cd ../

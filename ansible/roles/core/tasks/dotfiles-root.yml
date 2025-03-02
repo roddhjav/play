@@ -2,7 +2,7 @@
 
 - name: Synchronize the bash aliases (root)
   ansible.builtin.copy:
-    src: '{{ core__dotfiles_path }}/.bash_aliases'
+    src: '.bash_aliases'
     dest: /root/.bash_aliases
     owner: root
     group: root
@@ -16,7 +16,7 @@
 
 - name: Synchronize the htop configuraton (root)
   ansible.builtin.copy:
-    src: '{{ core__dotfiles_path }}/.config/htop/htoprc'
+    src: '.config/htop/htoprc'
     dest: /root/.config/htop/htoprc
     owner: root
     group: root

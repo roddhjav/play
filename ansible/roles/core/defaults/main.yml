@@ -37,11 +37,6 @@ core__resources_exec_path: []
 # All files from this directory will be copied to the host root file.
 core__resources_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/resources'
 
-# ??? core__dotfiles_path
-#
-# Path to the dotfiles directory
-core__dotfiles_path: '{{ core__resources_path }}/dotfiles'
-
 # ??? core__with_root
 #
 # Copy dotfiles to the root user home directory
