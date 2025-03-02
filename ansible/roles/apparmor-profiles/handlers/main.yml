@@ -1,0 +1,6 @@
+---
+
+- name: Enable journald audit
+  ansible.builtin.service:
+    name: systemd-journald-audit.socket
+    enabled: true
