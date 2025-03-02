@@ -1,0 +1,32 @@
+---
+
+# crowdsec
+
+## Installation, APT packages
+
+# ??? crowdsec__base_packages
+#
+# List of APT packages which are required by the role.
+crowdsec__base_packages:
+  - crowdsec
+  - crowdsec-blocklist-mirror
+  - crowdsec-firewall-bouncer-iptables
+
+# ??? crowdsec__packages
+#
+# List of APT packages to install on all hosts with the role.
+crowdsec__packages: []
+
+
+# ??? crowdsec__collections_list
+#
+# List of crowdsec collections to install on all hosts with the role.
+crowdsec__collections_list:
+  - crowdsecurity/sshd
+  - crowdsecurity/linux
+  - crowdsecurity/caddy
+
+# ??? crowdsec__console_token
+#
+# Token to use to connect to the crowdsec console
+crowdsec__console_token: ''

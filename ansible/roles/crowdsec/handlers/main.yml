@@ -1,7 +1,7 @@
 ---
 
-- name: Restart firewalld
+- name: Restart crowdsec
   ansible.builtin.service:
-    name: firewalld
+    name: crowdsec
     state: restarted
     enabled: true
