@@ -29,3 +29,11 @@ core__resources_exec_path:
 core__resources_remove_path:
   - /etc/update-motd.d/10-help-text
   - /etc/update-motd.d/90-updates-available
+
+# ??? resources__caddy_extra
+#
+# Extra Caddy configuration
+resources__caddy_extra: |
+  basicauth / {
+    play $2a$14$EfVwtt.O.HdhNIAFj7gp6u1ifxOBKiWUmK8/cIuHezZwgp/2zyZkK
+  }
