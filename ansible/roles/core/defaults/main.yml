@@ -21,6 +21,17 @@ core__base_packages:
 # List of APT packages to install on all hosts with the role.
 core__packages: []
 
+# ??? core__base_remove_packages
+#
+# List of APT packages which should be removed by the role.
+core__base_remove_packages:
+  - ufw
+
+# ??? core__remove_packages
+#
+# List of APT packages to remove on all hosts with the role.
+core__remove_packages: []
+
 # ??? core__resources_remove_path
 #
 # List of paths to remove from the host.
