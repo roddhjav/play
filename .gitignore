@@ -10,3 +10,16 @@ hugo_stats.json
 
 # Temporary lock file while building
 .hugo_build.lock
+
+### Terraform ###
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+*.lock.hcl

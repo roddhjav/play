@@ -1,0 +1,21 @@
+#cloud-config
+
+hostname: ${hostname}
+
+users:
+  - name: play
+    passwd: ${passwd}
+    ssh_authorized_keys:
+      - ${ssh_key}
+    lock_passwd: false
+    shell: /bin/bash
+    sudo: ALL=(ALL) ALL
+
+  - name: root
+    plain_text_passwd: apparmor
+    lock_passwd: false
+    shell: /bin/bash
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: false
