@@ -1,6 +1,6 @@
-# play - Apparmor play machine
+# apparmor.d - Full set of apparmor profiles
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
-# SPDX-License-Identifier: UNLICENSED
+# SPDX-License-Identifier: GPL-2.0-only
 
 # Allow confined users to read, write, lock and link to their own files
 # anywhere, and execute from some places.

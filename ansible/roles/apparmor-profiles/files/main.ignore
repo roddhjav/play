@@ -5,11 +5,8 @@
 # when built with 'make full'
 apparmor.d/groups/_full
 
-# Ignore files recently upstreamed
-apparmor.d/abstractions/devices-usb
-apparmor.d/abstractions/devices-usb-read
-apparmor.d/abstractions/nameservice-strict
-apparmor.d/tunables/multiarch.d/base
+# Overwrite the default profile for sshd
+apparmor.d/groups/ssh/sshd
 
 # This file is used to patch the apparmor.d build in order to ship far less profiles than enabled by default.
 # Will be the future equivalent of apparmor-profiles-base + apparmor-profiles-core + apparmor-profiles-server
@@ -39,6 +36,7 @@ dunst
 element-desktop
 foliate
 freetube
+libreoffice
 metadata-cleaner
 pipewire
 protonmail

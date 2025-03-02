@@ -1,6 +1,6 @@
-# play - Apparmor play machine
+# apparmor.d - Full set of apparmor profiles
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
-# SPDX-License-Identifier: UNLICENSED
+# SPDX-License-Identifier: GPL-2.0-only
 
 # The play user is a confined user. The hat contains only the permissions necessary
 # to transition to gray's login shell. All other permissions have been

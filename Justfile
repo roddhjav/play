@@ -51,7 +51,7 @@ img hostname="play.pujol.io" disk_size="10G":
 		packer/
 
 [doc('Create the machine')]
-vm dist hostname="play.pujol.io":
+vm hostname="play.pujol.io":
 	@cp -f {{base_dir}}/{{hostname}}.qcow2 {{vm}}/{{hostname}}.qcow2
 	@virt-install {{c}} \
 		--import \
