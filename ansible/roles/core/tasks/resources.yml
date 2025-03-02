@@ -62,3 +62,5 @@
     dest: '{{ item }}'
     state: absent
   with_items: '{{ core__resources_remove_path }}'
+  notify: Restart firewalld
+
