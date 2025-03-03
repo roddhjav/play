@@ -1,0 +1,17 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# A special role that is not allowed to do anything
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+profile role_nope {
+#   include <abstractions/base>
+
+#   include if exists <local/role_nope>
+}
+
+# vim:syntax=apparmor

@@ -1,0 +1,21 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Allow confined users to read, write, lock and link to their own files
+# anywhere, and execute from some places.
+
+# Only used by the deployment script from the Gitlab CI to update the hugo website
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+profile role_deploy flags=(complain) {
+  include <abstractions/base>
+  include <abstractions/consoles>
+
+  include if exists <local/role_deploy>
+}
+
+# vim:syntax=apparmor

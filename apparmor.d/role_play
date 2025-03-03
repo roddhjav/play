@@ -7,9 +7,16 @@ abi <abi/4.0>,
 include <tunables/global>
 
 profile role_play flags=(complain) {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/shells>
+  include <abstractions/python>
+
+  audit change_profile,
 
   capability,
   network,
+  mqueue getattr type=posix /,
   mount,
   remount,
   umount,
@@ -18,7 +25,32 @@ profile role_play flags=(complain) {
   signal,
   dbus,
   unix,
-  file,
+
+  @{lib}/**                    mrPix,
+  @{bin}/**                    mrmrPix,
+  /opt/*/**                    mrmrPix,
+  /usr/share/*/**              mrPix,
+  /tmp/**                      mrix,
+
+  / r,
+  /*{,/} rw,
+  @{run}/** rwlk,
+  @{HOME}/** rwlk,
+  /boot/** rwlk,
+  /etc/** rwlk,
+  /lib/** r,
+  /mnt/** rwlk,
+  /tmp/** rwlk,
+  /var/** rwlk,
+  /snap/** rwlk,
+
+  /root/ r,
+  /media/** r,
+  /opt/** r,
+
+  @{sys}/** r,
+  @{PROC}/** r,
+  /dev/** r,
 
   include if exists <local/role_play>
 }

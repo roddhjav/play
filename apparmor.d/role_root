@@ -15,6 +15,57 @@ profile role_root {
   include <abstractions/nameservice-strict>
   include <abstractions/shells>
 
+  # set rlimit cpu <= , # TODO; see how everything can be limited here
+
+  capability dac_read_search,
+
+  # Allow to run everything, but wintin this role
+  @{bin}/** mrix,
+  @{lib}/** mrix,
+
+  # Allow to run some specific program and to transition to their profile
+  @{bin}/aa-log     rPx,
+  @{bin}/aa-status  rPx,
+
+  # Transition to pam (and come back here)
+  @{bin}/su     rPx,
+  @{bin}/sudo   rPx,
+  @{bin}/login  rPx,
+
+  # Allow to update/show the Message of the Day
+  @{bin}/landscape-sysinfo rPx,
+  /etc/update-motd.d/* rPx,
+  /usr/share/landscape/landscape-sysinfo.wrapper rPx,
+
+  @{bin}/ r,
+  @{lib}/ r,
+  /usr/{,local/}bin/ r,
+  /usr/{,local/}games/ r,
+  /usr/{,local/}sbin/ r,
+
+  /etc/apparmor/** r,
+  /etc/apparmor.d/** r,
+
+  /etc/vim/vimrc r,
+  /usr/share/vim/** r,
+
+  / r,
+  /*/ r,
+
+  owner /root/ r,
+  owner /root/** mrix,
+  owner /root/*/ rw,
+  owner /root/*/** rwkl -> /root/*/**,
+  owner /root/dont-delete-me-please.txt r,
+  owner /root/thanks-append-only.txt ra,
+
+  @{sys}/** r,
+
+  @{PROC}/ r,
+  @{PROC}/** r,
+
+  # A list of actions explicitly denied to the role in order to not fill the logs
+
   deny capability sys_ptrace,
 
   deny network inet dgram,
@@ -22,28 +73,12 @@ profile role_root {
   deny network inet raw,
   deny network inet6 raw,
 
-  # Allow to run everything, but in this role.
-  @{bin}/** mrix,
-  @{lib}/** mrix,
-
-  # Allow to run some specific program and to transition to their profile
-  @{bin}/aa-log rPx,
-  @{bin}/aa-status rPx,
-
-  /etc/apparmor/** r,
-  /etc/apparmor.d/** r,
-
-  owner /root/ r,
-  owner /root/** mrix,
-  owner /root/*/ rw,
-  owner /root/*/** rwkl -> /root/*/**,
-  owner /root/thanks-append-only.txt ra,
-
-  deny owner /root/.ssh/authorized_keys w,
-
-  @{PROC}/** r,
+  deny ptrace read,
 
   deny @{bin}/{kmod,lsmod,depmod,insmod,rmmod,modinfo,modprobe} x,
+
+  deny owner /root/.ssh/authorized_keys w,
+  deny owner /root/dont-delete-me-please.txt w,
 
   include if exists <local/role_root>
 }
