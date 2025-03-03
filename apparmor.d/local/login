@@ -2,6 +2,7 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
-  include <mappings.d>
-  
-  deny @{bin}/@{shells} x,
+  include <mappings/login>
+
+  # deny @{bin}/@{shells} x,
+
