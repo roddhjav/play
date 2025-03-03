@@ -5,13 +5,21 @@
   gather_facts: false
   become: true
   vars:
-    site_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/site/public'
+    site_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/site/'
 
   tasks:
 
+    - name: Build the Hugo website
+      ansible.builtin.command:
+        chdir: '{{ site_path }}'
+        cmd: 'hugo build'
+        creates: '{{ site_path }}/public'
+      delegate_to: localhost
+      become: false
+
     - name: Ensure caddy web root is clean
       ansible.builtin.file:
-        dest: /srv/www/public
+        dest: /srv/www/
         state: absent
 
     - name: Create a new Caddy web root
@@ -22,8 +30,8 @@
 
     - name: Deploy the Hugo website
       ansible.builtin.copy:
-        src: '{{ site_path }}'
-        dest: /srv/www/
+        src: '{{ site_path }}/public/'
+        dest: /srv/www/public/
         mode: "0644"
 
     - name: Start Caddy
