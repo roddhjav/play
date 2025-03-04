@@ -15,6 +15,7 @@
   capability audit_write,
   capability chown,
   capability dac_read_search,
+  capability kill,
   capability setgid,
   capability setuid,
   capability sys_resource,

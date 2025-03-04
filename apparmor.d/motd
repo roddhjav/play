@@ -7,7 +7,7 @@ abi <abi/4.0>,
 include <tunables/global>
 
 @{exec_path} = /etc/update-motd.d/*
-profile motd @{exec_path} {
+profile motd @{exec_path} flags=(complain) {
   include <abstractions/base>
   include <abstractions/nameservice-strict>
 
@@ -28,7 +28,6 @@ profile motd @{exec_path} {
   @{bin}/tr         rix,
   @{bin}/uname      rPx,
   @{bin}/hostname   rPx,
-
 
   @{lib}/update-notifier/update-motd-fsck-at-reboot              rPx,
   @{lib}/update-notifier/update-motd-reboot-required             rix,

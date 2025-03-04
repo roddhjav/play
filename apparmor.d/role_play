@@ -27,14 +27,17 @@ profile role_play flags=(complain) {
   unix,
 
   @{lib}/**                    mrPix,
-  @{bin}/**                    mrmrPix,
-  /opt/*/**                    mrmrPix,
+  @{bin}/**                    mrPix,
+  /opt/*/**                    mrPix,
   /usr/share/*/**              mrPix,
   /tmp/**                      mrix,
+
+  /usr/local/** r,
 
   / r,
   /*{,/} rw,
   @{run}/** rwlk,
+  @{HOME}/ rw,
   @{HOME}/** rwlk,
   /boot/** rwlk,
   /etc/** rwlk,

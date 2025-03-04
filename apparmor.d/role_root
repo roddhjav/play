@@ -27,11 +27,6 @@ profile role_root {
   @{bin}/aa-log     rPx,
   @{bin}/aa-status  rPx,
 
-  # Transition to pam (and come back here)
-  @{bin}/su     rPx,
-  @{bin}/sudo   rPx,
-  @{bin}/login  rPx,
-
   # Allow to update/show the Message of the Day
   @{bin}/landscape-sysinfo rPx,
   /etc/update-motd.d/* rPx,
@@ -39,30 +34,32 @@ profile role_root {
 
   @{bin}/ r,
   @{lib}/ r,
-  /usr/{,local/}bin/ r,
-  /usr/{,local/}games/ r,
-  /usr/{,local/}sbin/ r,
+  /usr/local/** r,
 
+  # To see the apparmor profiles in use
   /etc/apparmor/** r,
   /etc/apparmor.d/** r,
 
   /etc/vim/vimrc r,
+
+  # For htop, harmless to allow
+  /etc/sensors.d/ r,
+  /etc/sensors3.conf r,
+
   /usr/share/vim/** r,
 
   / r,
   /*/ r,
 
   owner /root/ r,
-  owner /root/** mrix,
   owner /root/*/ rw,
+  owner /root/*/** mrix,
   owner /root/*/** rwkl -> /root/*/**,
   owner /root/dont-delete-me-please.txt r,
-  owner /root/thanks-append-only.txt ra,
 
-  @{sys}/** r,
-
-  @{PROC}/ r,
-  @{PROC}/** r,
+  # See all processes, users, the kernel settings, the hardware, the network...
+  @{sys}/{,**} r,
+  @{PROC}/{,**} r,
 
   # A list of actions explicitly denied to the role in order to not fill the logs
 
@@ -77,8 +74,9 @@ profile role_root {
 
   deny @{bin}/{kmod,lsmod,depmod,insmod,rmmod,modinfo,modprobe} x,
 
-  deny owner /root/.ssh/authorized_keys w,
-  deny owner /root/dont-delete-me-please.txt w,
+        deny owner /root/.config/htop/htoprc w,
+  audit deny owner /root/.ssh/** w,
+  audit deny owner /root/dont-delete-me-please.txt w,
 
   include if exists <local/role_root>
 }
