@@ -2,22 +2,21 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
-# Allow confined users to read, write, lock and link to their own files
-# anywhere, and execute from some places.
-
-# Only used by the deployment script from the Gitlab CI to update the hugo website
+# Only used by caddy to generate SSL cert
 
 abi <abi/4.0>,
 
 include <tunables/global>
 
-profile role_deploy flags=(complain) {
+profile role_default flags=(complain) {
   include <abstractions/base>
   include <abstractions/consoles>
+  include <abstractions/nameservice-strict>
+  include <abstractions/shells>
 
   @{shells_path}  rix,
 
-  include if exists <local/role_deploy>
+  include if exists <local/role_default>
 }
 
 # vim:syntax=apparmor
