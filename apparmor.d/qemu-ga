@@ -1,0 +1,41 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2022-2024 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = @{bin}/qemu-ga
+profile qemu-ga @{exec_path} {
+  include <abstractions/base>
+
+  @{exec_path} mr,
+
+  audit @{bin}/systemctl Cx -> systemctl,
+
+  /etc/qemu/qemu-ga.conf r,
+
+  owner @{run}/qga.state rw,
+  owner @{run}/qga.state.@{rand6} rw,
+
+  @{sys}/devices/system/node/ r,
+  @{sys}/devices/system/node/node@{int}/meminfo r,
+
+  /dev/vport@{int}p@{int} rw,
+
+  profile systemctl flags=(complain) {
+    include <abstractions/base>
+    include <abstractions/app/systemctl>
+
+    unix type=stream addr=@@{udbus}/bus/shutdown/system,
+
+    #aa-dbus talk bus=system name=org.freedesktop.login1 label=systemd-logind
+
+    include if exists <local/qemu-ga_systemctl>
+  }
+
+  include if exists <local/qemu-ga>
+}
+
+# vim:syntax=apparmor
