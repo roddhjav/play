@@ -1,0 +1,41 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = @{bin}/crowdsec-firewall-bouncer
+profile crowdsec-firewall-bouncer @{exec_path} flags=(complain) {
+  include <abstractions/base>
+  include <abstractions/nameservice-strict>
+  include <abstractions/ssl_certs>
+
+  capability net_admin,
+  capability net_raw,
+
+  network inet raw,
+  network inet stream,
+  network inet6 stream,
+  network netlink raw,
+
+  @{exec_path} mr,
+
+  @{bin}/xtables-nft-multi  rix,
+  @{bin}/ipset              rix,
+
+  /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml r,
+  /etc/lsb-release r,
+
+  /var/log/ r,
+  /var/log/crowdsec-firewall-bouncer.log w,
+
+  /tmp/cs-firewall-bouncer-ipset-@{int} rw,
+
+  @{run}/systemd/notify w,
+
+  include if exists <local/crowdsec-firewall-bouncer>
+}
+
+# vim:syntax=apparmor

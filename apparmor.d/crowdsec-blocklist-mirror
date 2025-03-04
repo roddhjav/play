@@ -1,0 +1,29 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = @{bin}/crowdsec-blocklist-mirror
+profile crowdsec-blocklist-mirror @{exec_path} flags=(complain) {
+  include <abstractions/base>
+  include <abstractions/ssl_certs>
+
+  network inet stream,
+  network inet6 stream,
+
+  @{exec_path} mr,
+
+  /etc/crowdsec/bouncers/crowdsec-blocklist-mirror.yaml r,
+
+  /var/log/ r,
+  /var/log/crowdsec-blocklist-mirror.log w,
+
+  @{PROC}/sys/net/core/somaxconn r,
+
+  include if exists <local/crowdsec-blocklist-mirror>
+}
+
+# vim:syntax=apparmor

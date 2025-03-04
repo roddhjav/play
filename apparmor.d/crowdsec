@@ -1,0 +1,44 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = @{bin}/crowdsec
+profile crowdsec @{exec_path} flags=(complain) {
+  include <abstractions/base>
+  include <abstractions/ssl_certs>
+  include <abstractions/nameservice-strict>
+
+  capability dac_read_search,
+
+  network inet dgram,
+  network inet stream,
+  network inet6 dgram,
+  network inet6 stream,
+
+  @{exec_path} mr,
+
+  /etc/crowdsec/{,**} r,
+  /etc/lsb-release r,
+
+  /var/tmp/etilqs_@{hex16} rw,
+
+  owner /var/lib/crowdsec/** rwlk -> /var/lib/crowdsec/**,
+
+  /var/log/ r,
+  /var/log/auth.log r,
+  /var/log/crowdsec*.log w,
+  /var/log/kern.log r,
+  /var/log/syslog r,
+
+  @{run}/systemd/notify w,
+
+  @{PROC}/sys/net/core/somaxconn r,
+
+  include if exists <local/crowdsec>
+}
+
+# vim:syntax=apparmor
