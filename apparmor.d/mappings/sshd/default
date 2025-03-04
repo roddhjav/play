@@ -1,0 +1,14 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+hat DEFAULT flags=(complain) {
+  include <abstractions/base>
+  include <abstractions/mapping/sshd>
+
+  @{shells_path}  rPx -> role_default,
+
+  include if exists <local/mappings/sshd/default>
+}
+
+# vim:syntax=apparmor
