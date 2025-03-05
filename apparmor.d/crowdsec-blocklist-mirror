@@ -11,6 +11,8 @@ profile crowdsec-blocklist-mirror @{exec_path} flags=(complain) {
   include <abstractions/base>
   include <abstractions/ssl_certs>
 
+  capability net_admin, # optional: no audit
+
   network inet stream,
   network inet6 stream,
 

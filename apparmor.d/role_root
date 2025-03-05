@@ -17,7 +17,10 @@ profile role_root {
 
   # set rlimit cpu <= , # TODO; see how everything can be limited here
 
+  capability dac_override,
   capability dac_read_search,
+
+  network netlink raw,
 
   # Allow to run everything, but wintin this role
   @{bin}/** mrix,
@@ -34,19 +37,19 @@ profile role_root {
 
   @{bin}/ r,
   @{lib}/ r,
-  /usr/local/** r,
-
-  # To see the apparmor profiles in use
-  /etc/apparmor/** r,
-  /etc/apparmor.d/** r,
-
-  /etc/vim/vimrc r,
-
-  # For htop, harmless to allow
-  /etc/sensors.d/ r,
-  /etc/sensors3.conf r,
+  /usr/local/{,**} r,
 
   /usr/share/vim/** r,
+
+  # To see the apparmor profiles in use
+  /etc/apparmor/{,**} r,
+  /etc/apparmor.d/{,**} r,
+
+  # For htop, harmless to allow
+  /etc/sensors.d/{,**} r,
+  /etc/sensors3.conf r,
+
+  /etc/vim/vimrc r,
 
   / r,
   /*/ r,

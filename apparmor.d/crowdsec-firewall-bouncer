@@ -35,6 +35,11 @@ profile crowdsec-firewall-bouncer @{exec_path} flags=(complain) {
 
   @{run}/systemd/notify w,
 
+  @{PROC}/@{pid}/limits r,
+  @{PROC}/@{pid}/net/ip_tables_names r,
+  @{PROC}/@{pid}/net/netstat r,
+  @{PROC}/@{pid}/stat r,
+
   include if exists <local/crowdsec-firewall-bouncer>
 }
 

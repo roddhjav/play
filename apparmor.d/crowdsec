@@ -13,6 +13,7 @@ profile crowdsec @{exec_path} flags=(complain) {
   include <abstractions/nameservice-strict>
 
   capability dac_read_search,
+  capability net_admin, # optional: no audit
 
   network inet dgram,
   network inet stream,
@@ -24,15 +25,16 @@ profile crowdsec @{exec_path} flags=(complain) {
   /etc/crowdsec/{,**} r,
   /etc/lsb-release r,
 
-  /var/tmp/etilqs_@{hex16} rw,
-
-  owner /var/lib/crowdsec/** rwlk -> /var/lib/crowdsec/**,
-
   /var/log/ r,
   /var/log/auth.log r,
   /var/log/crowdsec*.log w,
   /var/log/kern.log r,
   /var/log/syslog r,
+
+  owner /var/lib/crowdsec/** rwlk -> /var/lib/crowdsec/**,
+
+  owner /var/tmp/etilqs_@{hex15} rw,
+  owner /var/tmp/etilqs_@{hex16} rw,
 
   @{run}/systemd/notify w,
 
