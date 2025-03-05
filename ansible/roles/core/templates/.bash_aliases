@@ -2,10 +2,6 @@
 
 source /usr/share/bash-completion/bash_completion
 
-# HOSTNAME="$(hostname --alias)"
-# readonly HOSTNAME
-# PS1='\e[1;32m[\u@$HOSTNAME \W]\$ \e[0m'
-
 function up() {
     for nb in $(seq "$1"); do
         cd ../
@@ -13,8 +9,8 @@ function up() {
 }
 
 alias sudo='sudo -E'
-alias aa-log='sudo aa-log'
-alias aa-status='sudo aa-status'
+alias aa-log='{{ core__getroot_method }}aa-log'
+alias aa-status='{{ core__getroot_method }}aa-status'
 alias c='clear'
 alias l='ll -h'
 alias ll='ls -alFh'

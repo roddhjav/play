@@ -14,7 +14,7 @@
     core__users: '{{ _users.files | map(attribute="path") | map("basename") }}'
 
 - name: Synchronize the bash aliases
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: '.bash_aliases'
     dest: '/home/{{ item }}/.bash_aliases'
     owner: '{{ item }}'

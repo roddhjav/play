@@ -14,11 +14,15 @@
     purge: true
 
 - name: Install dotfiles for the default users
-  ansible.builtin.include_tasks: dotfiles.yml
+  ansible.builtin.include_tasks: dotfiles-users.yml
+  vars:
+    core__getroot_method: 'sudo '
 
 - name: Install dotfiles for root user
   ansible.builtin.include_tasks: dotfiles-root.yml
   when: core__with_root
+  vars:
+    core__getroot_method: ''
 
 - name: Install the resources files
   ansible.builtin.include_tasks: resources.yml

@@ -1,7 +1,7 @@
 ---
 
 - name: Synchronize the bash aliases (root)
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: '.bash_aliases'
     dest: /root/.bash_aliases
     owner: root
