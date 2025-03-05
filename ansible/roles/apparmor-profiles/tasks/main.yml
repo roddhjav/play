@@ -25,7 +25,8 @@
       # Configure apparmor.d to our needs
       configure() {
         # Enable Full System Policy with forced enforce mode
-        # echo -e "\noverride_dh_auto_build:\n\tmake\n\t./.build/prebuild --complain --full" >> "$VOLUME/$PKGNAME/debian/rules"
+        echo -e "\noverride_dh_auto_build:\n\tmake build\n\t./.build/prebuild" >> "$VOLUME/$PKGNAME/debian/rules"
+
 
         # Disable hotfixes as they are for desktop only
         sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
@@ -49,16 +50,29 @@
   become: false
   delegate_to: localhost
 
+- name: Ensure the apparmor.d packages are present
+  ansible.builtin.fail:
+    msg: "No apparmor.d packages found"
+  when: _apparmor_profiles__pkg_files.matched == 0
+
+- name: Ensure the upload directory for packages exists
+  ansible.builtin.file:
+    path: "/tmp/pkg"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+
 - name: Upload the apparmor.d packages
   ansible.builtin.copy:
     src: '{{ item["path"] }}'
-    dest: /tmp/
+    dest: /tmp/pkg/
     mode: "0644"
     force: '{{ apparmor_profiles__dev }}'
   with_items: '{{ _apparmor_profiles__pkg_files.files }}'
 
 - name: Install the apparmor.d packages
   ansible.builtin.command:
-    cmd: 'dpkg --install /tmp/{{ item["path"] | basename }}'
+    cmd: 'dpkg --install /tmp/pkg/{{ item["path"] | basename }}'
   with_items: '{{ _apparmor_profiles__pkg_files.files }}'
   notify: Enable journald audit

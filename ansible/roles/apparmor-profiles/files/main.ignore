@@ -1,19 +1,30 @@
 # Configure apparmor.d build for server by ignoring profiles only required on desktop
 # File format: one ignore by line, it can be a profile name or a directory to ignore
 
-# Contains profiles and configuration for full system confinement, only included
-# when built with 'make full'
+# This file is used to patch the apparmor.d build in order to ship far less profiles than enabled by default.
+# Will be the future equivalent of apparmor-profiles-base + apparmor-profiles-core + apparmor-profiles-server
+
+# Contains profiles and configuration for full system confinement, included
+# by the build system when built with 'make full'
 apparmor.d/groups/_full
+
+# Ignore the development profiles
+apparmor.d/groups/_dev/
+
+# When targeting apparmor > 4.1+, ignore files recently upstreamed
+# apparmor.d/abstractions/devices-usb
+# apparmor.d/abstractions/devices-usb-read
+# apparmor.d/abstractions/nameservice-strict
+# apparmor.d/tunables/multiarch.d/base
 
 # Overwrite the default profile for sshd
 apparmor.d/groups/ssh/sshd
 
-# This file is used to patch the apparmor.d build in order to ship far less profiles than enabled by default.
-# Will be the future equivalent of apparmor-profiles-base + apparmor-profiles-core + apparmor-profiles-server
-
+# Abstractions we can safely ignore on servers
 apparmor.d/abstractions/app/chromium
 apparmor.d/abstractions/app/firefox
 
+# Group related to desktop environments we can safely ignore on servers
 apparmor.d/groups/akonadi
 apparmor.d/groups/avahi
 apparmor.d/groups/bluetooth
@@ -32,33 +43,150 @@ apparmor.d/groups/steam
 apparmor.d/groups/xfce
 apparmor.d/groups/zed
 
-dunst
-element-desktop
-foliate
-freetube
-libreoffice
-metadata-cleaner
-pipewire
-protonmail
-protonmail-bridge
-protonmail-bridge-core
-session-desktop
-signal-desktop
-signal-desktop-chrome-sandbox
-simple-scan
-snapshot
-solaar
-spotify
-superproductivity
-telegram-desktop
-thunderbird
-thunderbird-glxtest
-thunderbird-vaapitest
-totem
-transmission
-virt-manager
-vlc
-wechat-universal
-wemeet
-YACReader
-YACReaderLibrary
+# With abstractions/gnome-strict
+apparmor.d/profiles-a-f/alc
+apparmor.d/profiles-a-f/amule
+apparmor.d/profiles-a-f/briar-desktop
+apparmor.d/profiles-a-f/deja-dup
+apparmor.d/profiles-a-f/evince
+apparmor.d/profiles-m-r/metadata-cleaner
+apparmor.d/profiles-m-r/pinentry-kwallet
+apparmor.d/profiles-m-r/pinentry-qt
+apparmor.d/profiles-s-z/xsane-gimp
+
+# With abstractions/common/gnome
+apparmor.d/profiles-a-f/baobab
+apparmor.d/profiles-a-f/file-roller
+apparmor.d/profiles-a-f/foliate
+apparmor.d/profiles-a-f/fractal
+apparmor.d/profiles-m-r/pika-backup
+apparmor.d/profiles-s-z/simple-scan
+apparmor.d/profiles-s-z/snapshot
+apparmor.d/profiles-s-z/totem
+
+# With abstractions/common/electron
+apparmor.d/groups/network/mullvad-gui
+apparmor.d/profiles-a-f/discord
+apparmor.d/profiles-a-f/element-desktop
+apparmor.d/profiles-a-f/freetube
+apparmor.d/profiles-g-l/linuxqq
+apparmor.d/profiles-m-r/protonmail
+apparmor.d/profiles-s-z/session-desktop
+apparmor.d/profiles-s-z/signal-desktop
+apparmor.d/profiles-s-z/signal-desktop-chrome-sandbox
+apparmor.d/profiles-s-z/spotify
+apparmor.d/profiles-s-z/superproductivity
+apparmor.d/profiles-s-z/vesktop
+apparmor.d/profiles-s-z/wechat-universal
+
+# With abstractions/freedesktop.org
+apparmor.d/profiles-a-f/appstreamcli
+apparmor.d/profiles-a-f/arduino
+apparmor.d/profiles-a-f/atril
+apparmor.d/profiles-a-f/cawbird
+apparmor.d/profiles-a-f/conky
+apparmor.d/profiles-a-f/czkawka-gui
+apparmor.d/profiles-a-f/deltachat-desktop
+apparmor.d/profiles-a-f/dunst
+apparmor.d/profiles-a-f/evince-previewer
+apparmor.d/profiles-a-f/exo-helper
+apparmor.d/profiles-a-f/exo-open
+apparmor.d/profiles-a-f/ffplay
+apparmor.d/profiles-a-f/fritzing
+apparmor.d/profiles-g-l/light-locker
+apparmor.d/profiles-m-r/mediaifo-gui
+apparmor.d/profiles-m-r/merkaartor
+apparmor.d/profiles-m-r/mkvtoolnix-gui
+apparmor.d/profiles-m-r/mtr
+apparmor.d/profiles-m-r/pcb-gtk
+apparmor.d/profiles-m-r/pinentry-gtk
+apparmor.d/profiles-m-r/pulseeffects
+apparmor.d/profiles-m-r/qbittorrent-nox
+apparmor.d/profiles-s-z/smtube
+apparmor.d/profiles-s-z/strawberry
+apparmor.d/profiles-s-z/tint2
+apparmor.d/profiles-s-z/tint2conf
+apparmor.d/profiles-s-z/xarchiver
+apparmor.d/profiles-s-z/zenmap
+
+# With abstractions/desktop
+apparmor.d/profiles-a-f/alacarte
+apparmor.d/profiles-a-f/birdtray
+apparmor.d/profiles-a-f/calibre
+apparmor.d/profiles-a-f/calibre
+apparmor.d/profiles-a-f/calibre
+apparmor.d/profiles-a-f/cemu
+apparmor.d/profiles-a-f/convertall
+apparmor.d/profiles-a-f/dino
+apparmor.d/profiles-a-f/dropbox
+apparmor.d/profiles-a-f/electrum
+apparmor.d/profiles-a-f/engrampa
+apparmor.d/profiles-a-f/filezilla
+apparmor.d/profiles-a-f/flameshot
+apparmor.d/profiles-a-f/font-manager
+apparmor.d/profiles-g-l/gajim
+apparmor.d/profiles-g-l/ganyremote
+apparmor.d/profiles-g-l/gimp
+apparmor.d/profiles-g-l/gitg
+apparmor.d/profiles-g-l/gpartedbin
+apparmor.d/profiles-g-l/gpodder
+apparmor.d/profiles-g-l/gsmartcontrol
+apparmor.d/profiles-g-l/hardinfo
+apparmor.d/profiles-g-l/homebank
+apparmor.d/profiles-g-l/hypnotix
+apparmor.d/profiles-g-l/imv
+apparmor.d/profiles-g-l/kanyremote
+apparmor.d/profiles-g-l/keepassxc
+apparmor.d/profiles-g-l/kerneloops-applet
+apparmor.d/profiles-g-l/labwc
+apparmor.d/profiles-g-l/libreoffice
+apparmor.d/profiles-g-l/localsend
+apparmor.d/profiles-g-l/lxappearance
+apparmor.d/profiles-m-r/mate-notification-daemon
+apparmor.d/profiles-m-r/megasync
+apparmor.d/profiles-m-r/minitube
+apparmor.d/profiles-m-r/mpv
+apparmor.d/profiles-m-r/mumble
+apparmor.d/profiles-m-r/nemo
+apparmor.d/profiles-m-r/nvidia-settings
+apparmor.d/profiles-m-r/pavucontrol
+apparmor.d/profiles-m-r/plank
+apparmor.d/profiles-m-r/pokemmo
+apparmor.d/profiles-m-r/protonmail-bridge
+apparmor.d/profiles-m-r/protonmail-bridge-core
+apparmor.d/profiles-m-r/psi
+apparmor.d/profiles-m-r/psi-plus
+apparmor.d/profiles-m-r/qbittorrent
+apparmor.d/profiles-m-r/qpdfview
+apparmor.d/profiles-m-r/qt5ct
+apparmor.d/profiles-m-r/qtox
+apparmor.d/profiles-m-r/quiterss
+apparmor.d/profiles-m-r/remmina
+apparmor.d/profiles-m-r/rpi-imager
+apparmor.d/profiles-m-r/rustdesk
+apparmor.d/profiles-s-z/scrcpy
+apparmor.d/profiles-s-z/smplayer
+apparmor.d/profiles-s-z/solaar
+apparmor.d/profiles-s-z/spice-vdagent
+apparmor.d/profiles-s-z/strawberry
+apparmor.d/profiles-s-z/system-config-printer
+apparmor.d/profiles-s-z/telegram-desktop
+apparmor.d/profiles-s-z/terminator
+apparmor.d/profiles-s-z/thunderbird
+apparmor.d/profiles-s-z/thunderbird-glxtest
+apparmor.d/profiles-s-z/thunderbird-vaapitest
+apparmor.d/profiles-s-z/transmission
+apparmor.d/profiles-s-z/utox
+apparmor.d/profiles-s-z/veracrypt
+apparmor.d/profiles-s-z/vidcutter
+apparmor.d/profiles-s-z/virt-manager
+apparmor.d/profiles-s-z/vlc
+apparmor.d/profiles-s-z/volumeicon
+apparmor.d/profiles-s-z/waybar
+apparmor.d/profiles-s-z/wemeet
+apparmor.d/profiles-s-z/wireshark
+apparmor.d/profiles-s-z/wpa-gui
+apparmor.d/profiles-s-z/YACReader
+apparmor.d/profiles-s-z/YACReaderLibrary
+apparmor.d/profiles-s-z/zathura
+
