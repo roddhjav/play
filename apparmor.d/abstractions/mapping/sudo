@@ -12,7 +12,8 @@
 
   network netlink raw,
 
-  /etc/login.defs r,
+  @{etc_ro}/login.defs r,
+  /etc/passwd r,
 
   include if exists <abstractions/mapping/sudo.d>
 
