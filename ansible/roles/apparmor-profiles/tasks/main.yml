@@ -30,8 +30,12 @@
       # Configure apparmor.d to our needs
       configure() {
         # Enable Full System Policy with forced enforce mode
-        echo -e "\noverride_dh_auto_build:\n\tmake build\n\t./.build/prebuild" >> "$VOLUME/$PKGNAME/debian/rules"
+        # [DEV] only classic enfore is enabled
+        echo -e "\noverride_dh_auto_build:\n\tmake build\n\t./.build/prebuild --complain --full" >> "$VOLUME/$PKGNAME/debian/rules"
 
+        # Strict FSP, the default profile is not enabled.
+        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/default"*
+        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/bwrap"*
 
         # Disable hotfixes as they are for desktop only
         sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
