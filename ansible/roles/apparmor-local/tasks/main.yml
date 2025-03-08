@@ -45,7 +45,7 @@
     mode: "0755"
     owner: root
     group: root
-  with_items: "{{ apparmor_local__new_paths }}"
+  with_items: "{{ apparmor_local__new_paths | map('dirname') | unique | list }}"
 
 - name: Install apparmor profiles managed by the role
   ansible.builtin.copy:

@@ -32,7 +32,7 @@
     mode: "0755"
     owner: root
     group: root
-  with_items: "{{ core__new_resources_paths }}"
+  with_items: "{{ core__new_resources_paths | map('dirname') | unique | list }}"
 
 - name: Install all tracked resourse files
   ansible.builtin.template:
