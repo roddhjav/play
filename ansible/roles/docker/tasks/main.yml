@@ -1,5 +1,19 @@
 ---
 
+- name: Add Docker APT key
+  ansible.builtin.get_url:
+    url: 'https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg'
+    dest: '/usr/share/keyrings/docker.asc'
+    mode: '0644'
+
+- name: Add Docker APT repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch=amd64 signed-by=/usr/share/keyrings/docker.asc]
+      https://download.docker.com/linux/{{ ansible_distribution | lower }}
+      {{ ansible_distribution_release }} stable
+    state: present
+
 - name: Install requested packages
   ansible.builtin.package:
     name: '{{ q("flattened", (docker__base_packages
@@ -7,12 +21,6 @@
     state: 'present'
     update_cache: true
     install_recommends: false
-
-- name: Install required python packages
-  ansible.builtin.pip:
-    name: '{{ q("flattened", (docker__pip_packages)) }}'
-    state: 'present'
-    break_system_packages: true
 
 - name: Ensure we are logged into the internal Docker registry
   community.docker.docker_login:
@@ -23,3 +31,4 @@
 
 - name: Install docker monitoring tools
   ansible.builtin.include_tasks: tools.yml
+  when: docker__with_tools

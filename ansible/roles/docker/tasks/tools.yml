@@ -1,5 +1,17 @@
 ---
 
+- name: Install requested packages
+  ansible.builtin.package:
+    name: 'python3-pip'
+    state: 'present'
+    install_recommends: false
+
+- name: Install required python packages
+  ansible.builtin.pip:
+    name: 'github3.py'
+    state: 'present'
+    break_system_packages: true
+
 - name: Get latest ctop version
   community.general.github_release:
     user: bcicen

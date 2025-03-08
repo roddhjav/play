@@ -21,8 +21,9 @@
 #
 # List of APT packages which are required by the role.
 docker__base_packages:
-  - docker.io
-  - gnupg
+  - containerd.io
+  - docker-ce
+  - docker-ce-cli
   - python3-docker
 
 # ??? docker__packages
@@ -30,12 +31,10 @@ docker__base_packages:
 # List of APT packages to install on all hosts with the role.
 docker__packages: []
 
-# ??? docker__pip_packages
+# ??? docker__with_tools
 #
-# List of packages to install from PyPI using the pip command.
-docker__pip_packages:
-  - github3.py
-
+# Either or not to install docker tool like ctop and lazydocker
+docker__with_tools: true
 
 ## Internal Docker Registry
 
