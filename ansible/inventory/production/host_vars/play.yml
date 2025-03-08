@@ -1,0 +1,36 @@
+---
+
+# ??? core__packages
+#
+# List of APT packages to install on all hosts with the role.
+core__packages:
+  - caddy
+  - curl
+  - gcc
+  - git
+  - golang-go
+  - jq
+  - make
+  - nano
+  - nmap
+  - python3
+  - vim
+  - wget
+
+# ??? core__resources_exec_path
+#
+# List of paths to be given executable permission
+core__resources_exec_path:
+  - /etc/update-motd.d/00-header
+
+# ??? core__resources_remove_path
+#
+# List of paths to remove from the host.
+core__resources_remove_path:
+  - /etc/update-motd.d/10-help-text
+  - /etc/update-motd.d/90-updates-available
+
+# ??? core__resources__caddy_extra
+#
+# Extra Caddy configuration
+core__resources__caddy_extra: ''
