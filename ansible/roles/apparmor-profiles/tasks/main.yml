@@ -84,4 +84,3 @@
   ansible.builtin.command:
     cmd: 'dpkg --install /tmp/pkg/{{ item["path"] | basename }}'
   with_items: '{{ _apparmor_profiles__pkg_files.files }}'
-  notify: Enable journald audit
