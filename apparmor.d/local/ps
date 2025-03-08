@@ -1,0 +1,5 @@
+
+  deny capability sys_ptrace,
+
+  deny ptrace read,
+

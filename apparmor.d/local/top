@@ -1,0 +1,6 @@
+
+  deny capability kill,
+  deny capability sys_nice,
+  deny capability sys_ptrace,
+
+  deny ptrace read,
