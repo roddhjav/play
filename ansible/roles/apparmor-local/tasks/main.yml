@@ -57,6 +57,17 @@
   with_items: "{{ apparmor_local__new_paths }}"
   notify: Restart apparmor
 
+- name: Ensure Apparmor libpam is configured
+  ansible.builtin.blockinfile:
+    path: '/etc/pam.d/{{ item }}'
+    block: '{{ apparmor_local__pam_config }}'
+    owner: root
+    group: root
+    mode: "0644"
+  when: apparmor_local__with_pam
+  with_items:
+    - '{{ apparmor_local__pam_files }}'
+
 - name: Update the list of tracked paths
   ansible.builtin.set_fact:
     apparmor_local__tracked_paths: "{{ apparmor_local__new_paths }}"

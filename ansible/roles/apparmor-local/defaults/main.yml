@@ -19,10 +19,37 @@ apparmor_local__base_packages:
 apparmor_local__packages: []
 
 
+## PAM Configuration
+
+# ??? apparmor_local__with_pam
+#
+# Either or not to include PAM configuration for AppArmor.
+apparmor_local__with_pam: true
+
+# ??? apparmor_local__pam_files
+#
+# List of PAM files to configure.
+apparmor_local__pam_files:
+  # - chfn
+  # - chpasswd
+  # - chsh
+  # - login
+  # - other
+  # - runuser
+  - sshd
+  # - su
+  - sudo
+
+# ??? apparmor_local__pam_config
+#
+# The PAM config to insert
+apparmor_local__pam_config: |
+  session optional	pam_apparmor.so order=user,group,default debug
+
 ## Internal Settings
 
 # ??? apparmor_local__build
 #
-# Path to the resourse directory (default: ./resources from the repo root).
-# All files from this directory will be copied to the host root file.
+# Path to the profiles build directory (default: ./.build/apparmor.d from the repo root).
+# All files from this directory will be copied to /etc/apparmor.d/ on the host.
 apparmor_local__build: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/.build/apparmor.d'
