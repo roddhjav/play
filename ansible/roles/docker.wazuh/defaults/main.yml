@@ -1,0 +1,62 @@
+---
+
+# docker.wazuh
+
+## General configuration
+
+# ??? wazuh__site_url
+#
+# Where your instance of Wazuh is publically available.
+wazuh__site_url: wazuh.example.com
+
+# ??? wazuh__version
+#
+# Wazuh version to install
+wazuh__version: '4.11.0'
+
+# ??? wazuh__indexer_username
+#
+# Wazuh Indexer username
+wazuh__indexer_username: admin
+
+# ??? wazuh__indexer_password
+#
+# Wazuh Indexer password
+wazuh__indexer_password: SecretPassword
+
+# ??? wazuh__api_username
+#
+# Wazuh API username
+wazuh__api_username: wazuh-wui
+
+# ??? wazuh__api_password
+#
+# Wazuh Indexer password
+wazuh__api_password: "MyS3cr37P450r.*-"
+
+# ??? wazuh__dashboard_username
+#
+# Wazuh Dashboard username
+wazuh__dashboard_username: kibanaserver
+
+# ??? wazuh__dashboard_password
+#
+# Wazuh Dashboard password
+wazuh__dashboard_password: kibanaserver
+
+## Internal configuration
+
+# # ??? dtrack__db_password
+# #
+# # Dtrack Postgres user password
+# wazuh__db_password: ''
+
+# # ??? dtrack__db_name
+# #
+# # Dtrack Postgres database name
+# wazuh__db_name: dtrack
+
+# # ??? dtrack__db_url
+# #
+# # Dtrack URL of the external database
+# wazuh__db_url: 'jdbc:postgresql://dtrack-postgres:5432/{{ dtrack__db_name }}'
