@@ -7,6 +7,11 @@
     state: 'present'
     install_recommends: false
 
+- name: Enable journald audit
+  ansible.builtin.service:
+    name: systemd-journald-audit.socket
+    enabled: true
+
 - name: Configure apparmor for large set of profiles
   ansible.builtin.copy:
     src: parser.conf
