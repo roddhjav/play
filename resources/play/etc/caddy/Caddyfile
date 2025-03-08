@@ -3,5 +3,5 @@
     root * /srv/www/public
     file_server
     tls internal
-    {{ resources__caddy_extra }}
+    {{ core__resources__caddy_extra }}
 }

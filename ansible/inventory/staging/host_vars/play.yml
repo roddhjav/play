@@ -29,3 +29,8 @@ core__resources_exec_path:
 core__resources_remove_path:
   - /etc/update-motd.d/10-help-text
   - /etc/update-motd.d/90-updates-available
+
+# ??? core__resources__caddy_extra
+#
+# Extra Caddy configuration
+core__resources__caddy_extra: ''
