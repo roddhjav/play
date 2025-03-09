@@ -1,2 +1,13 @@
 # Common profile flags definition for all distributions
 # File format: one profile by line using the format: '<profile> <flags>'
+
+caddy attach_disconnected,complain
+crowdsec complain
+crowdsec-blocklist-mirror complain
+crowdsec-firewall-bouncer complain
+cscli complain
+hc-ifscan complain
+role_caddy complain
+role_default complain
+role_nope complain
+role_play complain
