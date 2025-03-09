@@ -1,6 +1,6 @@
 
 {{ ansible_host }} {
-    root * /srv/www/public
+    root * /var/www/public
     file_server
     tls internal
     {{ core__resources__caddy_extra }}
