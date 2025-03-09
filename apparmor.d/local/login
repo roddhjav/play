@@ -4,5 +4,17 @@
 
   include <mappings/login>
 
-  # deny @{bin}/@{shells} x,
+  @{shells_path} rCx -> shell,
 
+  profile shell flags=(attach_disconnected,complain) {
+    include <abstractions/base>
+    include <abstractions/consoles>
+    include <abstractions/shells>
+
+    @{shells_path} rix,
+    @{bin}/env rix,
+    @{bin}/run-parts rix,
+    /etc/update-motd.d/* rPx,
+
+    include if exists <local/login_shell>
+  }
