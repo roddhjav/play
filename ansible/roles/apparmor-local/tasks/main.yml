@@ -40,7 +40,7 @@
 
 - name: Ensure all tracked directory exists
   ansible.builtin.file:
-    path: "/etc/apparmor.d/{{ item | dirname }}"
+    path: "/etc/apparmor.d/{{ item }}"
     state: directory
     mode: "0755"
     owner: root

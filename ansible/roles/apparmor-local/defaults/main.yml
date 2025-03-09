@@ -30,21 +30,19 @@ apparmor_local__with_pam: true
 #
 # List of PAM files to configure.
 apparmor_local__pam_files:
-  # - chfn
-  # - chpasswd
-  # - chsh
-  # - login
-  # - other
-  # - runuser
+  - chfn
+  - chpasswd
+  - chsh
+  - login
+  - runuser
   - sshd
-  # - su
-  - sudo
+  - su
 
 # ??? apparmor_local__pam_config
 #
 # The PAM config to insert
 apparmor_local__pam_config: |
-  session optional	pam_apparmor.so order=user,group,default debug
+  session optional	pam_apparmor.so order=user,group,default
 
 ## Internal Settings
 
