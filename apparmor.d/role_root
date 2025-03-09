@@ -5,12 +5,20 @@
 # Allow confined users to read, write, lock and link to their own files
 # anywhere, and execute from some places.
 
+# Don't confine members whose primary group is 'admin' who are not specifically
+# confined. Systems without this special primary group may want to define an
+# unconfined 'root' hat in this manner (depending on site policy).
+
 abi <abi/4.0>,
 
 include <tunables/global>
 
+# fNAylRXdERjmfyjNmGCmvOGLs
+
 profile role_root {
   include <abstractions/base>
+  include <abstractions/bus-system>
+  include <abstractions/common/apt>
   include <abstractions/consoles>
   include <abstractions/nameservice-strict>
   include <abstractions/shells>
@@ -22,37 +30,56 @@ profile role_root {
 
   network netlink raw,
 
-  # Allow to run everything, but wintin this role
+  # Allow to run everything, but in the scope of this role only
   @{bin}/** mrix,
   @{lib}/** mrix,
 
   # Allow to run some specific program and to transition to their profile
-  @{bin}/aa-log     rPx,
-  @{bin}/aa-status  rPx,
+  @{bin}/aa-enabled                               Px,
+  @{bin}/aa-log                                   Px,
+  @{bin}/aa-status                                Px,
+  @{bin}/blkid                                    Px, 
+  @{bin}/df                                       Px,
+  @{bin}/dmesg                                    Px,
+  @{bin}/findmnt                                  Px,
+  @{bin}/free                                     Px,
+  @{bin}/htop                                     Px,
+  @{bin}/lsblk                                    Px,
+  @{bin}/lscpu                                    Px,
+  @{bin}/lspci                                    Px,
+  @{bin}/ps                                       Px,
+  @{bin}/pstree                                   Px,
+  @{bin}/top                                      Px,
+  @{bin}/uname                                    Px,
+  @{bin}/uptime                                   Px,
+  @{bin}/users                                    Px,
+  @{bin}/w                                        Px,
+  @{bin}/who                                      Px,
+  @{lib}/command-not-found                        Px,
 
   # Allow to update/show the Message of the Day
-  @{bin}/landscape-sysinfo rPx,
-  /etc/update-motd.d/* rPx,
-  /usr/share/landscape/landscape-sysinfo.wrapper rPx,
-
-  @{bin}/ r,
-  @{lib}/ r,
-  /usr/local/{,**} r,
-
-  /usr/share/vim/** r,
+  @{bin}/landscape-sysinfo                        Px,
+  /etc/update-motd.d/*                            Px,
+  /usr/share/landscape/landscape-sysinfo.wrapper  Px,
 
   # To see the apparmor profiles in use
   /etc/apparmor/{,**} r,
   /etc/apparmor.d/{,**} r,
 
-  # For htop, harmless to allow
+  # Harmless to allow
+  /etc/dpkg/{,**} r,
+  /etc/init.d/{,**} r,
   /etc/sensors.d/{,**} r,
   /etc/sensors3.conf r,
-
   /etc/vim/vimrc r,
+
+  # Explicitly allow access to dpkg database
+  /var/lib/dpkg/{,**} r,
 
   / r,
   /*/ r,
+  /opt/{,**} r,
+  /usr/{,**} r,
 
   owner /root/ r,
   owner /root/*/ rw,

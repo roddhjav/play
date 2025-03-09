@@ -8,7 +8,7 @@ abi <abi/4.0>,
 
 include <tunables/global>
 
-profile role_caddy flags=(complain) {
+profile role_caddy {
   include <abstractions/base>
 
   @{shells_path}  rix,

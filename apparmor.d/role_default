@@ -8,7 +8,7 @@ abi <abi/4.0>,
 
 include <tunables/global>
 
-profile role_default flags=(complain) {
+profile role_default {
   include <abstractions/base>
   include <abstractions/consoles>
   include <abstractions/nameservice-strict>

@@ -2,29 +2,38 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
+# The play user is a confined admin user.
+
 abi <abi/4.0>,
 
 include <tunables/global>
 
-profile role_play flags=(complain) {
+profile role_play {
   include <abstractions/base>
+  include <abstractions/app/sudo>
+  include <abstractions/app/systemctl>
   include <abstractions/consoles>
-  include <abstractions/shells>
   include <abstractions/python>
+  include <abstractions/shells>
 
-  audit change_profile,
+  capability chown,
+  capability fowner,
+  capability fsetid,
+  capability kill,
+  capability sys_ptrace,
+  capability sys_rawio,
+  capability syslog,
 
-  capability,
-  network,
-  mqueue getattr type=posix /,
-  mount,
-  remount,
-  umount,
-  pivot_root,
-  ptrace,
-  signal,
-  dbus,
-  unix,
+  network netlink raw,
+
+  ptrace read,
+
+  signal receive set=hup peer=@{p_systemd},
+  signal send set=(cont term) peer=systemd-tty-ask-password-agent,
+
+  unix bind type=stream addr=@@{udbus}/bus/reboot/system,
+
+  #aa:dbus talk bus=session name=org.freedesktop.systemd1 label="@{p_systemd}"
 
   @{lib}/**                    mrPix,
   @{bin}/**                    mrPix,
@@ -32,7 +41,11 @@ profile role_play flags=(complain) {
   /usr/share/*/**              mrPix,
   /tmp/**                      mrix,
 
-  /usr/local/** r,
+  # As the root user is confined using the very restricted role_root profile,
+  # we ensure we get root while staying in our current role_play.
+  @{bin}/sudo rix,
+
+  /usr/{,**} r,
 
   / r,
   /*{,/} rw,
