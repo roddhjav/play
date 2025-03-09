@@ -10,6 +10,9 @@
     - role: core
       tags: ['role::core', 'skip::core']
 
+    - role: deploy
+      tags: ['role::deploy', 'skip::deploy']
+
     - role: apparmor-profiles
       tags: ['role::apparmor-profiles', 'skip::apparmor-profiles']
 

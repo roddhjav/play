@@ -1,0 +1,40 @@
+---
+
+- name: Install requested packages
+  ansible.builtin.package:
+    name: '{{ q("flattened", (deploy__base_packages
+                              + deploy__packages)) }}'
+    state: 'present'
+    install_recommends: false
+
+- name: Create deployment user
+  ansible.builtin.user:
+    name: "{{ deploy__user }}"
+    shell: /bin/bash
+    create_home: true
+
+- name: Setup SSH keys for deployment
+  ansible.posix.authorized_key:
+    user: "{{ deploy__user }}"
+    key: "{{ deploy__ssh_key }}"
+    state: present
+  when: deploy__ssh_key is defined
+
+- name: Ensure the deploy paths exist
+  ansible.builtin.file:
+    path: '{{ item }}/'
+    state: directory
+    mode: '0755'
+  with_items: "{{ deploy__allow_paths }}"
+  when: deploy__allow_paths is defined
+
+- name: Ensure the deploy user is allowed to access some specified paths
+  ansible.posix.acl:
+    path: '{{ item }}/'
+    entity: "{{ deploy__user }}"
+    etype: user
+    permissions: rwx
+    state: present
+    recursive: true
+  with_items: "{{ deploy__allow_paths }}"
+  when: deploy__allow_paths is defined
