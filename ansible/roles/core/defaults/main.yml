@@ -32,6 +32,13 @@ core__base_remove_packages:
 # List of APT packages to remove on all hosts with the role.
 core__remove_packages: []
 
+# ??? core__services
+#
+# List of systemd service to start and enable
+core__services:
+  - caddy
+  - firewalld
+
 # ??? core__resources_remove_path
 #
 # List of paths to remove from the host.

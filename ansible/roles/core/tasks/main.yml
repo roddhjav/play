@@ -1,5 +1,44 @@
 ---
 
+- name: Enable noble-proposed
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/ubuntu.sources
+    regexp: >-
+      ^Suites: {{ ansible_distribution_release }}
+      {{ ansible_distribution_release }}-updates
+      {{ ansible_distribution_release }}-backports
+    line: >-
+      Suites: {{ ansible_distribution_release }}
+      {{ ansible_distribution_release }}-updates
+      {{ ansible_distribution_release }}-backports
+      {{ ansible_distribution_release }}-proposed
+
+- name: 'Install kernel with fix for https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2095370'
+  ansible.builtin.shell:
+    cmd: |
+      apt update -y
+      apt install -y linux-virtual/noble-proposed linux-headers-virtual/noble-proposed
+      apt autoremove -y
+      mkdir -p /etc/ansible/facts/
+      touch /etc/ansible/facts/kernel_fixed
+      touch /etc/ansible/facts/reboot_needed
+    creates: /etc/ansible/facts/kernel_fixed
+
+- name: Check if a reboot is needed
+  ansible.builtin.stat:
+    path: /etc/ansible/facts/reboot_needed
+  register: reboot_needed
+
+- name: Reboot the machine after kernel update
+  ansible.builtin.reboot:
+    msg: "Rebooting machine after kernel update"
+  when: reboot_needed.stat.exists
+
+- name: Clean up after reboot
+  ansible.builtin.file:
+    path: /etc/ansible/facts/reboot_needed
+    state: absent
+
 - name: Install required packages
   ansible.builtin.apt:
     name: '{{ (core__base_packages + core__packages) | flatten }}'
@@ -26,3 +65,10 @@
 
 - name: Install the resources files
   ansible.builtin.include_tasks: resources.yml
+
+- name: Enabled service managed by the role
+  ansible.builtin.service:
+    name: '{{ item }}'
+    state: started
+    enabled: true
+  with_items: '{{ core__services }}'
