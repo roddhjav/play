@@ -16,6 +16,9 @@
     - role: docker.wazuh
       tags: ['role::wazuh', 'skip::wazuh']
 
+    - role: docker.grafana
+      tags: ['role::grafana', 'skip::grafana']
+
     - role: apparmor-profiles
       tags: ['role::apparmor-profiles', 'skip::apparmor-profiles']
 

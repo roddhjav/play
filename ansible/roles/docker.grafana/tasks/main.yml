@@ -1,0 +1,32 @@
+---
+
+# Documentation:
+# - https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker/
+
+- name: Create internal network
+  community.docker.docker_network:
+    name: grafana-network
+    driver: bridge
+
+- name: Ensure docker volumes exist
+  community.docker.docker_volume:
+    name: "{{ item }}"
+  with_items:
+    - grafana-data
+
+- name: Install Graphical
+  community.docker.docker_container:
+    name: wazuh.manager
+    detach: true
+    image: 'grafana/grafana-oss:{{ grafana__version }}'
+    pull: true
+    state: started
+    restart: true
+    restart_policy: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - name: wazuh-network
+# env: GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel"
