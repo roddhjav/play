@@ -8,10 +8,10 @@ output "password_play" {
   value = random_password.play.result
 }
 
-output "password_wazuh" {
-  description = "Password of the wazuh instance"
+output "password_donn" {
+  description = "Password of the donn instance"
   sensitive   = true
-  value = random_password.wazuh.result
+  value = random_password.donn.result
 }
 
 output "ip_play" {

@@ -14,8 +14,10 @@ resource "hcloud_server" "play" {
     ipv6_enabled = false
   }
 
+  ssh_keys = [hcloud_ssh_key.alex.id]
   user_data = templatefile("${path.cwd}/cloud-init.yml",
     {
+      "username" = "play"
       "hostname" = hcloud_primary_ip.play.labels["domain"]
       "ssh_key"  = file("${var.ssh_publickey}")
       "passwd"   = random_password.play.bcrypt_hash

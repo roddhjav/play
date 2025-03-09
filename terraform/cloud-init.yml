@@ -3,18 +3,18 @@
 hostname: ${hostname}
 
 users:
-  - name: play
+  - name: ${username}
     passwd: ${passwd}
+    shell: /bin/bash
     ssh_authorized_keys:
       - ${ssh_key}
     lock_passwd: false
-    shell: /bin/bash
     sudo: ALL=(ALL) ALL
 
   - name: root
     plain_text_passwd: apparmor
-    lock_passwd: false
     shell: /bin/bash
+    lock_passwd: false
 
 package_update: true
 package_upgrade: true

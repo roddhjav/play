@@ -2,6 +2,11 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: UNLICENSED
 
+resource "hcloud_ssh_key" "alex" {
+  name       = "alex@archlex"
+  public_key = file(var.ssh_publickey)
+}
+
 resource "hcloud_firewall" "play" {
   name = "tf-fw-play"
 
@@ -35,7 +40,7 @@ resource "random_password" "play" {
   special = false
 }
 
-resource "random_password" "wazuh" {
+resource "random_password" "donn" {
   length  = 32
   special = false
 }
