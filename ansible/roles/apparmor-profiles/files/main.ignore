@@ -17,8 +17,10 @@ apparmor.d/groups/_dev/
 # apparmor.d/abstractions/nameservice-strict
 # apparmor.d/tunables/multiarch.d/base
 
-# Overwrite the default profile for sshd
+# Overwrite profiles where pam is enabled
 apparmor.d/groups/ssh/sshd
+apparmor.d/groups/utils/login
+apparmor.d/groups/utils/su
 
 # Abstractions we can safely ignore on servers
 apparmor.d/abstractions/app/chromium
