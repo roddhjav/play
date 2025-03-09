@@ -6,7 +6,7 @@ hat deploy flags=(complain) {
   include <abstractions/base>
   include <abstractions/mapping/shadow>
 
-  @{shells_path}  rPx -> role_nope, # Prevent he deploy user to edit they own shadow settings
+  @{shells_path}  rPx -> role_nope, # Prevent the deploy user to edit they own shadow settings
 
   include if exists <local/mappings/shadow/deploy>
 }

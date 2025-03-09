@@ -7,7 +7,7 @@ abi <abi/4.0>,
 include <tunables/global>
 
 @{exec_path} = @{bin}/caddy
-profile caddy @{exec_path} flags=(attach_disconnected,complain) {
+profile caddy @{exec_path} flags=(attach_disconnected) {
   include <abstractions/base>
   include <abstractions/consoles>
   include <abstractions/ssl_certs>
@@ -32,7 +32,7 @@ profile caddy @{exec_path} flags=(attach_disconnected,complain) {
   /etc/caddy/** r,
   /etc/machine-id r,
 
-  /srv/www/public/** r,
+  /var/www/public/** r,
 
   @{user_config_dirs}/caddy/{,**} rw,
   @{user_share_dirs}/caddy/{,**} rw,
@@ -48,7 +48,7 @@ profile caddy @{exec_path} flags=(attach_disconnected,complain) {
   owner @{PROC}/@{pid}/cpuset r,
   owner @{PROC}/@{pid}/mountinfo r,
 
-  profile sudo flags=(attach_disconnected,complain) {
+  profile sudo flags=(attach_disconnected) {
     include <abstractions/base>
     include <abstractions/app/sudo>
 

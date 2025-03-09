@@ -2,13 +2,10 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
-hat deploy {
-  include <abstractions/base>
-  include <abstractions/mapping/login>
+  abi <abi/4.0>,
 
-  @{sh_path}  rPx -> role_deploy,
+  owner @{HOME}/.ansible/tmp/ansible-tmp-*/* rw,
 
-  include if exists <local/mappings/login/deploy>
-}
+  include if exists <abstractions/ansible.d>
 
 # vim:syntax=apparmor

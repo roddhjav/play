@@ -6,7 +6,7 @@ hat deploy flags=(complain) {
   include <abstractions/base>
   include <abstractions/mapping/sshd>
 
-  @{shells_path}  rPx -> role_deploy,
+  @{sh_path}  rPx -> role_deploy,
 
   include if exists <local/mappings/sshd/deploy>
 }
