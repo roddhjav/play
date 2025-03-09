@@ -97,12 +97,17 @@ integration hostname="play.pujol.io":
 		bats --recursive --pretty --timing --print-output-on-failure Projects/integration/
 
 [doc('Build the static website')]
-web-buid:
+web-build:
 	@cd site && hugo
 
 [doc('Serve the static website')]
 web-serve:
 	@cd site && hugo serve
+
+[doc('Deploy the static website to the play machine')]
+deploy: web-build
+	@rsync --recursive --links --verbose --compress --delete \
+		site/public/ deploy@play.pujol.io:/var/www/public/
 
 [doc('Run the linters')]
 lint:
@@ -113,7 +118,7 @@ lint:
 
 [doc('Clean the build directories')]
 clean:
-	rm -rf {{build}}/
+	rm -rf {{build}}/ site/public/ site/.hugo_build.lock
 
 get_ip hostname:
 	@virsh --quiet --readonly {{c}} domifaddr {{hostname}} | \
