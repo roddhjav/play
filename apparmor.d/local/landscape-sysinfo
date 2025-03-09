@@ -1,3 +1,0 @@
-
-  deny network inet dgram,
-  deny network inet6 dgram,

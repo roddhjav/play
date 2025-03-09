@@ -24,6 +24,10 @@ profile role_play {
   capability sys_rawio,
   capability syslog,
 
+  network inet dgram,
+  network inet stream,
+  network inet6 dgram,
+  network inet6 stream,
   network netlink raw,
 
   ptrace read,
@@ -34,6 +38,7 @@ profile role_play {
   unix bind type=stream addr=@@{udbus}/bus/reboot/system,
 
   #aa:dbus talk bus=session name=org.freedesktop.systemd1 label="@{p_systemd}"
+  #aa:dbus talk bus=system name=org.freedesktop.PackageKit label=packagekitd
 
   @{lib}/**                    mrPix,
   @{bin}/**                    mrPix,

@@ -61,7 +61,6 @@ profile sshd @{exec_path} flags=(attach_disconnected) {
 
   @{exec_path} mrix,
 
-  @{bin}/@{shells}                  rUx,
   @{bin}/false                      rix,
   @{bin}/nologin                    rPx,
   @{bin}/passwd                     rPx,
