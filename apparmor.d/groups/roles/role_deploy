@@ -2,7 +2,8 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
-# The deploy user is only user to deploy the static website and therefore can only do this.
+# The deploy user is only used to deploy the static website from CI system,
+# and therefore; it is strictly limited to this task.
 
 abi <abi/4.0>,
 

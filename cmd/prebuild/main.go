@@ -19,6 +19,7 @@ func init() {
 	// Define the tasks applied by default
 	prepare.Register(
 		"synchronise", // Initialize a new clean apparmor.d build directory
+		"merge",       // Merge profiles (from group/, profiles-*-*/) to a unified apparmor.d directory
 		"setflags",    // Set flags as definied in dist/flags
 		"overwrite",   // Overwrite dummy upstream profiles
 	)

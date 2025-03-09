@@ -7,7 +7,7 @@ abi <abi/4.0>,
 include <tunables/global>
 
 @{exec_path} = @{bin}/crowdsec-blocklist-mirror
-profile crowdsec-blocklist-mirror @{exec_path} flags=(complain) {
+profile crowdsec-blocklist-mirror @{exec_path} {
   include <abstractions/base>
   include <abstractions/ssl_certs>
 

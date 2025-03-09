@@ -7,7 +7,7 @@ abi <abi/4.0>,
 include <tunables/global>
 
 @{exec_path} = @{bin}/crowdsec-firewall-bouncer
-profile crowdsec-firewall-bouncer @{exec_path} flags=(complain) {
+profile crowdsec-firewall-bouncer @{exec_path} {
   include <abstractions/base>
   include <abstractions/nameservice-strict>
   include <abstractions/ssl_certs>

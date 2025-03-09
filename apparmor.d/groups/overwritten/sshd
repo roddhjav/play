@@ -15,7 +15,7 @@ abi <abi/4.0>,
 include <tunables/global>
 
 @{exec_path} = @{bin}/sshd
-profile sshd @{exec_path} flags=(attach_disconnected,complain) {
+profile sshd @{exec_path} flags=(attach_disconnected) {
   include <abstractions/base>
   include <abstractions/authentication>
   include <abstractions/bus-system>
