@@ -32,6 +32,7 @@ profile role_play {
 
   ptrace read,
 
+  signal send set=hup,
   signal receive set=hup peer=@{p_systemd},
   signal send set=(cont term) peer=systemd-tty-ask-password-agent,
 
@@ -49,6 +50,8 @@ profile role_play {
   # As the root user is confined using the very restricted role_root profile,
   # we ensure we get root while staying in our current role_play.
   @{bin}/sudo rix,
+
+  @{bin}/gpg rix,
 
   /usr/{,**} r,
 

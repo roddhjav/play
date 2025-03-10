@@ -1,0 +1,54 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+abi <abi/4.0>,
+
+include <tunables/global>
+
+@{exec_path} = /var/lib/dpkg/**
+profile dpkg-scripts @{exec_path} {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/nameservice-strict>
+  include <abstractions/perl>
+
+  @{exec_path} mr,
+
+  @{bin}/update-alternatives rPx,
+
+  @{sh_path}                      rix,
+  @{coreutils_path}               rix,
+  @{bin}/dpkg                     rPx -> child-dpkg,
+  @{bin}/dpkg-maintscript-helper  rix,
+  @{bin}/invoke-rc.d              rix,
+  @{bin}/ldconfig{,.real}         rix,
+  @{bin}/locale                   rix,
+  @{bin}/perl r,
+  @{bin}/systemctl                rCx -> systemctl,
+  @{bin}/update-rc.d              rix,
+  /usr/share/debconf/frontend     rix,
+
+  /var/lib/dpkg/info/*.@{dpkg_script_ext} rix,
+  /var/lib/dpkg/tmp.ci/@{dpkg_script_ext} rPUx, # Px as they do not varies
+
+  /usr/share/debconf/{,*} r,
+
+  /etc/ r,
+  /etc/rc@{int}.d/{,**} r,
+
+  owner /var/cache/debconf/* rwk,
+
+  profile systemctl {
+    include <abstractions/base>
+    include <abstractions/app/systemctl>
+  
+    capability sys_ptrace,
+
+    include if exists <local/dpkg-scripts_systemctl>
+  }
+  
+  include if exists <local/dpkg-scripts>
+}
+
+# vim:syntax=apparmor

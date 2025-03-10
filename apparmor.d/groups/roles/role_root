@@ -13,8 +13,6 @@ abi <abi/4.0>,
 
 include <tunables/global>
 
-# fNAylRXdERjmfyjNmGCmvOGLs
-
 profile role_root {
   include <abstractions/base>
   include <abstractions/bus-system>
@@ -23,7 +21,9 @@ profile role_root {
   include <abstractions/nameservice-strict>
   include <abstractions/shells>
 
-  # set rlimit cpu <= , # TODO; see how everything can be limited here
+  set rlimit cpu <= 100,
+  set rlimit fsize <= 5242880, # 5MB
+  set rlimit nofile <= 256,
 
   capability dac_override,
   capability dac_read_search,
@@ -38,7 +38,7 @@ profile role_root {
   @{bin}/aa-enabled                               Px,
   @{bin}/aa-log                                   Px,
   @{bin}/aa-status                                Px,
-  @{bin}/blkid                                    Px, 
+  @{bin}/blkid                                    Px,
   @{bin}/df                                       Px,
   @{bin}/dmesg                                    Px,
   @{bin}/findmnt                                  Px,
@@ -57,11 +57,6 @@ profile role_root {
   @{bin}/who                                      Px,
   @{lib}/command-not-found                        Px,
 
-  # Allow to update/show the Message of the Day
-  @{bin}/landscape-sysinfo                        Px,
-  /etc/update-motd.d/*                            Px,
-  /usr/share/landscape/landscape-sysinfo.wrapper  Px,
-
   # To see the apparmor profiles in use
   /etc/apparmor/{,**} r,
   /etc/apparmor.d/{,**} r,
@@ -69,17 +64,23 @@ profile role_root {
   # Harmless to allow
   /etc/dpkg/{,**} r,
   /etc/init.d/{,**} r,
+  /etc/machine-id r,
   /etc/sensors.d/{,**} r,
   /etc/sensors3.conf r,
   /etc/vim/vimrc r,
+  /var/lib/dbus/machine-id r,
 
-  # Explicitly allow access to dpkg database
-  /var/lib/dpkg/{,**} r,
-
+  # Explicitly allow access to the main filesystem structure
   / r,
   /*/ r,
   /opt/{,**} r,
   /usr/{,**} r,
+
+  # Explicitly allow access to dpkg database
+  /var/lib/dpkg/{,**} r,
+
+  # Explicitly allow access to journalctl logs
+  /{run,var}/log/journal/{,**} r,
 
   owner /root/ r,
   owner /root/*/ rw,
@@ -94,6 +95,7 @@ profile role_root {
   # A list of actions explicitly denied to the role in order to not fill the logs
 
   deny capability sys_ptrace,
+  deny capability fsetid,
 
   deny network inet dgram,
   deny network inet6 dgram,
@@ -105,8 +107,9 @@ profile role_root {
   deny @{bin}/{kmod,lsmod,depmod,insmod,rmmod,modinfo,modprobe} x,
 
         deny owner /root/.config/htop/htoprc w,
-  audit deny owner /root/.ssh/** w,
-  audit deny owner /root/dont-delete-me-please.txt w,
+  audit deny owner /root/.config/ r,
+  audit deny owner /root/.config/htop/ r,
+  audit deny owner /root/.ssh/{,**} w,
 
   include if exists <local/role_root>
 }
