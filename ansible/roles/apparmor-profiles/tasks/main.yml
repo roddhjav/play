@@ -30,8 +30,7 @@
       # Configure apparmor.d to our needs
       configure() {
         # Enable Full System Policy with forced enforce mode
-        # [DEV] only classic enfore is enabled
-        echo -e "\noverride_dh_auto_build:\n\tmake build\n\t./.build/prebuild --complain --full" >> "$VOLUME/$PKGNAME/debian/rules"
+        echo -e "\noverride_dh_auto_build:\n\tmake build\n\t./.build/prebuild --full" >> "$VOLUME/$PKGNAME/debian/rules"
 
         # Strict FSP, the default profile is not enabled.
         rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/default"*
@@ -42,6 +41,7 @@
 
         # Only install profile required on servers
         cp '{{ role_path }}/files/main.ignore' "$VOLUME/$PKGNAME/dists/ignore/main.ignore"
+        cp '{{ role_path }}/files/main.flags' "$VOLUME/$PKGNAME/dists/flags/main.flags"
       }
 
       sync
