@@ -116,6 +116,9 @@ lint:
 	@packer fmt packer/
 	@packer validate --syntax-only packer/
 
+check:
+	@bash ../apparmor.d/tests/check.sh
+
 [doc('Clean the build directories')]
 clean:
 	rm -rf {{build}}/ site/public/ site/.hugo_build.lock
