@@ -2,14 +2,30 @@
 # File format: one profile by line using the format: '<profile> <flags>'
 
 # New profiles
+deb-systemd-helper complain
+deb-systemd-invoke complain
 dpkg-db-backup complain
+dpkg-maintscript-helper complain
+dpkg-script-base complain
+dpkg-script-crowdsec complain
+dpkg-script-initramfs complain
+dpkg-script-kmod complain
+dpkg-script-landscape complain
 dpkg-script-libc complain
 dpkg-script-linux complain
 dpkg-script-man complain
+dpkg-script-python complain
 dpkg-script-rsyslog complain
 dpkg-script-systemd complain
+dpkg-script-tmp attach_disconnected,complain
+dpkg-script-udev complain
 dpkg-script-ufw complain
+dpkg-script-wazuh complain
+dpkg-scripts complain
 netplan-generate complain,attach_disconnected
+pycompile complain
+sysstat-sa complain
+sysstat-sadc complain
 
 dkms attach_disconnected,complain
 dmsetup complain
