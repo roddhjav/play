@@ -1,0 +1,9 @@
+# apparmor.d - Full set of apparmor profiles
+# Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# FIXME: Required because apparmor the apparmor package adds a file in
+# /usr/lib/sysctl.d/10-apparmor.conf that set kernel.apparmor_restrict_unprivileged_userns
+# However, it allows every user of sysctl to manage MAC policies
+
+  capability mac_admin,

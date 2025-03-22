@@ -4,3 +4,4 @@
 
   include <abstractions/ansible>
 
+  owner @{HOME}/.ansible/tmp/ansible-tmp-*/AnsiballZ_*.py rw,

@@ -2,12 +2,25 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
-# Allow confined users to read, write, lock and link to their own files
-# anywhere, and execute from some places.
-
-# Don't confine members whose primary group is 'admin' who are not specifically
-# confined. Systems without this special primary group may want to define an
-# unconfined 'root' hat in this manner (depending on site policy).
+# Confined role to the root user
+#
+# Allowed actions:
+#  * Allow to run everything, but in the scope of this role only for most programs
+#  * Local access to dpkg/apt
+#  * Can see the logs with journalctl, dmesg and aa-log
+#  * Can see all AppArmor profiles in use as well as some AppArmor tools
+#  * Can see the main filesystem structure /, /opt, /usr
+#  * Can see the processes, users, the kernel settings, the hardware, the network
+#  * Full unrestricted access to /root/*/** (rwklmix), it is where the user can
+#    store, run bash scripts, compile programs, etc.
+#
+# Everything else is not allowed, particularly:
+#  * No capabilities
+#  * No access to the network
+#  * No dbus (no loginctl, reboot/shutdown...)
+#  * No ptrace
+#  * No access to /home/
+#  * No access to Caddy data
 
 abi <abi/4.0>,
 
@@ -15,6 +28,7 @@ include <tunables/global>
 
 profile role_root {
   include <abstractions/base>
+  include <abstractions/bus-session>
   include <abstractions/bus-system>
   include <abstractions/common/apt>
   include <abstractions/consoles>
@@ -44,6 +58,7 @@ profile role_root {
   @{bin}/findmnt                                  Px,
   @{bin}/free                                     Px,
   @{bin}/htop                                     Px,
+  @{bin}/journalctl                               Px,
   @{bin}/lsblk                                    Px,
   @{bin}/lscpu                                    Px,
   @{bin}/lspci                                    Px,
@@ -78,9 +93,6 @@ profile role_root {
 
   # Explicitly allow access to dpkg database
   /var/lib/dpkg/{,**} r,
-
-  # Explicitly allow access to journalctl logs
-  /{run,var}/log/journal/{,**} r,
 
   owner /root/ r,
   owner /root/*/ rw,

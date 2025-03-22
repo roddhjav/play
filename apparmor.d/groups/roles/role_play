@@ -38,6 +38,10 @@ profile role_play {
 
   unix bind type=stream addr=@@{udbus}/bus/reboot/system,
 
+  # FIXME: restrict this. no program need that much
+  dbus bus=system, 
+  dbus bus=session,
+
   #aa:dbus talk bus=session name=org.freedesktop.systemd1 label="@{p_systemd}"
   #aa:dbus talk bus=system name=org.freedesktop.PackageKit label=packagekitd
 
