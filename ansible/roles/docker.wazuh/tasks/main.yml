@@ -1,6 +1,7 @@
 ---
 
 # Documentation:
+#  - https://github.com/Hamada-khairi/Hamada-FYP/blob/main/docker-compose.yml
 # - https://documentation.wazuh.com/current/deployment-options/docker/wazuh-container.html
 
 - name: Increase max_map_count on your host
