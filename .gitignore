@@ -1,6 +1,8 @@
 # Build output
 .ansible
 .build
+.logs
+.pam
 
 # Generated files by hugo
 public/
