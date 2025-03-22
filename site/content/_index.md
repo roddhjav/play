@@ -38,7 +38,7 @@ No.
 
 *Yes.* It should be secure. If it is not, it is a nice way to learn how to improve it.
 
-#### What can I do
+#### What can I do?
 
 There is no harm in letting you see dmesg/journalctl as well as the apparmor profiles in use. Security by obscurity isn’t much good anyway. For a serious server you would probably deny dmesg access, but this is a play machine. One of the purposes of the machine is to teach people about Apparmor, and you can learn a lot from the dmesg output.
 
@@ -55,7 +55,7 @@ Run any of the following to see the profiles in use:
 - `htop`
 - `aa-status`
 
-The profiles are all available in `/etc/apparmor.d`
+You can also use `aa-log` to check denied logs from apparmor. The profiles are all available in `/etc/apparmor.d`
 
 #### Is it a honeypot?
 
