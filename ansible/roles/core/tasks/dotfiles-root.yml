@@ -26,7 +26,7 @@
   ansible.builtin.blockinfile:
     path: /root/.bashrc
     block: |
-      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@$(hostname --alias)\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@$(hostname --fqdn)\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
       [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
     owner: root
     group: root

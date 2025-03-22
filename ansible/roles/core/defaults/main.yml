@@ -2,7 +2,7 @@
 
 # core
 
-# very common and basic configuration for all hosts
+# Very common and basic configuration for all hosts
 
 ## General settings
 
@@ -10,7 +10,6 @@
 #
 # List of APT packages which are required by the role.
 core__base_packages:
-  - firewalld
   - htop
   - qemu-guest-agent
   - unattended-upgrades
@@ -24,8 +23,7 @@ core__packages: []
 # ??? core__base_remove_packages
 #
 # List of APT packages which should be removed by the role.
-core__base_remove_packages:
-  - ufw
+core__base_remove_packages: []
 
 # ??? core__remove_packages
 #
@@ -35,9 +33,7 @@ core__remove_packages: []
 # ??? core__services
 #
 # List of systemd service to start and enable
-core__services:
-  - caddy
-  - firewalld
+core__services: []
 
 # ??? core__resources_remove_path
 #
@@ -55,7 +51,17 @@ core__resources_exec_path: []
 # All files from this directory will be copied to the host root file.
 core__resources_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/resources'
 
+# ??? core__with_resources
+#
+# Copy resources to the host
+core__with_resources: false
+
 # ??? core__with_root
 #
 # Copy dotfiles to the root user home directory
-core__with_root: true
+core__with_root: false
+
+# ??? core__with_patch
+#
+# Apply patches to the host
+core__with_patch: false

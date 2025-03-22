@@ -1,7 +1,0 @@
----
-
-- name: Restart apparmor
-  ansible.builtin.service:
-    name: apparmor
-    state: restarted
-    enabled: true

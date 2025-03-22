@@ -12,6 +12,11 @@
     name: systemd-journald-audit.socket
     enabled: true
 
+- name: Ensure old apparmor cache directory is clean
+  ansible.builtin.file:
+    path: /var/cache/apparmor
+    state: absent
+
 - name: Configure apparmor for large set of profiles
   ansible.builtin.copy:
     src: parser.conf

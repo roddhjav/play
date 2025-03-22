@@ -27,7 +27,8 @@ deploy__allow_paths:
 # ??? deploy__base_packages
 #
 # List of APT packages which are required by the role.
-deploy__base_packages: []
+deploy__base_packages:
+  - acl
 
 # ??? deploy__packages
 #

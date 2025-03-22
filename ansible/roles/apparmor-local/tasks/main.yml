@@ -55,7 +55,6 @@
     group: root
     mode: "0644"
   with_items: "{{ apparmor_local__new_paths }}"
-  notify: Restart apparmor
 
 - name: Ensure Apparmor libpam is configured
   ansible.builtin.blockinfile:
@@ -72,3 +71,9 @@
   ansible.builtin.set_fact:
     apparmor_local__tracked_paths: "{{ apparmor_local__new_paths }}"
     cacheable: true
+
+- name: Ensure the apparmor service is restarted
+  ansible.builtin.service:
+    name: apparmor
+    state: restarted
+    enabled: true

@@ -12,6 +12,7 @@
       {{ ansible_distribution_release }}-updates
       {{ ansible_distribution_release }}-backports
       {{ ansible_distribution_release }}-proposed
+  when: core__with_patch
 
 - name: 'Install kernel with fix for https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2095370'
   ansible.builtin.shell:
@@ -23,21 +24,24 @@
       touch /etc/ansible/facts/kernel_fixed
       touch /etc/ansible/facts/reboot_needed
     creates: /etc/ansible/facts/kernel_fixed
+  when: core__with_patch
 
 - name: Check if a reboot is needed
   ansible.builtin.stat:
     path: /etc/ansible/facts/reboot_needed
   register: reboot_needed
+  when: core__with_patch
 
 - name: Reboot the machine after kernel update
   ansible.builtin.reboot:
     msg: "Rebooting machine after kernel update"
-  when: reboot_needed.stat.exists
+  when: core__with_patch and reboot_needed.stat.exists
 
 - name: Clean up after reboot
   ansible.builtin.file:
     path: /etc/ansible/facts/reboot_needed
     state: absent
+  when: core__with_patch
 
 - name: Install required packages
   ansible.builtin.apt:
@@ -65,6 +69,7 @@
 
 - name: Install the resources files
   ansible.builtin.include_tasks: resources.yml
+  when: core__with_resources
 
 - name: Enabled service managed by the role
   ansible.builtin.service:
