@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: UNLICENSED
 
 resource "hcloud_server" "play" {
-  name        = "tf-preprod-play"
+  name        = "tf-prod-play"
   image       = "ubuntu-24.04"
   datacenter  = local.datacenter
   server_type = "cx22"

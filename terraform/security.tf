@@ -12,11 +12,6 @@ resource "hcloud_firewall" "play" {
 
   rule {
     direction  = "in"
-    protocol   = "icmp"
-    source_ips = ["0.0.0.0/0"]
-  }
-  rule {
-    direction  = "in"
     protocol   = "tcp"
     port       = "22"
     source_ips = ["0.0.0.0/0"]
@@ -39,9 +34,3 @@ resource "random_password" "play" {
   length  = 32
   special = false
 }
-
-resource "random_password" "donn" {
-  length  = 32
-  special = false
-}
-

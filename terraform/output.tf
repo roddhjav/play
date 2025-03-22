@@ -8,15 +8,8 @@ output "password_play" {
   value = random_password.play.result
 }
 
-output "password_donn" {
-  description = "Password of the donn instance"
-  sensitive   = true
-  value = random_password.donn.result
-}
-
 output "ip_play" {
   description = "Address IP of the play instance"
   sensitive   = false
   value = hcloud_primary_ip.play.ip_address
 }
-

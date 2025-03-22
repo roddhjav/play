@@ -7,5 +7,4 @@ crowdsec-firewall-bouncer complain
 cscli complain
 dpkg-scripts complain
 hc-ifscan complain
-role_caddy complain
 role_play complain

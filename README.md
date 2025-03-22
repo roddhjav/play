@@ -15,5 +15,32 @@ The aim of this is to:
 - Show that root is not everything in modern security.
 - Give a demo machine with [apparmor.d](https://github.com/roddhjav/apparmor.d) fully integrated.
 
+## Requirements
+
+**System requirements**
+
+* A fresh VM with Ubuntu 24.04
+
+**Local dependency**
+
+* Ansible
+* Go >= 1.21
+* Hugo
+* Just
+* The `apparmor.d` project must be available under the `../apparmor.d` path.
+
+## Deploy
+
+To build the profiles, and install the play machine, run the following command:
+```sh
+just ansible
+```
+
+Then, you can deploy the static website with:
+```sh
+just deploy
+```
+
+
 [project]: https://gitlab.com/rdhjv/security/play
 [build]: https://gitlab.com/rdhjv/security/play/main/pipeline.svg?style=flat-square
