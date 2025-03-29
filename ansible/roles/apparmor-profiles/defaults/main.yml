@@ -33,6 +33,11 @@ apparmor_profiles__base_names:
 # List of apparmor.d profiles package to install on all hosts the role.
 apparmor_profiles__names: []
 
+# ??? apparmor_profiles__auto_build
+#
+# Debian package build command to use in 'override_dh_auto_build' block.
+# Usefull to personalize the build process.
+apparmor_profiles__auto_build: 'make build\n\t./.build/prebuild --full'
 
 ## Internal Settings
 
