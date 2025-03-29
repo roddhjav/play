@@ -16,11 +16,6 @@ apparmor_profiles__base_packages:
 # List of APT packages to install on all hosts with the role.
 apparmor_profiles__packages: []
 
-# List of apparmor.d profiles package which are required by the role.
-apparmor_profiles__base_names:
-  - core
-  - base
-
 # List of apparmor.d profiles package to install on all hosts the role.
 apparmor_profiles__names: []
 

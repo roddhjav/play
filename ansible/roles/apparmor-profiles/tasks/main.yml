@@ -35,8 +35,8 @@
       # Configure apparmor.d to our needs
       configure() {
         # Enable Full System Policy with forced enforce mode
-        echo -e "\noverride_dh_auto_build:\n\t" >> "$VOLUME/$PKGNAME/debian/rules"
-        echo -e "{{ apparmor_profiles__auto_build }}" >> "$VOLUME/$PKGNAME/debian/rules"
+        echo -e "\noverride_dh_auto_build:" >> "$VOLUME/$PKGNAME/debian/rules"
+        echo -e "\t{{ apparmor_profiles__auto_build }}" >> "$VOLUME/$PKGNAME/debian/rules"
 
         # Strict FSP, the default profile is not enabled.
         rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/default"*
