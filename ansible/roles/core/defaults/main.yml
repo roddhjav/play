@@ -6,8 +6,6 @@
 
 ## General settings
 
-# ??? core__base_packages
-#
 # List of APT packages which are required by the role.
 core__base_packages:
   - htop
@@ -15,53 +13,36 @@ core__base_packages:
   - unattended-upgrades
   - bash-completion
 
-# ??? core__packages
-#
 # List of APT packages to install on all hosts with the role.
 core__packages: []
 
-# ??? core__base_remove_packages
-#
 # List of APT packages which should be removed by the role.
 core__base_remove_packages: []
 
-# ??? core__remove_packages
-#
 # List of APT packages to remove on all hosts with the role.
 core__remove_packages: []
 
-# ??? core__services
-#
 # List of systemd service to start and enable
 core__services: []
 
-# ??? core__resources_remove_path
-#
 # List of paths to remove from the host.
 core__resources_remove_path: []
 
-# ??? core__resources_exec_path
-#
 # List of paths to be given executable permission
 core__resources_exec_path: []
 
-# ??? core__resources_path
-#
 # Path to the resourse directory (default: ./resources from the repo root).
 # All files from this directory will be copied to the host root file.
 core__resources_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/resources'
 
-# ??? core__with_resources
-#
 # Copy resources to the host
 core__with_resources: false
 
-# ??? core__with_root
-#
 # Copy dotfiles to the root user home directory
 core__with_root: false
 
-# ??? core__with_patch
-#
 # Apply patches to the host
 core__with_patch: false
+
+# Apply play specificities
+core__with_play_machine: true

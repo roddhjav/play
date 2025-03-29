@@ -7,28 +7,22 @@
 
 ## Installation, APT packages
 
-# ??? apparmor_local__base_packages
-#
 # List of APT packages which are required by the role.
 apparmor_local__base_packages:
   - libpam-apparmor
 
-# ??? apparmor_local__packages
-#
 # List of APT packages to install on all hosts with the role.
 apparmor_local__packages: []
 
 
 ## PAM Configuration
 
-# ??? apparmor_local__with_pam
-#
 # Either or not to include PAM configuration for AppArmor.
 apparmor_local__with_pam: true
 
-# ??? apparmor_local__pam_files
-#
 # List of PAM files to configure.
+# Warning: if the local profiles do not ship coresponding roles and mappings,
+# the programs will fail to start.
 apparmor_local__pam_files:
   - chfn
   - chpasswd
@@ -38,16 +32,12 @@ apparmor_local__pam_files:
   - sshd
   - su
 
-# ??? apparmor_local__pam_config
-#
-# The PAM config to insert
+# The PAM configuration to insert
 apparmor_local__pam_config: |
   session optional	pam_apparmor.so order=user,group,default
 
 ## Internal Settings
 
-# ??? apparmor_local__build
-#
 # Path to the profiles build directory (default: ./.build/apparmor.d from the repo root).
 # All files from this directory will be copied to /etc/apparmor.d/ on the host.
 apparmor_local__build: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/.build/apparmor.d'

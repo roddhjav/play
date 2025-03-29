@@ -2,35 +2,26 @@
 
 # deploy
 
-# Create the deploy user for various server deployment tasks
+# Create the deploy user for various server deployment tasks.
+# This user will then be confined using the role_deploy profile.
 
 ## General
 
-# ??? deploy__user
-#
 # The username of the deploy user to create.
 deploy__user: deploy
 
-# ??? deploy__ssh_key
-#
 # The SSH key to add to the deploy user's authorized_keys file.
 deploy__ssh_key: ''
 
-# ??? deploy__allow_paths
-#
 # A list of paths that the deploy user is allowed to write to.
 deploy__allow_paths:
   - /var/www/public
 
 ## Installation, APT packages
 
-# ??? deploy__base_packages
-#
 # List of APT packages which are required by the role.
 deploy__base_packages:
   - acl
 
-# ??? deploy__packages
-#
 # List of APT packages to install on all hosts with the role.
 deploy__packages: []

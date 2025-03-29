@@ -7,46 +7,31 @@
 
 ## Installation, APT packages
 
-# ??? apparmor_profiles__base_packages
-#
 # List of APT packages which are required by the role.
 apparmor_profiles__base_packages:
   - apparmor-profiles
   - apparmor-utils
   - auditd
 
-# ??? apparmor_profiles__packages
-#
 # List of APT packages to install on all hosts with the role.
 apparmor_profiles__packages: []
 
-
-# ??? apparmor_profiles__base_names
-#
 # List of apparmor.d profiles package which are required by the role.
 apparmor_profiles__base_names:
   - core
   - base
 
-# ??? apparmor_profiles__names
-#
 # List of apparmor.d profiles package to install on all hosts the role.
 apparmor_profiles__names: []
 
-# ??? apparmor_profiles__auto_build
-#
 # Debian package build command to use in 'override_dh_auto_build' block.
 # Usefull to personalize the build process.
 apparmor_profiles__auto_build: 'make build\n\t./.build/prebuild --full'
 
 ## Internal Settings
 
-# ??? apparmor_profiles__repo_path
-#
 # Path to the apparmor.d repository. (default: ../apparmor.d for repo root)
 apparmor_profiles__repo_path: '{{ inventory_dir | realpath | dirname | dirname | dirname | dirname }}/apparmor.d'
 
-# ??? apparmor_profiles__dev
-#
 # Development mode, if true, the role will always rebuild profiles.
 apparmor_profiles__dev: true
