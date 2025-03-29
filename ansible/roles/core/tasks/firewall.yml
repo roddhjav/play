@@ -1,0 +1,39 @@
+---
+
+- name: Ensure UFW is installed
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+
+- name: Allow SSH connections
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow HTTP connections
+  community.general.ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+- name: Allow HTTPS connections
+  community.general.ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+
+- name: Deny all other incoming connections
+  community.general.ufw:
+    default: deny
+    direction: incoming
+
+- name: Allow all outgoing connections
+  community.general.ufw:
+    default: allow
+    direction: outgoing
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    logging: full
+

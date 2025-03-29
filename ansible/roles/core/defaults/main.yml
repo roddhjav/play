@@ -28,5 +28,8 @@ core__with_root: false
 # Apply play specificities
 core__with_play_machine: true
 
+# Install and configure the firewall
+core__with_firewall: true
+
 # Extra Caddy configuration
 core__play_caddy_extra: ''
