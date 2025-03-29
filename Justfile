@@ -20,6 +20,11 @@ build:
 ansible inventory="staging" playbook="play" *args="":
 	ansible-playbook -i ansible/inventory/{{inventory}} ansible/playbooks/{{playbook}}.yml {{args}}
 
+# [doc('Run the integration tests on the machine')]
+# integration hostname="play.pujol.io":
+# 	@ssh {{sshopt}} user@`just get_ip {{hostname}}` \
+# 		bats --recursive --pretty --timing --print-output-on-failure Projects/integration/
+
 [doc('Build the static website')]
 web-build:
 	@cd site && hugo
@@ -37,8 +42,6 @@ deploy: web-build
 lint:
 	@ansible-lint ansible/
 	@golangci-lint run
-	@packer fmt packer/
-	@packer validate --syntax-only packer/
 
 check:
 	@bash ../apparmor.d/tests/check.sh
