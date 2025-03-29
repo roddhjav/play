@@ -1,0 +1,67 @@
+---
+
+- name: Configure Caddy
+  ansible.builtin.copy:
+    content: |
+      {{ ansible_host }} {
+          root * /var/www/public
+          file_server
+          {{ core__play_caddy_extra }}
+      }
+    dest: /etc/caddy/Caddyfile
+    mode: "0644"
+  notify:
+    - Restart caddy
+
+- name: Disable MOTD news message
+  ansible.builtin.copy:
+    content: |
+      ENABLED=0
+    dest: /etc/default/motd-news
+    mode: "0644"
+
+- name: Disable MOTD help & update messages
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - /etc/update-motd.d/10-help-text
+    - /etc/update-motd.d/90-updates-available
+
+- name: Personalize the MOTD header
+  ansible.builtin.copy:
+    content: |
+      #!/bin/sh
+      [ -r /etc/lsb-release ] && . /etc/lsb-release
+      if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
+          # Fall back to using the very slow lsb_release utility
+          DISTRIB_DESCRIPTION=$(lsb_release -s -d)
+      fi
+      printf "Welcome to %s (%s). You are root. Have fun!\n" \
+          "$(hostname --alias)" "$DISTRIB_DESCRIPTION"
+    dest: /etc/update-motd.d/00-header
+    mode: "0755"
+
+- name: Set the MOTD message
+  ansible.builtin.copy:
+    src: etc/motd
+    dest: /etc/motd
+    mode: "0644"
+
+- name: Allow root login with password over SSH
+  ansible.builtin.copy:
+    src: etc/ssh/sshd_config.d/90-play.conf
+    dest: /etc/ssh/sshd_config.d/90-play.conf
+    mode: "0644"
+
+- name: Ensure authorized_keys for root has been set
+  ansible.builtin.file:
+    path: /root/.ssh/authorized_keys
+    state: touch
+    mode: "0644"
+
+- name: Ensure the dont-delete-me-please.txt challenge has been set
+  ansible.builtin.file:
+    path: /root/dont-delete-me-please.txt
+    state: touch
+    mode: "0644"

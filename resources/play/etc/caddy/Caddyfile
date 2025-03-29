@@ -1,5 +1,0 @@
-
-{{ ansible_host }} {
-    root * /var/www/public
-    file_server
-}

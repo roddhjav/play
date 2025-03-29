@@ -43,18 +43,16 @@
     state: absent
   when: core__with_patch
 
+- name: Update the apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
 - name: Install required packages
   ansible.builtin.apt:
     name: '{{ (core__base_packages + core__packages) | flatten }}'
     state: 'present'
     install_recommends: false
-    update_cache: true
-
-- name: Ensure unwelcome packages are not installed
-  ansible.builtin.apt:
-    name: '{{ (core__base_remove_packages + core__remove_packages) | flatten }}'
-    state: 'absent'
-    purge: true
 
 - name: Install dotfiles for the default users
   ansible.builtin.include_tasks: dotfiles-users.yml
@@ -67,13 +65,10 @@
   vars:
     core__getroot_method: ''
 
-- name: Install the resources files
-  ansible.builtin.include_tasks: resources.yml
-  when: core__with_resources
+- name: Install and configure the firewall
+  ansible.builtin.include_tasks: firewall.yml
+  when: core__with_firewall
 
-- name: Enabled service managed by the role
-  ansible.builtin.service:
-    name: '{{ item }}'
-    state: started
-    enabled: true
-  with_items: '{{ core__services }}'
+- name: Install play machine specificities
+  ansible.builtin.include_tasks: play.yml
+  when: core__with_play_machine

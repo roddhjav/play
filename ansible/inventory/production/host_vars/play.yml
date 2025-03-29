@@ -1,7 +1,5 @@
 ---
 
-# ??? core__packages
-#
 # List of APT packages to install on all hosts with the role.
 core__packages:
   - caddy
@@ -17,38 +15,5 @@ core__packages:
   - vim
   - wget
 
-# ??? core__base_remove_packages
-#
-# List of APT packages which should be removed by the role.
-core__base_remove_packages:
-  - ufw
-
-# ??? core__services
-#
-# List of systemd service to start and enable
-core__services:
-  - caddy
-  - firewalld
-
-# ??? core__resources_exec_path
-#
-# List of paths to be given executable permission
-core__resources_exec_path:
-  - /etc/update-motd.d/00-header
-
-# ??? core__resources_remove_path
-#
-# List of paths to remove from the host.
-core__resources_remove_path:
-  - /etc/update-motd.d/10-help-text
-  - /etc/update-motd.d/90-updates-available
-
-# ??? core__resources__caddy_extra
-#
-# Extra Caddy configuration
-core__resources__caddy_extra: ''
-
-# ??? deploy__ssh_key
-#
 # The SSH key to add to the deploy user's authorized_keys file.
 deploy__ssh_key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
