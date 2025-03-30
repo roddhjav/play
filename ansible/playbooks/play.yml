@@ -8,13 +8,13 @@
   roles:
 
     - role: core
-      tags: ['role::core', 'skip::core']
+      tags: ['role::core']
 
     - role: deploy
-      tags: ['role::deploy', 'skip::deploy']
+      tags: ['role::deploy']
 
     - role: apparmor-profiles
-      tags: ['role::apparmor-profiles', 'skip::apparmor-profiles']
+      tags: ['role::apparmor-profiles']
 
     - role: apparmor-local
-      tags: ['role::apparmor-local', 'skip::apparmor-local']
+      tags: ['role::apparmor-local']
