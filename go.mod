@@ -1,4 +1,4 @@
-module gitlab.com/rdhjv/security/play
+module github.com/roddhjav/play
 
 go 1.22
 
