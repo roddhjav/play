@@ -22,6 +22,9 @@ dpkg-script-udev complain
 dpkg-script-ufw complain
 dpkg-script-wazuh complain
 dpkg-scripts complain
+initramfs-hooks complain
+initramfs-scripts complain
+linux-update-symlinks complain
 netplan-generate complain,attach_disconnected
 pycompile complain
 sysstat-sa complain

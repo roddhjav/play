@@ -5,6 +5,5 @@ crowdsec complain
 crowdsec-blocklist-mirror complain
 crowdsec-firewall-bouncer complain
 cscli complain
-dpkg-scripts complain
 hc-ifscan complain
 role_play complain

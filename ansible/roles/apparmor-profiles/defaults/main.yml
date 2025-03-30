@@ -21,6 +21,7 @@ apparmor_profiles__names: []
 
 # Debian package build command to use in 'override_dh_auto_build' block.
 # Usefull to personalize the build process.
+# For testing purposes, set it to 'make build\n\t./.build/prebuild --complain'
 apparmor_profiles__auto_build: 'make build\n\t./.build/prebuild --full'
 
 ## Internal Settings

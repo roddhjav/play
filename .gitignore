@@ -3,6 +3,7 @@
 .build
 .logs
 .pam
+.vscode
 
 # Generated files by hugo
 public/

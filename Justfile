@@ -48,5 +48,5 @@ check:
 
 [doc('Clean the build directories')]
 clean:
-	rm -rf {{build}}/ site/public/ site/.hugo_build.lock
+	rm -rf {{build}}/ site/public/ site/.hugo_build.lock .hugo_build.lock
 
