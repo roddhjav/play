@@ -23,6 +23,20 @@
     dest: /etc/apparmor/parser.conf
     mode: "0644"
 
+- name: Ensure ansible will work with apparmor
+  ansible.builtin.copy:
+    content: |
+      owner @{HOME}/.ansible/tmp/ansible-tmp-*/* rw,
+    dest: /etc/apparmor.d/local/sftp-server
+    mode: "0644"
+
+- name: Ensure apparmor.d packages can be read by dpkg
+  ansible.builtin.copy:
+    content: |
+      @{user_pkg_dirs}+=/tmp/pkg
+    dest: /etc/apparmor.d/tunables/multiarch.d/ansible
+    mode: "0644"
+
 - name: Locally build the apparmor.d repository
   ansible.builtin.shell:
     chdir: '{{ apparmor_profiles__repo_path }}'
