@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 
 # The play user is a confined admin user.
+# It is large as it aims to be used by ansible and an admin to manage the system.
 
 abi <abi/4.0>,
 
@@ -37,9 +38,10 @@ profile role_play {
   signal send set=(cont term) peer=systemd-tty-ask-password-agent,
 
   unix bind type=stream addr=@@{udbus}/bus/reboot/system,
+  unix bind type=stream addr=@@{udbus}/bus/shutdown/system,
 
   # FIXME: restrict this. no program need that much
-  dbus bus=system, 
+  dbus bus=system,
   dbus bus=session,
 
   #aa:dbus talk bus=session name=org.freedesktop.systemd1 label="@{p_systemd}"
@@ -55,29 +57,28 @@ profile role_play {
   # we ensure we get root while staying in our current role_play.
   @{bin}/sudo rix,
 
-  @{bin}/gpg rix,
-
-  /usr/{,**} r,
-
+  # Allow to read/write almost everything in the system
+  # Restricting this would break the ansible playbook.
   / r,
   /*{,/} rw,
-  @{run}/** rwlk,
+  /etc/** rwlk,
+  /boot/** rwlk,
+  /mnt/** rwlk,
+  /snap/** rwlk,
+  /var/** rwlk,
   @{HOME}/ rw,
   @{HOME}/** rwlk,
-  /boot/** rwlk,
-  /etc/** rwlk,
-  /lib/** r,
-  /mnt/** rwlk,
   /tmp/** rwlk,
-  /var/** rwlk,
-  /snap/** rwlk,
+  @{run}/** rwlk,
 
-  /root/ r,
+  # Ensure core immutable directories stay ro even for ansible.
+  # Note: ansible can still modify them through other means (apt, dpkg, ...).
+  /usr/** r,
   /media/** r,
   /opt/** r,
-
-  @{sys}/** r,
+  /root/ r,
   @{PROC}/** r,
+  @{sys}/** r,
   /dev/** r,
 
   include if exists <local/role_play>
