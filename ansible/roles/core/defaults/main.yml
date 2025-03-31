@@ -19,9 +19,6 @@ core__packages: []
 
 ## Additional features
 
-# Apply patches to the host
-core__with_patch: false
-
 # Copy dotfiles to the root user home directory
 core__with_root: false
 
