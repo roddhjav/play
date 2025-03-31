@@ -1,6 +1,6 @@
 // play - Apparmor play machine
 // Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: GPL-2.0-only
 
 package main
 
