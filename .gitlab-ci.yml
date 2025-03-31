@@ -23,5 +23,5 @@ build:
   stage: build
   image: archlinux
   script:
-    - pacman -Syu --noconfirm --noprogressbar	golang-go just
+    - pacman -Syu --noconfirm --noprogressbar	go just
     - just build
