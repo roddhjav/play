@@ -1,0 +1,27 @@
+---
+
+stages:
+  - lint
+  - build
+  - deploy
+
+
+# Code Linter
+# -----------
+
+check:
+  stage: lint
+  image: archlinux
+  script:
+    - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/check.sh > check.sh
+    - bash check.sh
+
+# Profiles Build
+# --------------
+
+build:
+  stage: build
+  image: archlinux
+  script:
+    - pacman -Syu --noconfirm --noprogressbar	golang-go just
+    - just build
