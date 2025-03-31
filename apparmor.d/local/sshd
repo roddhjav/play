@@ -6,7 +6,7 @@
 
   @{shells_path} rCx -> shell,
 
-  profile shell flags=(attach_disconnected,complain) {
+  profile shell flags=(attach_disconnected) {
     include <abstractions/base>
     include <abstractions/consoles>
     include <abstractions/shells>
