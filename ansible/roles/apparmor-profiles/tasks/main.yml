@@ -111,3 +111,25 @@
     state: restarted
     enabled: true
 
+- name: Check for apparmor.d first install
+  ansible.builtin.stat:
+    path: /etc/ansible/facts/apparmor_profiles__installed
+  register: apparmor_profiles__first_install
+
+- name: Reboot the machine on first install of the apparmor.d packages
+  ansible.builtin.reboot:
+    msg: "Rebooting the machine on first install of the apparmor.d packages"
+  when: not apparmor_profiles__first_install.stat.exists
+
+- name: Create ansible fact directory
+  ansible.builtin.file:
+    path: /etc/ansible/facts
+    state: directory
+    mode: '0755'
+
+- name: Create first install marker file
+  ansible.builtin.file:
+    path: /etc/ansible/facts/apparmor_profiles__installed
+    state: touch
+    mode: '0644'
+  when: not apparmor_profiles__first_install.stat.exists
