@@ -9,7 +9,9 @@ abi <abi/4.0>,
 include <tunables/global>
 
 profile role_nope {
+  include <abstractions/base>
 
+  include if exists <local/role_nope>
 }
 
 # vim:syntax=apparmor
