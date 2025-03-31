@@ -15,5 +15,9 @@ core__packages:
   - vim
   - wget
 
+# Extra Caddy configuration
+core__play_caddy_extra: |
+  tls internal
+
 # The SSH key to add to the deploy user's authorized_keys file.
 deploy__ssh_key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
