@@ -35,4 +35,5 @@
 - name: Enable UFW
   community.general.ufw:
     state: enabled
-    logging: full
+    logging: low
+
