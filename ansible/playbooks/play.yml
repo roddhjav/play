@@ -25,14 +25,12 @@
 
   roles:
 
+    - role: apparmor-profiles
+      tags: ['role::apparmor-profiles']
+
     - role: core
       tags: ['role::core']
 
     - role: deploy
       tags: ['role::deploy']
 
-    - role: apparmor-profiles
-      tags: ['role::apparmor-profiles']
-
-    - role: apparmor-local
-      tags: ['role::apparmor-local']
