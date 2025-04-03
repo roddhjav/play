@@ -5,15 +5,20 @@
 build := ".build"
 
 [doc('Show this help message')]
-default:
-	@echo -e "Integration environment helper for play\n"
+help:
 	@just --list --unsorted
-	@echo -e "\nSee https://apparmor.pujol.io/development/vm/ for more information."
 
-[doc('Build the apparmor profiles')]
+[doc('Build the go programs')]
 build:
 	@go build -o {{build}}/ ./cmd/prebuild
+
+[doc('Prebuild the profiles in enforced mode')]
+enforce: build
 	@./{{build}}/prebuild
+
+[doc('Prebuild the profiles in complain mode')]
+complain: build
+	@./{{build}}/prebuild --complain
 
 # just ansible staging play -t role::core
 [doc('Provision the machine')]
@@ -43,6 +48,7 @@ lint:
 	@ansible-lint ansible/
 	@golangci-lint run
 
+[doc('Run style checks on the profiles')]
 check:
 	@bash ../apparmor.d/tests/check.sh
 

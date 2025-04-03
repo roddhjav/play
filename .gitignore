@@ -1,4 +1,5 @@
 # Build output
+.secret-store
 .ansible
 .build
 .logs
