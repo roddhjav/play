@@ -65,3 +65,15 @@
     path: /root/dont-delete-me-please.txt
     state: touch
     mode: "0644"
+
+- name: Ensure the test directory exists
+  ansible.builtin.file:
+    path: /root/tests
+    state: directory
+    mode: "0755"
+
+- name: Add the roulette game
+  ansible.builtin.copy:
+    src: root/roulette.py
+    dest: /root/roulette.py
+    mode: "0755"
