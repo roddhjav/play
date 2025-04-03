@@ -1,7 +1,7 @@
 
 ## Free root access on an Apparmor machine!
 
-A Play Machine is what is called a system with root as the guest account with only Apparmor to restrict access.
+A Play Machine is what a system with root as the guest account with only Apparmor to restrict access is called.
 
 To access my Ubuntu 24.04 play machine ssh to `play.pujol.io` as root, the password is `apparmor`: `ssh root@play.pujol.io`
 
