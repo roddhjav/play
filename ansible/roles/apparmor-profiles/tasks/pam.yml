@@ -1,0 +1,11 @@
+---
+
+- name: Ensure Apparmor libpam is configured
+  ansible.builtin.blockinfile:
+    path: '/etc/pam.d/{{ item }}'
+    block: '{{ apparmor_profiles__pam_config }}'
+    owner: root
+    group: root
+    mode: "0644"
+  with_items:
+    - '{{ apparmor_profiles__pam_files }}'

@@ -2,8 +2,7 @@
 
 - name: Install requested packages
   ansible.builtin.package:
-    name: '{{ q("flattened", (apparmor_profiles__base_packages
-                              + apparmor_profiles__packages)) }}'
+    name: '{{ (apparmor_profiles__base_packages + apparmor_profiles__packages) | flatten }}'
     state: 'present'
     install_recommends: false
 
@@ -23,113 +22,42 @@
     dest: /etc/apparmor/parser.conf
     mode: "0644"
 
-- name: Ensure ansible will work with apparmor
+- name: Ensure that Ansible will work with apparmor enabled
   ansible.builtin.copy:
     content: |
       owner @{HOME}/.ansible/tmp/ansible-tmp-*/* rw,
     dest: /etc/apparmor.d/local/sftp-server
     mode: "0644"
 
-- name: Ensure apparmor.d packages can be read by dpkg
-  ansible.builtin.copy:
-    content: |
-      @{user_pkg_dirs}+=/tmp/pkg
-    dest: /etc/apparmor.d/tunables/multiarch.d/ansible
-    mode: "0644"
+- name: Install local profiles
+  ansible.builtin.include_tasks: local.yml
+  when: apparmor_profiles__with_local
 
-- name: Locally build the apparmor.d repository
-  ansible.builtin.shell:
-    chdir: '{{ apparmor_profiles__repo_path }}'
-    cmd: |
-      #!/usr/bin/env bash
-      set -euo pipefail
+- name: Install apparmor.d
+  ansible.builtin.include_tasks: apparmord.yml
+  when: apparmor_profiles__with_apparmord
 
-      source dists/docker.sh
-
-      # Configure apparmor.d to our needs
-      configure() {
-        # Enable Full System Policy with forced enforce mode
-        echo -e "\noverride_dh_auto_build:" >> "$VOLUME/$PKGNAME/debian/rules"
-        echo -e "\t{{ apparmor_profiles__auto_build }}" >> "$VOLUME/$PKGNAME/debian/rules"
-
-        # Strict FSP, the default profile is not enabled.
-        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/default"*
-        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/bwrap"*
-
-        # Disable hotfixes as they are for desktop only
-        sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
-
-        # Only install profile required on servers
-        cp '{{ role_path }}/files/main.ignore' "$VOLUME/$PKGNAME/dists/ignore/main.ignore"
-        cp '{{ role_path }}/files/main.flags' "$VOLUME/$PKGNAME/dists/flags/main.flags"
-      }
-
-      sync
-      configure
-      build_in_docker_dpkg ubuntu
-  become: false
-  delegate_to: localhost
-
-- name: Locate the apparmor.d packages
-  ansible.builtin.find:
-    paths: '{{ apparmor_profiles__repo_path }}/.pkg'
-    patterns: 'apparmor.d_*.deb'
-    age: '-2m'
-  register: _apparmor_profiles__pkg_files
-  become: false
-  delegate_to: localhost
-
-- name: Ensure the apparmor.d packages are present
-  ansible.builtin.fail:
-    msg: "No apparmor.d packages found"
-  when: _apparmor_profiles__pkg_files.matched == 0
-
-- name: Ensure the upload directory for packages exists
-  ansible.builtin.file:
-    path: "/tmp/pkg"
-    state: directory
-    mode: "0755"
-    owner: root
-    group: root
-
-- name: Upload the apparmor.d packages
-  ansible.builtin.copy:
-    src: '{{ item["path"] }}'
-    dest: /tmp/pkg/
-    mode: "0644"
-    force: '{{ apparmor_profiles__dev }}'
-  with_items: '{{ _apparmor_profiles__pkg_files.files }}'
-
-- name: Install the apparmor.d packages
-  ansible.builtin.command:
-    cmd: 'dpkg --install /tmp/pkg/{{ item["path"] | basename }}'
-  with_items: '{{ _apparmor_profiles__pkg_files.files }}'
-
-- name: Ensure the apparmor service is restarted
+- name: Restart apparmor
   ansible.builtin.service:
     name: apparmor
     state: restarted
     enabled: true
 
-- name: Check for apparmor.d first install
-  ansible.builtin.stat:
-    path: /etc/ansible/facts/apparmor_profiles__installed
-  register: apparmor_profiles__first_install
+- name: Configure AppArmor RBAC
+  ansible.builtin.include_tasks: pam.yml
+  when: apparmor_profiles__with_pam
 
-- name: Reboot the machine on first install of the apparmor.d packages
-  ansible.builtin.reboot:
-    msg: "Rebooting the machine on first install of the apparmor.d packages"
-  when: not apparmor_profiles__first_install.stat.exists
+- name: Reboot if required
+  ansible.builtin.include_tasks: reboot.yml
 
-- name: Create ansible fact directory
-  ansible.builtin.file:
-    path: /etc/ansible/facts
-    state: directory
-    mode: '0755'
-
-- name: Create first install marker file
-  ansible.builtin.file:
-    path: /etc/ansible/facts/apparmor_profiles__installed
-    state: touch
-    mode: '0644'
-  when: not apparmor_profiles__first_install.stat.exists
+# NOTE: this is good, but not enough:
+# In fully enforced mode: FSP with pam role (and no default profile), the reboot
+# would prevent ansible to install the apparmor_local role with the pam roles.
+# However, if we do it before the reboot, the pam role config would prevent this
+# role install. Thus, the apparmor reload needs to be postponed.
+# Solution; we need to ensure that;
+# 1. the apparmor.d packages are installed
+# 2. the apparmor_local profile are installed
+# 3. Only then apparmor service is restarted
+# 4. The pam config is set
+# 5. Reboot the machine

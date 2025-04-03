@@ -2,8 +2,21 @@
 
 # apparmor-profiles
 
-# Install apparmor-profles-* packages, a set of over 1500 AppArmor profiles
+# Install apparmor.d package, a set of over 1500 AppArmor profiles
 # whose aim is to confine most Linux based applications and processes.
+#
+# Also configure, build, and install local apparmor profiles from the ./apparmor.d directory
+
+## Settings
+
+# Either or not to build and install profiles managed by this project.
+apparmor_profiles__with_local: true
+
+# Either or not to build and install the profiles from apparmor.d
+apparmor_profiles__with_apparmord: true
+
+# Either or not to include PAM configuration for AppArmor.
+apparmor_profiles__with_pam: true
 
 ## Installation, APT packages
 
@@ -12,22 +25,44 @@ apparmor_profiles__base_packages:
   - apparmor-profiles
   - apparmor-utils
   - auditd
+  - libpam-apparmor
 
 # List of APT packages to install on all hosts with the role.
 apparmor_profiles__packages: []
 
-# List of apparmor.d profiles package to install on all hosts the role.
-apparmor_profiles__names: []
+## PAM Configuration
 
-# Debian package build command to use in 'override_dh_auto_build' block.
-# Usefull to personalize the build process.
-# For testing purposes, set it to 'make build\n\t./.build/prebuild --complain'
-apparmor_profiles__auto_build: 'make build\n\t./.build/prebuild --full'
+# List of PAM files to configure.
+# Warning: if the local profiles do not ship coresponding roles and mappings,
+# the programs will fail to start.
+apparmor_profiles__pam_files:
+  - chfn
+  - chpasswd
+  - chsh
+  - login
+  - runuser
+  - sshd
+  - su
+
+# The PAM configuration to insert
+apparmor_profiles__pam_config: |
+  session optional	pam_apparmor.so order=user,group,default
 
 ## Internal Settings
 
-# Path to the apparmor.d repository. (default: ../apparmor.d for repo root)
-apparmor_profiles__repo_path: '{{ inventory_dir | realpath | dirname | dirname | dirname | dirname }}/apparmor.d'
+# Debian package build command to use in 'override_dh_auto_build' block.
+# Usefull to personalize the build process.
+# For testing purposes, set it to 'make build\n\t./.build/prebuild --full --complain'
+apparmor_profiles__build_cmd: 'make build\n\t./.build/prebuild --full'
 
-# Development mode, if true, the role will always rebuild profiles.
-apparmor_profiles__dev: true
+# Path to the apparmor.d repository. (default: ../apparmor.d for repo root)
+apparmor_profiles__build_path: '{{ inventory_dir | realpath | dirname | dirname | dirname | dirname }}/apparmor.d'
+
+# Path to the local profiles build directory (default: ./.build/apparmor.d from the repo root).
+# All files from this directory will be copied to /etc/apparmor.d/ on the host.
+apparmor_profiles__local_build_path: '{{ inventory_dir | realpath | dirname | dirname | dirname }}/.build/apparmor.d'
+
+# Local build command to prebuild the profile.
+# Usefull to personalize the build process.
+# For testing purposes, set it to 'just complain'
+apparmor_profiles__local_build_cmd: 'just enforce'

@@ -1,0 +1,78 @@
+---
+
+- name: Ensure apparmor.d packages can be read by dpkg
+  ansible.builtin.copy:
+    content: |
+      @{user_pkg_dirs}+=/tmp/pkg
+    dest: /etc/apparmor.d/tunables/multiarch.d/ansible
+    mode: "0644"
+
+- name: Locally build the apparmor.d repository
+  ansible.builtin.shell:
+    chdir: '{{ apparmor_profiles__build_path }}'
+    cmd: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      source dists/docker.sh
+
+      # Configure apparmor.d to our needs
+      configure() {
+        # Enable Full System Policy with forced enforce mode
+        echo -e "\noverride_dh_auto_build:" >> "$VOLUME/$PKGNAME/debian/rules"
+        echo -e "\t{{ apparmor_profiles__build_cmd }}" >> "$VOLUME/$PKGNAME/debian/rules"
+
+        # Strict FSP, the default profile is not enabled.
+        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/default"*
+        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/bwrap"*
+
+        # Disable hotfixes as they are for desktop only
+        sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
+
+        # Only install profile required on servers
+        cp '{{ role_path }}/files/main.ignore' "$VOLUME/$PKGNAME/dists/ignore/main.ignore"
+        cp '{{ role_path }}/files/main.flags' "$VOLUME/$PKGNAME/dists/flags/main.flags"
+      }
+
+      sync
+      configure
+      build_in_docker_dpkg ubuntu
+  changed_when: true
+  become: false
+  delegate_to: localhost
+
+- name: Locate the apparmor.d packages
+  ansible.builtin.find:
+    paths: '{{ apparmor_profiles__build_path }}/.pkg'
+    patterns: 'apparmor.d_*.deb'
+    age: '-2m'
+  register: _apparmor_profiles__pkg_files
+  become: false
+  delegate_to: localhost
+
+- name: Ensure the apparmor.d packages are present
+  ansible.builtin.fail:
+    msg: "No apparmor.d packages found"
+  when: _apparmor_profiles__pkg_files.matched == 0
+
+- name: Ensure the upload directory for packages exists
+  ansible.builtin.file:
+    path: "/tmp/pkg"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Upload the apparmor.d packages
+  ansible.builtin.copy:
+    src: '{{ item["path"] }}'
+    dest: /tmp/pkg/
+    mode: "0644"
+    force: '{{ apparmor_profiles__dev }}'
+  loop: '{{ _apparmor_profiles__pkg_files.files }}'
+
+- name: Install the apparmor.d packages
+  ansible.builtin.command:
+    cmd: 'dpkg --install /tmp/pkg/{{ item["path"] | basename }}'
+  changed_when: true
+  loop: '{{ _apparmor_profiles__pkg_files.files }}'
