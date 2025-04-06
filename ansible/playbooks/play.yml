@@ -4,24 +4,6 @@
   hosts: ['play_machine']
   gather_facts: true
   become: true
-  vars:
-    deploy__ssh_key: "{{ lookup('file', '~/.ssh/id_deploy.pub') }}"
-    core__with_root: true
-    core__packages:
-      - caddy
-      - curl
-      - gcc
-      - git
-      - golang-go
-      - jq
-      - make
-      - nano
-      - nmap
-      - python3
-      - systemd-coredump
-      - systemd-oomd
-      - vim
-      - wget
 
   roles:
 

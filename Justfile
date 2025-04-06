@@ -20,10 +20,12 @@ enforce: build
 complain: build
 	@./{{build}}/prebuild --complain
 
-# just ansible staging play -t role::core
+# First provision:
+# just ansible staging play -t role::apparmor-profiles --extra-vars \"apparmor_profiles__local_build_cmd=\'just complain\'\"
+# just ansible staging play
 [doc('Provision the machine')]
 ansible inventory="staging" playbook="play" *args="":
-	ansible-playbook -i ansible/inventory/{{inventory}} ansible/playbooks/{{playbook}}.yml {{args}}
+	ansible-playbook -i ansible/inventory/common -i ansible/inventory/{{inventory}} ansible/playbooks/{{playbook}}.yml {{args}}
 
 # [doc('Run the integration tests on the machine')]
 # integration hostname="play.pujol.io":
