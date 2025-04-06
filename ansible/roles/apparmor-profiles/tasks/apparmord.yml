@@ -36,7 +36,7 @@
 
       sync
       configure
-      build_in_docker_dpkg ubuntu
+      build_in_docker_dpkg {{ ansible_distribution | lower }} {{ ansible_distribution_version }}
   changed_when: true
   become: false
   delegate_to: localhost
@@ -68,11 +68,13 @@
     src: '{{ item["path"] }}'
     dest: /tmp/pkg/
     mode: "0644"
-    force: '{{ apparmor_profiles__dev }}'
+    force: true
   loop: '{{ _apparmor_profiles__pkg_files.files }}'
 
 - name: Install the apparmor.d packages
   ansible.builtin.command:
-    cmd: 'dpkg --install /tmp/pkg/{{ item["path"] | basename }}'
+    cmd: 'dpkg --install --force-confnew --no-triggers /tmp/pkg/{{ item["path"] | basename }}'
   changed_when: true
   loop: '{{ _apparmor_profiles__pkg_files.files }}'
+  environment:
+    DEBIAN_FRONTEND: noninteractive

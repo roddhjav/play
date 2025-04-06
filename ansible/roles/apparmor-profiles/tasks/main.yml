@@ -32,20 +32,23 @@
 - name: Install local profiles
   ansible.builtin.include_tasks: local.yml
   when: apparmor_profiles__with_local
+  tags: ['local']
 
 - name: Install apparmor.d
   ansible.builtin.include_tasks: apparmord.yml
   when: apparmor_profiles__with_apparmord
+  tags: ['apparmord']
+
+- name: Configure AppArmor RBAC
+  ansible.builtin.include_tasks: pam.yml
+  when: apparmor_profiles__with_pam
+  tags: ['pam']
 
 - name: Restart apparmor
   ansible.builtin.service:
     name: apparmor
     state: restarted
     enabled: true
-
-- name: Configure AppArmor RBAC
-  ansible.builtin.include_tasks: pam.yml
-  when: apparmor_profiles__with_pam
 
 - name: Reboot if required
   ansible.builtin.include_tasks: reboot.yml
