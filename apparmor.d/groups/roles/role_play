@@ -61,15 +61,16 @@ profile role_play {
   # Restricting this would break the ansible playbook.
   / r,
   /*{,/} rw,
-  /etc/** rwlk,
-  /boot/** rwlk,
-  /mnt/** rwlk,
-  /snap/** rwlk,
-  /var/** rwlk,
+  /etc/** rwlk -> /etc/**,
+  /boot/** rwlk -> /boot/**,
+  /mnt/** rwlk -> /mnt/**,
+  /snap/** rwlk -> /snap/**,
+  /var/** rwlk -> /var/**,
   @{HOME}/ rw,
-  @{HOME}/** rwlk,
-  /tmp/** rwlk,
-  @{run}/** rwlk,
+  @{HOME}/** rwlk -> @{HOME}/**,
+  @{tmp}/** rwlk -> @{tmp}/**,
+  @{run}/** rwlk -> @{run}/**,
+  /dev/shm/** rwlk -> /dev/shm/**,
 
   # Ensure core immutable directories stay ro even for ansible.
   # Note: ansible can still modify them through other means (apt, dpkg, ...).

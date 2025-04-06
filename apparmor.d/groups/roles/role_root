@@ -90,17 +90,24 @@ profile role_root {
   # Explicitly allow access to the main filesystem structure
   / r,
   /*/ r,
-  /opt/{,**} r,
-  /usr/{,**} r,
+  /opt/** r,
+  /usr/** r,
+  /mnt/** r,
+  /media/** r,
+  @{run}/** r,
+  /dev/shm/ r,
 
   # Explicitly allow access to dpkg database
   /var/lib/dpkg/{,**} r,
 
   owner /root/ r,
+  owner /root/** mrix,
   owner /root/*/ rw,
-  owner /root/*/** mrix,
   owner /root/*/** rwkl -> /root/*/**,
   owner /root/dont-delete-me-please.txt r,
+
+  owner @{tmp}/** rwlk -> @{tmp}/**,
+  owner /dev/shm/** rwlk -> /dev/shm/**,
 
   # See all processes, users, the kernel settings, the hardware, the network...
   @{sys}/{,**} r,
@@ -118,9 +125,10 @@ profile role_root {
 
   deny ptrace read,
 
-  deny @{bin}/{kmod,depmod,insmod,rmmod,modinfo,modprobe} x,
+  deny @{bin}/{kmod,lsmod,depmod,insmod,rmmod,modinfo,modprobe} x,
 
         deny owner /root/.config/htop/htoprc w,
+        deny owner /root/tests/ w,
   audit deny owner /root/.config/ r,
   audit deny owner /root/.config/htop/ r,
   audit deny owner /root/.ssh/{,**} w,
