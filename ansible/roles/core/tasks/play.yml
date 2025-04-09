@@ -29,21 +29,13 @@
     - /etc/update-motd.d/90-updates-available
 
 - name: Personalize the MOTD header
-  ansible.builtin.copy:
-    content: |
-      #!/bin/sh
-      [ -r /etc/lsb-release ] && . /etc/lsb-release
-      if [ -z "$DISTRIB_DESCRIPTION" ] && [ -x /usr/bin/lsb_release ]; then
-          # Fall back to using the very slow lsb_release utility
-          DISTRIB_DESCRIPTION=$(lsb_release -s -d)
-      fi
-      printf "Welcome to %s (%s). You are root. Have fun!\n" \
-          "$(hostname --alias)" "$DISTRIB_DESCRIPTION"
+  ansible.builtin.template:
+    src: etc/update-motd.d/00-header
     dest: /etc/update-motd.d/00-header
     mode: "0755"
 
 - name: Set the MOTD message
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: etc/motd
     dest: /etc/motd
     mode: "0644"
@@ -52,6 +44,12 @@
   ansible.builtin.copy:
     src: etc/ssh/sshd_config.d/90-play.conf
     dest: /etc/ssh/sshd_config.d/90-play.conf
+    mode: "0644"
+
+- name: Add issue message
+  ansible.builtin.template:
+    src: etc/issue.net
+    dest: /etc/issue.net
     mode: "0644"
 
 - name: Ensure authorized_keys for root has been set

@@ -1,4 +1,4 @@
- More information on https://play.pujol.io
+ More information on https://{{ ansible_host }}
 
 Discuss:
 

@@ -1,0 +1,2 @@
+This is an AppArmor play machine, see https://{{ ansible_host }} for more information.
+The root password is: apparmor
