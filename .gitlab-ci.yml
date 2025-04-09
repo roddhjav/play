@@ -9,6 +9,13 @@ stages:
 # Code Linter
 # -----------
 
+.ansible:
+  stage: lint
+  image: archlinux
+  script:
+    - pacman -Syu --noconfirm --noprogressbar ansible	ansible-lint
+    - ansible-lint ansible/
+
 check:
   stage: lint
   image: archlinux
