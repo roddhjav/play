@@ -45,6 +45,7 @@ apparmor_profiles__pam_files:
   - su
 
 # The PAM configuration to insert
+# For testing, set it to 'session optional pam_apparmor.so order=user,group,default debug'
 apparmor_profiles__pam_config: |
   session optional	pam_apparmor.so order=user,group,default
 
@@ -52,7 +53,7 @@ apparmor_profiles__pam_config: |
 
 # Debian package build command to use in 'override_dh_auto_build' block.
 # Usefull to personalize the build process.
-# For testing purposes, set it to 'make build\n\t./.build/prebuild --full --complain'
+# For testing, set it to 'make build\n\t./.build/prebuild --full --complain'
 apparmor_profiles__build_cmd: 'make build\n\t./.build/prebuild --full'
 
 # Path to the apparmor.d repository. (default: ../apparmor.d for repo root)
@@ -64,5 +65,5 @@ apparmor_profiles__local_build_path: '{{ inventory_dir | realpath | dirname | di
 
 # Local build command to prebuild the profile.
 # Usefull to personalize the build process.
-# For testing purposes, set it to 'just complain'
+# For testing, set it to 'just complain'
 apparmor_profiles__local_build_cmd: 'just enforce'

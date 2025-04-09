@@ -18,6 +18,9 @@
 
       # Configure apparmor.d to our needs
       configure() {
+        # Do not reload the profiles as part of the postinst script
+        sed -i -e '/systemctl/d' "$VOLUME/$PKGNAME/debian/apparmor.d.postinst"
+
         # Enable Full System Policy with forced enforce mode
         echo -e "\noverride_dh_auto_build:" >> "$VOLUME/$PKGNAME/debian/rules"
         echo -e "\t{{ apparmor_profiles__build_cmd }}" >> "$VOLUME/$PKGNAME/debian/rules"
@@ -73,8 +76,8 @@
 
 - name: Install the apparmor.d packages
   ansible.builtin.command:
-    cmd: 'dpkg --install --force-confnew --no-triggers /tmp/pkg/{{ item["path"] | basename }}'
-  changed_when: true
-  loop: '{{ _apparmor_profiles__pkg_files.files }}'
+    cmd: 'dpkg --install --force-confnew /tmp/pkg/{{ item["path"] | basename }}'
   environment:
     DEBIAN_FRONTEND: noninteractive
+  changed_when: true
+  loop: '{{ _apparmor_profiles__pkg_files.files }}'

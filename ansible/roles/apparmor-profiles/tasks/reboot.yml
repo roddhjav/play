@@ -1,9 +1,11 @@
 ---
 
-- name: Check for apparmor.d first install
-  ansible.builtin.stat:
-    path: /etc/ansible/facts/apparmor_profiles__installed
-  register: apparmor_profiles__first_install
+- name: Wait for AppArmor service to be ready
+  ansible.builtin.wait_for:
+    timeout: 60
+  become: false
+  delegate_to: localhost
+  when: not apparmor_profiles__first_install.stat.exists
 
 - name: Reboot the machine on first install of the apparmor.d packages
   ansible.builtin.reboot:

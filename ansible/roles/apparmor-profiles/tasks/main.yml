@@ -1,5 +1,10 @@
 ---
 
+- name: Check for apparmor.d first install
+  ansible.builtin.stat:
+    path: /etc/ansible/facts/apparmor_profiles__installed
+  register: apparmor_profiles__first_install
+
 - name: Install requested packages
   ansible.builtin.package:
     name: '{{ (apparmor_profiles__base_packages + apparmor_profiles__packages) | flatten }}'
@@ -45,22 +50,11 @@
   tags: ['pam']
 
 - name: Restart apparmor
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: apparmor
     state: restarted
     enabled: true
+    no_block: false
 
 - name: Reboot if required
   ansible.builtin.include_tasks: reboot.yml
-
-# NOTE: this is good, but not enough:
-# In fully enforced mode: FSP with pam role (and no default profile), the reboot
-# would prevent ansible to install the apparmor_local role with the pam roles.
-# However, if we do it before the reboot, the pam role config would prevent this
-# role install. Thus, the apparmor reload needs to be postponed.
-# Solution; we need to ensure that;
-# 1. the apparmor.d packages are installed
-# 2. the apparmor_local profile are installed
-# 3. Only then apparmor service is restarted
-# 4. The pam config is set
-# 5. Reboot the machine
