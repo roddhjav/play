@@ -5,3 +5,9 @@
     name: caddy
     state: restarted
     enabled: true
+
+- name: Restart ssh
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+    enabled: true

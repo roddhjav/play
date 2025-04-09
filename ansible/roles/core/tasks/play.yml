@@ -45,6 +45,8 @@
     src: etc/ssh/sshd_config.d/90-play.conf
     dest: /etc/ssh/sshd_config.d/90-play.conf
     mode: "0644"
+  notify:
+    - Restart ssh
 
 - name: Add issue message
   ansible.builtin.template:
