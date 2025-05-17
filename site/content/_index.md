@@ -15,7 +15,7 @@ This server is running the [apparmor.d](https://github.com/roddhjav/apparmor.d) 
 ## Discuss
 
 - Matrix channel available on https://matrix.to/#/#apparmor.d:matrix.org
-- Github discussion on: https://github.com/roddhjav/apparmor.d/discussions/619
+- Github discussion on: https://github.com/roddhjav/apparmor.d/discussions/722
 - If you find a security issue, please report it privately at security@pujol.io
 
 ## Rules
