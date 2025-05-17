@@ -20,7 +20,9 @@ check:
   stage: lint
   image: archlinux
   script:
+    - mkdir -p tests
     - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/check.sh > check.sh
+    - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/sbin.list > tests//sbin.list
     - bash check.sh
 
 # Profiles Build
