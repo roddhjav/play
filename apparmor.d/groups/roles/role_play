@@ -21,6 +21,7 @@ profile role_play {
   capability fowner,
   capability fsetid,
   capability kill,
+  capability sys_admin,
   capability sys_ptrace,
   capability sys_rawio,
   capability syslog,
@@ -47,8 +48,9 @@ profile role_play {
   #aa:dbus talk bus=session name=org.freedesktop.systemd1 label="@{p_systemd}"
   #aa:dbus talk bus=system name=org.freedesktop.PackageKit label=packagekitd
 
-  @{lib}/**                    mrPix,
   @{bin}/**                    mrPix,
+  @{sbin}/**                   mrPix,
+  @{lib}/**                    mrPix,
   /opt/*/**                    mrPix,
   /usr/share/*/**              mrPix,
   /tmp/**                      mrix,

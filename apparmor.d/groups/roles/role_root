@@ -47,8 +47,9 @@ profile role_root {
   signal receive peer=@{p_systemd},
 
   # Allow to run everything, but in the scope of this role only
-  @{bin}/** mrix,
-  @{lib}/** mrix,
+  @{bin}/**   mrix,
+  @{sbin}/**  mrix,
+  @{lib}/**   mrix,
 
   # Allow to run some specific program and to transition to their profile
   @{bin}/aa-enabled                               Px,
