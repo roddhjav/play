@@ -54,8 +54,6 @@ profile role_root {
   # Allow to run some specific program and to transition to their profile
   @{bin}/aa-enabled                               Px,
   @{bin}/aa-log                                   Px,
-  @{bin}/aa-status                                Px,
-  @{bin}/blkid                                    Px,
   @{bin}/df                                       Px,
   @{bin}/dmesg                                    Px,
   @{bin}/findmnt                                  Px,
@@ -64,7 +62,6 @@ profile role_root {
   @{bin}/journalctl                               Px,
   @{bin}/lsblk                                    Px,
   @{bin}/lscpu                                    Px,
-  @{bin}/lspci                                    Px,
   @{bin}/ps                                       Px,
   @{bin}/pstree                                   Px,
   @{bin}/top                                      Px,
@@ -73,6 +70,9 @@ profile role_root {
   @{bin}/users                                    Px,
   @{bin}/w                                        Px,
   @{bin}/who                                      Px,
+  @{sbin}/aa-status                               Px,
+  @{sbin}/blkid                                   Px,
+  @{sbin}/lspci                                   Px,
   @{lib}/command-not-found                        Px,
 
   # To see the apparmor profiles in use

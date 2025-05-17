@@ -60,7 +60,7 @@ profile caddy @{exec_path} flags=(attach_disconnected) {
 
     ptrace read peer=caddy,
 
-    @{bin}/update-ca-certificates rPx,
+    @{sbin}/update-ca-certificates rPx,
 
     @{run}/ r,
 
