@@ -77,3 +77,10 @@
     src: root/roulette.py
     dest: /root/roulette.py
     mode: "0755"
+
+- name: Add the shellshock game
+  ansible.builtin.get_url:
+    url: 'https://dhampir.no/stuff/bash/shellshock'
+    checksum: 'sha512:c6d65cd86387f79a4a5288c6e26ba5deea90d440e01fdac1910d69ccf988fb8776e646f8defcc2531d8d651f254d00b425e5ce3d1a7e72ab26db23fb90e4d560'
+    dest: /root/shellshock
+    mode: "0755"
