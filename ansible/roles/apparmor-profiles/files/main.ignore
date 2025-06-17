@@ -11,12 +11,6 @@ apparmor.d/groups/_full
 # Ignore the development profiles
 apparmor.d/groups/_dev/
 
-# When targeting apparmor > 4.1+, ignore files recently upstreamed
-# apparmor.d/abstractions/devices-usb
-# apparmor.d/abstractions/devices-usb-read
-# apparmor.d/abstractions/nameservice-strict
-# apparmor.d/tunables/multiarch.d/base
-
 # Overwrite profiles where pam is enabled
 apparmor.d/groups/ssh/sshd
 apparmor.d/groups/utils/login

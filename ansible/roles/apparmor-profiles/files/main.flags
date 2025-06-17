@@ -2,33 +2,47 @@
 # File format: one profile by line using the format: '<profile> <flags>'
 
 # New profiles
+apt_news attach_disconnected,complain
+cloud-init-hotplugd.service complain
 deb-systemd-helper complain
 deb-systemd-invoke complain
+debug-shell.service complain
+dmesg.service complain,attach_disconnected
 dpkg-db-backup complain
 dpkg-maintscript-helper complain
-dpkg-script-base complain
-dpkg-script-crowdsec complain
-dpkg-script-initramfs complain
 dpkg-script-kmod complain
-dpkg-script-landscape complain
-dpkg-script-libc complain
 dpkg-script-linux complain
-dpkg-script-man complain
-dpkg-script-python complain
-dpkg-script-rsyslog complain
 dpkg-script-systemd complain
-dpkg-script-tmp attach_disconnected,complain
-dpkg-script-udev complain
-dpkg-script-ufw complain
-dpkg-script-wazuh complain
 dpkg-scripts complain
+esm_cache complain
+grub-common.service complain
 initramfs-hooks complain
 initramfs-scripts complain
+kdump_mem_estimator complain
+kdump-config attach_disconnected,complain
+kdump-tools-init complain,attach_disconnected
+kernel complain
+kernel-install complain
+kernel-postinst-kdump complain
+ldconfig.service complain
 linux-update-symlinks complain
+man-db.service complain,attach_disconnected
 netplan-generate complain,attach_disconnected
 pycompile complain
+secureboot-db.service complain
+shadow.service complain,attach_disconnected
+snapd.system-shutdown.service complain
 sysstat-sa complain
 sysstat-sadc complain
+system-update-cleanup.service complain
+udev-ata_id complain
+udev-bcache-export-cached complain
+udev-cdrom_id complain
+udev-dmi-memory-id complain
+udev-fido_id complain
+udev-hdparm complain
+udev-probe-bcache complain
+usb_modeswitch.service complain
 
 dkms attach_disconnected,complain
 dmsetup complain
@@ -38,7 +52,6 @@ fail2ban-server attach_disconnected,complain
 fdisk complain
 firewall-applet attach_disconnected,complain
 firewall-config complain
-fstrim complain
 grub-bios-setup complain
 grub-editenv complain
 grub-file complain
@@ -77,7 +90,7 @@ lvmconfig complain
 lvmdump complain
 lvmpolld complain
 mke2fs complain
-netplan.script attach_disconnected,complain
+netplan attach_disconnected,complain
 run-parts complain
 systemd-generator-bless-boot attach_disconnected,complain
 systemd-generator-cloud-init attach_disconnected,complain

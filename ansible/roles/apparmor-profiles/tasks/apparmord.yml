@@ -25,10 +25,6 @@
         echo -e "\noverride_dh_auto_build:" >> "$VOLUME/$PKGNAME/debian/rules"
         echo -e "\t{{ apparmor_profiles__build_cmd }}" >> "$VOLUME/$PKGNAME/debian/rules"
 
-        # Strict FSP, the default profile is not enabled.
-        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/default"*
-        rm "$VOLUME/$PKGNAME/apparmor.d/groups/_full/bwrap"*
-
         # Disable hotfixes as they are for desktop only
         sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
 
