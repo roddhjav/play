@@ -2,8 +2,6 @@
 # Copyright (C) 2025 Alexandre Pujol <alexandre@pujol.io>
 # SPDX-License-Identifier: GPL-2.0-only
 
-# Only used by caddy to generate SSL cert
-
 abi <abi/4.0>,
 
 include <tunables/global>
