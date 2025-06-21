@@ -24,9 +24,6 @@ enforce: build
 complain: build
 	@./{{build}}/prebuild --complain
 
-# First provision:
-# just ansible staging play -t role::apparmor-profiles --extra-vars \"apparmor_profiles__local_build_cmd=\'just complain\'\"
-# just ansible staging play
 [group('provision')]
 [doc('Provision the machine')]
 ansible inventory="staging" playbook="play" *args="":
