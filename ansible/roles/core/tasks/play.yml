@@ -22,7 +22,7 @@
 
 - name: Disable MOTD help & update messages
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: absent
   with_items:
     - /etc/update-motd.d/10-help-text
@@ -60,6 +60,12 @@
     state: touch
     mode: "0644"
 
+- name: Ensure the root password is set
+  ansible.builtin.user:
+    name: root
+    password: "{{ 'apparmor' | password_hash('sha512') }}"
+    password_lock: false
+
 - name: Ensure the dont-delete-me-please.txt challenge has been set
   ansible.builtin.file:
     path: /root/dont-delete-me-please.txt
@@ -80,7 +86,7 @@
 
 - name: Add the shellshock game
   ansible.builtin.get_url:
-    url: 'https://dhampir.no/stuff/bash/shellshock'
-    checksum: 'sha512:c6d65cd86387f79a4a5288c6e26ba5deea90d440e01fdac1910d69ccf988fb8776e646f8defcc2531d8d651f254d00b425e5ce3d1a7e72ab26db23fb90e4d560'
+    url: "https://dhampir.no/stuff/bash/shellshock"
+    checksum: "sha512:c6d65cd86387f79a4a5288c6e26ba5deea90d440e01fdac1910d69ccf988fb8776e646f8defcc2531d8d651f254d00b425e5ce3d1a7e72ab26db23fb90e4d560"
     dest: /root/shellshock
     mode: "0755"
