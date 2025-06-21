@@ -11,11 +11,6 @@ apparmor.d/groups/_full
 # Ignore the development profiles
 apparmor.d/groups/_dev/
 
-# Overwrite profiles where pam is enabled
-apparmor.d/groups/ssh/sshd
-apparmor.d/groups/utils/login
-apparmor.d/groups/utils/su
-
 # Abstractions we can safely ignore on servers
 apparmor.d/abstractions/app/chromium
 apparmor.d/abstractions/app/firefox
