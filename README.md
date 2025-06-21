@@ -1,6 +1,6 @@
 [<img src="https://gitlab.com/uploads/-/system/project/avatar/65991964/logo.png" align="right" height="110"/>][project]
 
-# play.pujol.io [![][build]][project]
+# play.pujol.io [![][build]][project] [![][matrix]][matrix-link] [![][play]][play-link]
 
 **AppArmor play machine**
 
@@ -23,18 +23,27 @@ The aim of this is to:
 
 **Local dependency**
 
-* Ansible
-* Go >= 1.21
-* Hugo
 * Just
+* Ansible
+* Go >= 1.23
+* Docker (to build the `apparmor.d` package)
 * The `apparmor.d` project must be available under the `../apparmor.d` path.
+* Hugo (to build the website)
 
 ## Deploy
 
 To build the profiles, and install the play machine, run the following command:
 ```sh
-just ansible
+just ansible staging play
 ```
+
+If you only want to provision the apparmor-profiles, you can run:
+```sh
+just ansible production play -t role::apparmor-profiles
+```
+
+> [!NOTE]  
+> The first provision is a bit tricky: you may have to force rebooting the VM manually
 
 Then, you can deploy the static website with:
 ```sh
@@ -44,3 +53,7 @@ just deploy
 
 [project]: https://gitlab.com/rdhjv/security/play
 [build]: https://gitlab.com/rdhjv/security/play/main/pipeline.svg?style=flat-square
+[matrix]: https://img.shields.io/badge/Matrix-%23apparmor.d-blue?style=flat-square&logo=matrix
+[matrix-link]: https://matrix.to/#/#apparmor.d:matrix.org
+[play]: https://img.shields.io/badge/Live_Demo-play.pujol.io-blue?style=flat-square
+[play-link]: https://play.pujol.io
