@@ -32,5 +32,6 @@ build:
   stage: build
   image: archlinux
   script:
-    - pacman -Syu --noconfirm --noprogressbar	go just
+    - pacman -Syu --noconfirm --noprogressbar	git go just
+    - git clone --depth 1 https://gitlab.com/roddhjav/apparmor.d.git ../apparmor.d
     - just build
