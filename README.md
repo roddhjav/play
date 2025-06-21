@@ -50,9 +50,8 @@ Then, you can deploy the static website with:
 just deploy
 ```
 
-
-[project]: https://gitlab.com/rdhjv/security/play
-[build]: https://gitlab.com/rdhjv/security/play/main/pipeline.svg?style=flat-square
+[project]: https://gitlab.com/roddhjav/play
+[build]: https://gitlab.com/roddhjav/play/main/pipeline.svg?style=flat-square
 [matrix]: https://img.shields.io/badge/Matrix-%23apparmor.d-blue?style=flat-square&logo=matrix
 [matrix-link]: https://matrix.to/#/#apparmor.d:matrix.org
 [play]: https://img.shields.io/badge/Live_Demo-play.pujol.io-blue?style=flat-square
