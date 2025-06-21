@@ -62,6 +62,7 @@ profile role_root {
   @{bin}/journalctl                               Px,
   @{bin}/lsblk                                    Px,
   @{bin}/lscpu                                    Px,
+  @{bin}/lspci                                    Px,
   @{bin}/ps                                       Px,
   @{bin}/pstree                                   Px,
   @{bin}/top                                      Px,
@@ -70,10 +71,9 @@ profile role_root {
   @{bin}/users                                    Px,
   @{bin}/w                                        Px,
   @{bin}/who                                      Px,
+  @{lib}/command-not-found                        Px,
   @{sbin}/aa-status                               Px,
   @{sbin}/blkid                                   Px,
-  @{sbin}/lspci                                   Px,
-  @{lib}/command-not-found                        Px,
 
   # To see the apparmor profiles in use
   /etc/apparmor/{,**} r,
@@ -126,12 +126,14 @@ profile role_root {
 
   deny ptrace read,
 
-  deny @{bin}/{kmod,lsmod,depmod,insmod,rmmod,modinfo,modprobe} x,
+  deny @{bin}/kmod x,
 
         deny owner /root/.config/htop/htoprc w,
+        deny owner /root/@{XDG_GPG_DIR}/{,**} rwklmx,
+        deny owner /root/@{XDG_PASSWORDSTORE_DIR}/{,**} rwklmx,
         deny owner /root/tests/ w,
-  audit deny owner /root/.config/ r,
-  audit deny owner /root/.config/htop/ r,
+  audit deny owner /root/.config/ w,
+  audit deny owner /root/.config/htop/ w,
   audit deny owner /root/.ssh/{,**} w,
 
   include if exists <local/role_root>
