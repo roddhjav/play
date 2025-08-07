@@ -63,7 +63,7 @@ profile role_play {
   / r,
   /*{,/} rw,
   /etc/** rwlk -> /etc/**,
-  /boot/** rwlk -> /boot/**,
+  @{efi}/** rwlk -> @{efi}/**,
   /mnt/** rwlk -> /mnt/**,
   /snap/** rwlk -> /snap/**,
   /var/** rwlk -> /var/**,
