@@ -22,8 +22,7 @@
         sed -i -e '/systemctl/d' "$VOLUME/$PKGNAME/debian/apparmor.d.postinst"
 
         # Enable Full System Policy with forced enforce mode
-        echo -e "\noverride_dh_auto_build:" >> "$VOLUME/$PKGNAME/debian/rules"
-        echo -e "\t{{ apparmor_profiles__build_cmd }}" >> "$VOLUME/$PKGNAME/debian/rules"
+        sed -e "s/just complain/just {{ apparmor_profiles__build_cmd }}/" -i "$VOLUME/$PKGNAME/debian/rules"
 
         # Disable hotfixes as they are for desktop only
         sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"

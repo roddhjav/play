@@ -53,8 +53,8 @@ apparmor_profiles__pam_config: |
 
 # Debian package build command to use in 'override_dh_auto_build' block.
 # Usefull to personalize the build process.
-# For testing, set it to 'make build\n\t./.build/prebuild --full --complain'
-apparmor_profiles__build_cmd: 'make build\n\t./.build/prebuild --full'
+# For testing, set it to 'just fsp-complain'
+apparmor_profiles__build_cmd: 'just fsp'
 
 # Path to the apparmor.d repository. (default: ../apparmor.d for repo root)
 apparmor_profiles__build_path: '{{ inventory_dir | realpath | dirname | dirname | dirname | dirname }}/apparmor.d'

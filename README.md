@@ -21,7 +21,7 @@ The aim of this is to:
 
 * A fresh VM with Ubuntu 24.04
 
-**Local dependency**
+**Local dependencies**
 
 * Just
 * Ansible
