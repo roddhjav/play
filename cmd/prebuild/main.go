@@ -13,8 +13,17 @@ import (
 )
 
 func init() {
+	prebuild.DownStream = true
+
 	// Define the target ABI
 	prebuild.ABI = 4
+
+	// Define the default version
+	prebuild.Version = 4.0
+
+	// Define the target distribution and
+	prebuild.Distribution = "ubuntu"
+	prebuild.Release["VERSION_CODENAME"] = "noble"
 
 	// Define the tasks applied by default
 	prepare.Register(
@@ -26,7 +35,8 @@ func init() {
 
 	// Build tasks applied by default
 	builder.Register(
-		"userspace", // Resolve variable in profile attachments
+		"userspace",   // Resolve variable in profile attachments
+		"base-strict", // Use base-strict as base abstraction
 	)
 
 	// Define the dist directory, ie. the location of the overwrite file

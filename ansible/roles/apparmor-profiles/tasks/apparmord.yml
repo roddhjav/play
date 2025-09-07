@@ -19,16 +19,12 @@
       # Configure apparmor.d to our needs
       configure() {
         # Do not reload the profiles as part of the postinst script
-        sed -i -e '/systemctl/d' "$VOLUME/$PKGNAME/debian/apparmor.d.postinst"
+        sed -i -e '/deb-systemd-invoke/d' "$VOLUME/$PKGNAME/debian/apparmor.d.postinst"
 
         # Enable Full System Policy with forced enforce mode
-        sed -e "s/just complain/just {{ apparmor_profiles__build_cmd }}/" -i "$VOLUME/$PKGNAME/debian/rules"
+        sed -e "s/just complain/{{ apparmor_profiles__build_cmd }}/" -i "$VOLUME/$PKGNAME/debian/rules"
 
-        # Disable hotfixes as they are for desktop only
-        sed -e '/hotfix/d' -i "$VOLUME/$PKGNAME/cmd/prebuild/main.go"
-
-        # Only install profile required on servers
-        cp '{{ role_path }}/files/main.ignore' "$VOLUME/$PKGNAME/dists/ignore/main.ignore"
+        # Strict enforce mode, limit the number of profiles on complain mode
         cp '{{ role_path }}/files/main.flags' "$VOLUME/$PKGNAME/dists/flags/main.flags"
       }
 
