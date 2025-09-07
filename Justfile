@@ -54,7 +54,10 @@ lint:
 [group('linter')]
 [doc('Run style checks on the profiles')]
 check:
-	@bash ../apparmor.d/tests/check.sh
+    @mkdir -p tests
+    @curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/check.sh > tests/check.sh
+    @curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/sbin.list > tests/sbin.list
+    @bash tests/check.sh
 
 [group('tests')]
 [doc('Run the integration tests on the machine')]

@@ -21,9 +21,9 @@ check:
   image: archlinux
   script:
     - mkdir -p tests
-    - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/check.sh > check.sh
-    - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/sbin.list > tests//sbin.list
-    - bash check.sh
+    - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/check.sh > tests/check.sh
+    - curl -sSL https://raw.githubusercontent.com/roddhjav/apparmor.d/refs/heads/main/tests/sbin.list > tests/sbin.list
+    - bash tests/check.sh
 
 # Profiles Build
 # --------------
