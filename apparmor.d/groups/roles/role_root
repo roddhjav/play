@@ -130,6 +130,7 @@ profile role_root {
 
         deny owner /root/.config/htop/htoprc w,
         deny owner /root/@{XDG_GPG_DIR}/{,**} rwklmx,
+        deny owner /root/.config/systemd/** w, # stgraber-was-here
         deny owner /root/@{XDG_PASSWORDSTORE_DIR}/{,**} rwklmx,
         deny owner /root/tests/ w,
   audit deny owner /root/.config/ w,
