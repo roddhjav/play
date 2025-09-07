@@ -81,6 +81,7 @@ profile role_root {
 
   # Harmless to allow
   /etc/dpkg/{,**} r,
+  /etc/pam.d/{,**} r,
   /etc/init.d/{,**} r,
   /etc/machine-id r,
   /etc/sensors.d/{,**} r,
